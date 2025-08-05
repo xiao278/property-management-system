@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: pms-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER_NAME}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+    env_file:
+      - db.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build: ./backend
+    container_name: pms-backend
+    depends_on:
+      - mysql
+    ports:
+      - "8990:8990"
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${DB_USER_NAME}
+      DB_PASSWORD: ${DB_USER_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    env_file:
+      - db.env
+
+  frontend:
+    build: ./frontend
+    container_name: pms-frontend
+    ports:
+      - "8989:8989"
+
+volumes:
+  mysql_data:
