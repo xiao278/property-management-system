@@ -25,9 +25,7 @@ export function LoginPage() {
 
             if (response.ok) {
                 const { token } = await response.json();
-                console.log("success logging in");
                 login(token);
-                console.log('token recognized');
             }
             else {
                 // server did not like credentials

@@ -9,7 +9,6 @@ export function RequireAuth({ children }: {children: JSX.Element}) {
     useEffect(() => {
         setIsLoading(false);
     }, [isAuthenticated])
-    console.log(isAuthenticated, isLoading)
     if (!isAuthenticated && !isLoading) {
         return <Navigate to="/login" state={{from: location}} replace/>
     }

@@ -6,12 +6,10 @@ export function DashboardPage () {
     const handleLogout = () => {
         logout();
     }
-    console.log(user)
     return (
         <div>
             <div>Welcome {user?.username}</div>
             <button onClick={handleLogout}>Logout</button>
         </div>
-        
     );
 }
