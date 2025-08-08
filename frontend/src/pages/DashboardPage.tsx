@@ -8,7 +8,7 @@ export function DashboardPage () {
     }
     return (
         <div>
-            <div>Welcome {user?.username}</div>
+            <div>Welcome {user?.firstname} {user?.lastname}</div>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );

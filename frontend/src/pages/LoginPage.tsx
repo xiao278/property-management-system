@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { LoginForm } from "../../../interface/Auth";
 import { post } from "../api";
 import { AuthContext } from "../components/AuthProvider";
+import './LoginPage.css'
 
 export function LoginPage() {
     const [username, setUsername] = useState('');
@@ -45,20 +46,33 @@ export function LoginPage() {
     })
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Login</button>
-                {error && <div className="loginError">{error}</div>}
+        <div className="LoginPage">
+            <form className="LoginForm" onSubmit={handleSubmit}>
+                <div className="LogInputContainer">
+                    <h1>login</h1>
+                </div>
+                <div className="LogInputContainer">
+                    <p>Username</p>
+                    <input
+                        type="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <div className="LogInputContainer">
+                    <p>Password</p>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className="LogInputContainer">
+                    <button type="submit">Login</button>
+                </div>
+                <div className="LogInputContainer">
+                    {error && <p className="LoginError">{error}</p>}
+                </div>
             </form>
         </div>
     );

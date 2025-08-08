@@ -1,0 +1,32 @@
+.LoginPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+}
+
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    padding: 20px;
+}
+
+.LogInputContainer {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.LogInputContainer > * {
+    margin: 0;
+}
+
+.LoginError {
+    color: red;
+}
