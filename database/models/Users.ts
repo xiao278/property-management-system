@@ -1,7 +1,17 @@
 import { sequelize } from '../main';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
-const Users = sequelize.define(
+interface UserAttributes {
+    username: string,
+    password: string,
+    role: 'admin' | 'operator',
+    firstname?: string,
+    lastname?: string 
+}
+
+interface UserInstance extends Model<UserAttributes>, UserAttributes{}
+
+const Users = sequelize.define<UserInstance>(
     'Users',
     {
         username: {

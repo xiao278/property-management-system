@@ -3,4 +3,11 @@ interface LoginForm {
     password: string;
 }
 
-export { LoginForm }
+interface TokenUserInfo {
+    username: string;
+    isAdmin: boolean;
+    firstname: string;
+    lastname: string;
+}
+
+export { LoginForm, TokenUserInfo }
