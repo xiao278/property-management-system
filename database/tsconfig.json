@@ -7,8 +7,8 @@
     }
   },
   "compilerOptions": {
-    "module": "Node16",
+    "module": "Node16", // this (esnext -> node16) fixed the datatypes import using relative path instead of 'sequelize'
     "esModuleInterop": true,
-    "strict": false
+    "skipLibCheck": true
   }
 }
