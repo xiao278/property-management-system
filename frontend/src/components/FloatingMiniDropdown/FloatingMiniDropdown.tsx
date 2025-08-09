@@ -14,7 +14,7 @@ export function FloatingMiniDropdown({ actions, children }: { actions: MenuItemA
 
     return (
         <div className="FloatingDropdownContainer">
-            <div onClick={() => {setShow(!show)}}>
+            <div className="FloatingDropdownToggleButton" onClick={() => {setShow(!show)}}>
                 {children}
             </div>
             {show ? 
