@@ -9,6 +9,5 @@
   "compilerOptions": {
     "module": "Node16",
     "esModuleInterop": true,
-    "strict": false
   }
 }

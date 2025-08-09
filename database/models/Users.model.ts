@@ -39,4 +39,6 @@ const Users = sequelize.define<UserInstance>(
     },
 );
 
+// associations in housings.model
+
 export { Users }

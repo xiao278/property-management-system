@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Users } from '../../../database/models/Users';
+import { Users } from '../../../database/models/Users.model';
 import { LoginForm, TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
 import jwt from 'jsonwebtoken';

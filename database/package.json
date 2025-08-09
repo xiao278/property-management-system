@@ -1,0 +1,17 @@
+{
+    "name": "database",
+    "version": "1.0.0",
+    "scripts": {
+        "sync-tables": "ts-node scripts/syncAllTables.ts"
+    },
+    "main": "main.ts",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@types/node": "^24.2.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.2"
+    }
+}

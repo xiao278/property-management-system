@@ -1,5 +1,6 @@
 import { sequelize } from '../main';
 import { DataTypes, Model } from 'sequelize';
+import { Housings } from './Housings.model';
 
 interface AddressAttributes {
     address_id: number;

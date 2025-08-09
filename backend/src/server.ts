@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { authRoutes } from './routes/auth';
 import { sequelize } from '../../database/main';
-import { Users } from '../../database/models/Users'
+import { Users } from '../../database/models/Users.model'
 
 dotenv.config();
 
@@ -37,8 +37,3 @@ sequelize.authenticate().then(() => {
 }).catch((error:Error) => {
     console.error('Unable to connect to the database: ', error.message);
 });
-
-(async () => {
-  await Users.sync();
-  console.log("tables synced");
-})();

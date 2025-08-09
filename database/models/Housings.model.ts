@@ -1,5 +1,6 @@
 import { sequelize } from '../main';
 import { DataTypes, Model } from 'sequelize';
+import { Addresses } from './Addresses.model';
 
 interface HousingAttributes {
     property_id: number;
@@ -35,7 +36,11 @@ const Housings = sequelize.define<HousingInstance>(
         },
         address_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: Addresses,
+                key: 'address_id'
+            }
         },
         unit: {
             type: DataTypes.STRING(8),
@@ -46,5 +51,12 @@ const Housings = sequelize.define<HousingInstance>(
         }
     }
 );
+
+Housings.belongsTo(Addresses, {
+    foreignKey: 'address_id',
+})
+Addresses.hasMany(Housings, {
+    foreignKey: 'address_id',
+})
 
 export { Housings }
