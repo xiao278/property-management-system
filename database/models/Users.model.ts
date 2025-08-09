@@ -20,7 +20,7 @@ const Users = sequelize.define<UserInstance>(
             primaryKey: true
         },
         password: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(60),
             allowNull: false
         },
         role: {
@@ -41,4 +41,4 @@ const Users = sequelize.define<UserInstance>(
 
 // associations in housings.model
 
-export { Users }
+export { Users, UserAttributes }

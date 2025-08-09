@@ -59,4 +59,4 @@ Addresses.hasMany(Housings, {
     foreignKey: 'address_id',
 })
 
-export { Housings }
+export { Housings, HousingAttributes }

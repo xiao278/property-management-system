@@ -55,4 +55,4 @@ const Addresses = sequelize.define<AddressInstance>(
     },
 );
 
-export { Addresses }
+export { Addresses, AddressAttributes }
