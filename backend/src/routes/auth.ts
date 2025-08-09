@@ -3,6 +3,7 @@ import { Users } from '../../../database/models/Users.model';
 import { LoginForm, TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const authRoutes = Router();
 
@@ -10,7 +11,7 @@ authRoutes.post('/login', async (req, res) => {
   const loginForm:LoginForm = req.body;
   console.log(loginForm)
   const user = await Users.findOne({where: {username: loginForm.username}})
-  if (!user || loginForm.password != user.getDataValue('password')) {
+  if (!user || !bcrypt.compare(loginForm.password, user.password)) {
     res.status(401).json({error: "Invalid Credentials"})
   }
   else {
