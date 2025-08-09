@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { LoginForm } from "../../../interface/Auth";
-import { post } from "../api";
-import { AuthContext } from "../components/AuthProvider";
+import { LoginForm } from "../../../../interface/Auth";
+import { post } from "../../api";
+import { AuthContext } from "../../components/AuthProvider";
 import './LoginPage.css'
+import { mainPageRoute } from "../../Router";
 
 export function LoginPage() {
     const [username, setUsername] = useState('');
@@ -41,7 +42,7 @@ export function LoginPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate(location.state?.from?.pathname || '/dashboard', {replace: true})
+            navigate(`${mainPageRoute}`, {replace: true})
         }
     })
 
@@ -54,6 +55,7 @@ export function LoginPage() {
                 <div className="LogInputContainer">
                     <p>Username</p>
                     <input
+                        className="LoginTextInput"
                         type="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -62,16 +64,17 @@ export function LoginPage() {
                 <div className="LogInputContainer">
                     <p>Password</p>
                     <input
+                        className="LoginTextInput"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <div className="LogInputContainer">
-                    <button type="submit">Login</button>
+                    <p className="LoginError">{error}</p>
                 </div>
                 <div className="LogInputContainer">
-                    {error && <p className="LoginError">{error}</p>}
+                    <button className="LoginButton" type="submit">Connect</button>
                 </div>
             </form>
         </div>

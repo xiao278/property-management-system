@@ -1,0 +1,27 @@
+.NavBarContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(10,60,50);
+    color: rgb(200,200,200);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.NavBarOptionsContainer {
+    display: flex;
+}
+
+.WideOptionsContainer {
+    flex-direction: row;
+}
+
+.MiscContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.MiscContainer > * {
+    height: min-content;
+}

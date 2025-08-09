@@ -1,0 +1,29 @@
+.FloatingDropdownContainer {
+    position: relative;
+}
+
+.FloatingDropdownMenu {
+    width: max-content;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    top: 100%;
+}
+
+.FloatingDropdownMenuButtons {
+    background-color: rgb(240,245,240);
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.FloatingDropdownMenuButtons:hover {
+    cursor: pointer;
+    background-color: rgb(200,200,200);
+}
+
+.FloatingDropdownMenuRetract {
+    background-color: rgb(245,230,220);
+    height: 20px;
+}

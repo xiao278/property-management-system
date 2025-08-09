@@ -1,0 +1,26 @@
+.NavOption {
+    display: flex;
+    transition: 100ms;
+}
+
+.NavOptionHorizontal {
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.NavOption > p {
+    margin: 0;
+    height: min-content;
+    user-select: none;
+}
+
+.NavOption:hover {
+    color: rgb(255,255,255);
+}
+
+.NavOptionActive {
+    background-color: rgba(255,255,255,0.1);
+    color: rgb(255,255,255)
+}

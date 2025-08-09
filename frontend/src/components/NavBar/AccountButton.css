@@ -1,0 +1,19 @@
+.AccountButton {
+    height: 35px;
+    width: 35px;
+    margin: 5px;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.AccountButton > div {
+    user-select: none;
+}
+
+.AccountButtonText {
+    font-weight: 600;
+}
