@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoginForm } from "../../../../interface/Auth";
 import { post } from "../../api";
 import { AuthContext } from "../../components/AuthProvider";
@@ -11,7 +11,6 @@ export function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const location = useLocation();
     const { login, isAuthenticated } = useContext(AuthContext);
 
 
