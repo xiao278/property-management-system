@@ -11,7 +11,9 @@ authRoutes.post('/login', async (req, res) => {
   const loginForm:LoginForm = req.body;
   console.log(loginForm)
   const user = await Users.findOne({where: {username: loginForm.username}})
-  if (!user || !bcrypt.compare(loginForm.password, user.password)) {
+  if (!user || 
+    !(await bcrypt.compare(loginForm.password, user.password))
+  ) {
     res.status(401).json({error: "Invalid Credentials"})
   }
   else {

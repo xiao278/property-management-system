@@ -41,9 +41,9 @@ export function LoginPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate(`${mainPageRoute}`, {replace: true})
+            navigate(`/${mainPageRoute}`)
         }
-    })
+    }, [isAuthenticated, navigate])
 
     return (
         <div className="LoginPage">
