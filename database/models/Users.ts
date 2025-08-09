@@ -12,7 +12,7 @@ interface UserAttributes {
 interface UserInstance extends Model<UserAttributes>, UserAttributes{}
 
 const Users = sequelize.define<UserInstance>(
-    'Users',
+    'users',
     {
         username: {
             type: DataTypes.STRING(32),
@@ -28,10 +28,13 @@ const Users = sequelize.define<UserInstance>(
             allowNull: false
         },
         firstname: {
-            type: DataTypes.STRING(16)
+            type: DataTypes.STRING(16),
+            allowNull: false
+
         },
         lastname: {
-            type: DataTypes.STRING(16)
+            type: DataTypes.STRING(16),
+            allowNull: false
         }
     },
 );
