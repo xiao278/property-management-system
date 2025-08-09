@@ -17,6 +17,7 @@
     padding-top: 5px;
     padding-bottom: 5px;
     cursor: pointer;
+    user-select: none;
 }
 
 .FloatingDropdownMenuButtons:hover {

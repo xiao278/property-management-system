@@ -1,6 +1,5 @@
-import { JSX, useRef, useState } from "react";
+import { JSX, useState } from "react";
 import "./FloatingMiniDropdown.css"
-import * as ReactDOM from 'react-dom'
 
 interface MenuItemActions {
     [actionName:string]: () => void;
@@ -24,10 +23,6 @@ export function FloatingMiniDropdown({ actions, children }: { actions: MenuItemA
                             {actionName}
                         </button>
                     ))}
-                    <button 
-                        className="FloatingDropdownMenuButtons FloatingDropdownMenuRetract"
-                        onClick={() => {setShow(false)}}
-                    >^</button>
                 </div>
             :<></>}
         </div>
