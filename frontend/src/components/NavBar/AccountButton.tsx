@@ -18,7 +18,7 @@ function unicodeStringHash(str: string) {
         hash = hash | 0;
         if (charCode > 0xffff) i++
     }
-    return hash;
+    return Math.abs(hash);
 }
 
 function hexBrightness(str: string) {
