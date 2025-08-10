@@ -1,0 +1,27 @@
+.HousingFormContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.HfSection {
+    display: flex;
+    flex-direction: column;
+    border-color: rgb(40, 80, 40);
+    border-radius: 16px;
+    border-style: solid;
+    padding: 20px;
+    gap: 20px;
+}
+
+.HfSection > h2 {
+    margin: 0;
+}
+
+.ClusteredInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}

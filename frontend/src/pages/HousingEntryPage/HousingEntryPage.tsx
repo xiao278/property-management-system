@@ -1,14 +1,13 @@
-import { SmallCard } from "../../components/Template/SmallCard/SmallCard"
+import { HousingForm } from "../../components/Content/HousingForm/HousingForm"
+import "./HousingEntryPage.css"
+
 
 export const housingEntryPageRoute = "/insert"
 
 export function HousingEntryPage() {
     return (
-        <SmallCard>
-            <div>a</div>
-            <div>b</div>
-            <div>c</div>
-            <div>d</div>
-        </SmallCard>
+        <div className="HousingEntryPageContainer">
+            <HousingForm />
+        </div>
     )
 }
