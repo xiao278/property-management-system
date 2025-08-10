@@ -6,6 +6,8 @@ import { AuthContext } from "../../components/AuthProvider";
 import './LoginPage.css'
 import { mainPageRoute } from "../../Router";
 
+export const loginPageRoute = "/login";
+
 export function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -41,7 +43,7 @@ export function LoginPage() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate(`/${mainPageRoute}`)
+            navigate(`${mainPageRoute}`)
         }
     }, [isAuthenticated, navigate])
 

@@ -2,10 +2,11 @@ import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom'
 import { RequireAuth } from './components/RequireAuth';
 import { useAuth } from './hooks/useAuth';
 import { LoginPage } from './pages/LoginPage/LoginPage';
-import { NavBar } from './components/NavBar/NavBar';
+import { NavBar } from './components/Content/NavBar/NavBar';
 import { AuthProvider } from './components/AuthProvider';
+import { loginPageRoute } from './pages/LoginPage/LoginPage';
 
-export const mainPageRoute = "app"
+export const mainPageRoute = "/app"
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -14,15 +15,15 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* pubic routes no auth required */}
-          <Route path="/login" element={ <LoginPage /> }/>
+          <Route path={`${loginPageRoute}`} element={ <LoginPage /> }/>
           {/* protected routes auth requird */}
-          <Route path={`/${mainPageRoute}/*`} element={
+          <Route path={`${mainPageRoute}/*`} element={
             <RequireAuth>
               <NavBar />
             </RequireAuth>
           } />
           <Route path="*" element={ 
-            <Navigate to={isAuthenticated ? `/${mainPageRoute}` : "/login"} replace={true}/>
+            <Navigate to={isAuthenticated ? `${mainPageRoute}` : `${loginPageRoute}`} replace={true}/>
           } />
         </Routes>
       </AuthProvider>

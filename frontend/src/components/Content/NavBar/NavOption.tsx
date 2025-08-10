@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { mainPageRoute } from "../../Router";
+import { mainPageRoute } from "../../../Router";
 import "./NavOption.css";
-import { AuthContext } from "../AuthProvider";
+import { AuthContext } from "../../AuthProvider";
 import { useContext } from "react";
 
 interface NavOptionProps {
@@ -16,7 +16,7 @@ export function NavOption(props:NavOptionProps) {
     const requireAdmin = props.requireAdmin ? props.requireAdmin : false;
     const navigate = useNavigate();
     const location = useLocation();
-    const route = `/${mainPageRoute}/${pageroute}`
+    const route = `${mainPageRoute}${pageroute}`
     const handleClick = () => {
         navigate(route);
     }
