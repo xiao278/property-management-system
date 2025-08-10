@@ -4,7 +4,7 @@ import "./HousingForm.css"
 import { useState } from "react";
 
 export function HousingForm() {
-    const [unit, setUnit] = useState<string | null>();
+    const [unit, setUnit] = useState('');
     const [bathrooms, setBathrooms] = useState(0);
     const [bedrooms, setBedrooms] = useState(0);
     const [size, setSize] = useState(0);
@@ -12,8 +12,8 @@ export function HousingForm() {
     const [price, setPrice] = useState(0);
     const [purchaseDate, setPurchaseDate] = useState<string>(new Date().toISOString().substring(0,10))
 
-    const [buildingName, setBuildingName] = useState<string | null>();
-    const [streetNumber, setStreetNumber] = useState<string | null>();
+    const [buildingName, setBuildingName] = useState('');
+    const [streetNumber, setStreetNumber] = useState('');
     const [streetName, setStreetName] = useState('');
     const [city, setCity] = useState('');
     const [zip, setZip] = useState('');

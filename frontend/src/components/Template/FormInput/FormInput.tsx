@@ -13,7 +13,9 @@ export function FormInput(props: FormInputProps) {
     const { name, type, allowEmpty, inputField, setInputField } = props;
     return (
         <div className="FormInputContainer">
-            <input className="FormInput" value={inputField} type={type} onChange={(e) => setInputField(e.target.value)} />
+            <input className={"FormInput"} value={inputField} type={type} style={{
+                backgroundColor: (!allowEmpty && (type == "text") && (inputField.length < 1)) ? "rgb(245,220,220)" : ""
+            }} onChange={(e) => setInputField(e.target.value)} />
             <div className="FormInputName"> {name}
                 {allowEmpty ? <></> : 
                     <span style={{color: "red"}}>*</span>
