@@ -11,7 +11,7 @@
     text-wrap-mode: nowrap;
 }
 
-.FormInput {
+.FormInputContainer > input {
     background-color: rgb(245,245,245);
     border-width: 1px;
     border-style: solid;
