@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage/LoginPage';
 import { NavBar } from './components/Content/NavBar/NavBar';
 import { AuthProvider } from './components/AuthProvider';
 import { loginPageRoute } from './pages/LoginPage/LoginPage';
+import { HousingEntryPage, housingEntryPageRoute } from './pages/HousingEntryPage/HousingEntryPage';
 
 export const mainPageRoute = "/app"
 
@@ -20,6 +21,11 @@ function App() {
           <Route path={`${mainPageRoute}/*`} element={
             <RequireAuth>
               <NavBar />
+              <Routes>
+                <Route path={`${housingEntryPageRoute}`} element= {
+                  <HousingEntryPage />
+                } />
+              </Routes>
             </RequireAuth>
           } />
           <Route path="*" element={ 

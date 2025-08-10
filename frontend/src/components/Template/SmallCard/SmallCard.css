@@ -1,0 +1,12 @@
+.SmallCardContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.SmallCardContainerContent {
+    flex: 1 1 calc(50% - 25px);
+    min-width: 300px;
+    max-width: 100%;
+    padding: 5px;
+}

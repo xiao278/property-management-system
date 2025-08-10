@@ -7,7 +7,7 @@ interface RequireAuthProps {
     requireAdmin: boolean;
 }
 
-export function RequireAuth({ props, children }: {props?:RequireAuthProps, children: JSX.Element}) {
+export function RequireAuth({ props, children }: {props?:RequireAuthProps, children: JSX.Element[]}) {
     const adminRequired = props ? props.requireAdmin : false;
     const {user, isAuthenticated} = useContext(AuthContext)
     const [isLoading, setIsLoading] = useState(true);
@@ -20,5 +20,9 @@ export function RequireAuth({ props, children }: {props?:RequireAuthProps, child
     ) {
         return <Navigate to={`${loginPageRoute}`} replace/>
     }
-    return children;
+    return (
+        <div>
+            {children}
+        </div>
+    );
 }

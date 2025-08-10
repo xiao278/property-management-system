@@ -4,6 +4,7 @@ import { NavOption } from "./NavOption";
 import "./NavBar.css"
 import { AccountButton } from "../AccountButton/AccountButton";
 import { FloatingMiniDropdown } from "../../Template/FloatingMiniDropdown/FloatingMiniDropdown";
+import { housingEntryPageRoute } from "../../../pages/HousingEntryPage/HousingEntryPage";
 
 export function NavBar () {
     const {logout} = useContext(AuthContext);
@@ -15,7 +16,7 @@ export function NavBar () {
                 <NavOption pagename="Filler1" pageroute="/invalid1"/> 
                 <NavOption pagename="Filler2" pageroute="/invalid2"/> 
                 <NavOption pagename="Filler3" pageroute="/invalid3"/>
-                <NavOption pagename="New Entry" pageroute="/insert" requireAdmin={true}/>
+                <NavOption pagename="New Entry" pageroute={housingEntryPageRoute} requireAdmin={true}/>
             </div>
             <div className="MiscContainer">
                 {/* <div>Welcome {user?.firstname} {user?.lastname}</div>
