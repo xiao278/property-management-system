@@ -1,7 +1,7 @@
 import React, { JSX } from 'react';
 import "./SmallCard.css"
 
-export function SmallCard ({ children }: { children: JSX.Element[] }) {
+export function SmallCard ({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
         <div className="SmallCardContainer">
             { React.Children.map(children, (child, index) => (
