@@ -9,12 +9,18 @@ export function HousingForm() {
                 <h2>Housing Details</h2>
                 <SmallCard>
                     <div className="ClusteredInput">
-                        <FormInput name="number of bathrooms" type="number" allowEmpty={false} />
-                        <FormInput name="number of bedrooms" type="number" allowEmpty={false} />
-                        <FormInput name="unit size (m^2)" type="number" allowEmpty={false} />
+                        <FormInput name="unit no." type="text" allowEmpty={true} />
+                        <FormInput name="bathrooms" type="number" allowEmpty={false} />
+                        <FormInput name="bedrooms" type="number" allowEmpty={false} />
+                        <FormInput name="size (m^2)" type="number" allowEmpty={false} />
                     </div>
                     <div className="ClusteredInput">
-                        <FormInput name="unit number" type="text" allowEmpty={true} />
+                        <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
+                            <FormInput name="currency" type="text" allowEmpty={false} />
+                        </div>
+                        <div style={{width: "100%"}}>
+                            <FormInput name="price" type="number" allowEmpty={false} />
+                        </div>
                         <FormInput name="date of purchase" type="date" allowEmpty={false} />
                     </div>
                 </SmallCard>
@@ -22,17 +28,10 @@ export function HousingForm() {
             <div className="HfSection">
                 <h2>Address</h2>
                 <SmallCard>
-                    {/* <div>building name</div>
-                    <div>street no.</div>
-                    <div>street name</div>
-                    <div>city</div>
-                    <div>state</div>
-                    <div>postcode</div>
-                    <div>country</div> */}
                     <FormInput name="building name" type="text" allowEmpty={true}/>
                     <div className="ClusteredInput">
                         <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
-                            <FormInput name="street number" type="text" allowEmpty={true}/>
+                            <FormInput name="street no." type="text" allowEmpty={true}/>
                         </div>
                         <FormInput name="street name" type="text" allowEmpty={false}/>
                     </div>
@@ -46,6 +45,7 @@ export function HousingForm() {
                     </div>
                 </SmallCard>
             </div>
+            <button className="HfSection HousingFormSubmitButton">Submit</button>
         </div>
     )
 }

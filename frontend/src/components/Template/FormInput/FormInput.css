@@ -8,6 +8,7 @@
 .FormInputName {
     font-size: 11px;
     user-select: none;
+    text-wrap-mode: nowrap;
 }
 
 .FormInput {
