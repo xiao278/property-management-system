@@ -1,0 +1,33 @@
+.AddressDisplayContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px;
+    gap: 5px;
+    user-select: none;
+    background: linear-gradient(0deg,rgb(90, 159, 107) 0%, rgb(118, 202, 139) 100%);
+    border-radius: 5px;
+    overflow: hidden;
+    flex-shrink: 1;
+}
+
+.AddressSectionDisplayContainer {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+    padding: 2px;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.PrefixSpan {
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+}
+
+.AddressDisplayWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    max-width: 100%;
+}

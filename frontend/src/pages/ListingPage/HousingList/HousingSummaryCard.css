@@ -1,3 +1,14 @@
 .HousingSummaryCardContainer {
-    
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+}
+
+.HousingSummaryCardDetailsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    width: 100%;
 }

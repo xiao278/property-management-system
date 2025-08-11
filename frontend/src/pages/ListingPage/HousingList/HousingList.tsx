@@ -28,7 +28,13 @@ export function HousingList() {
         <div className="HousingListContainer">
             {housingList ? housingList.map((value, key) => {
                 return (
-                    <HousingSummaryCard housingData={value} key={key} />
+                    <>
+                        <HousingSummaryCard housingData={value} key={key} itemNumber={key} />
+                        {(key < housingList.length - 1) ? 
+                        <div className="HousingListSeparator">
+                            <div />
+                        </div> : <></>}
+                    </>
                 )
             }) : <LoadingContentPlaceholder />}
         </div>
