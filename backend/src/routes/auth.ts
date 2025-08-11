@@ -14,7 +14,7 @@ authRoutes.post('/login', async (req, res) => {
   if (!user || 
     !(await bcrypt.compare(loginForm.password, user.password))
   ) {
-    res.status(401).json({error: "Invalid Credentials"})
+    res.status(401).json({message: "Invalid Credentials"})
   }
   else {
     // issue json web token if auth passed

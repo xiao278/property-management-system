@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { JSX, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthProvider";
-import { loginPageRoute } from "../pages/LoginPage/LoginPage";
+import { loginPageRoute } from "../../pages/LoginPage/LoginPage";
 
 interface RequireAuthProps {
     requireAdmin: boolean;
@@ -21,8 +21,8 @@ export function RequireAuth({ props, children }: {props?:RequireAuthProps, child
         return <Navigate to={`${loginPageRoute}`} replace/>
     }
     return (
-        <div>
+        <>
             {children}
-        </div>
+        </>
     );
 }

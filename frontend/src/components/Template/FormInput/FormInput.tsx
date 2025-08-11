@@ -23,12 +23,13 @@ export function FormInput(props: FormInputProps) {
                 <Controller 
                     control={control}
                     name={fieldName}
+                    defaultValue={""}
                     render={({ field: { onChange, value, ref }, formState, fieldState }) => (
                         React.cloneElement<NumericFormatProps>(children, {
-                            value: value, // return updated value
+                            value: value,
                             onValueChange: (values) => {onChange(values.floatValue)},
                             getInputRef: ref,
-                            placeholder: placeholder
+                            placeholder: placeholder,
                         })
                     )}
                     rules={validation}

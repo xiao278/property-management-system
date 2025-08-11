@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../../AuthProvider";
+import { AuthContext } from "../../Auth/AuthProvider";
 import "./AccountButton.css";
 
 const colors = [

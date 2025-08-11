@@ -10,7 +10,14 @@ export const housingEntryPageRoute = "/insert"
 export function HousingEntryPage() {
     const methods = useForm<HousingFormInput>();
     const onFormSubmit: SubmitHandler<HousingFormInput> = async (data) => {
-        await post("/api/housing/create", data);
+        const res = await post("/api/housing/create", data);
+        if (res.ok) {
+            alert("Housing Added Successfully");
+        }
+        else {
+            const error = await res.json()
+            alert(`Error: ${error.message}`)
+        }
     }
     return (
         <div className="HousingEntryPageContainer">

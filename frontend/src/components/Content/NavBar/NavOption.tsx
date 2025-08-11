@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { mainPageRoute } from "../../../Router";
 import "./NavOption.css";
-import { AuthContext } from "../../AuthProvider";
+import { AuthContext } from "../../Auth/AuthProvider";
 import { useContext } from "react";
 
 interface NavOptionProps {

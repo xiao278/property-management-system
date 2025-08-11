@@ -5,7 +5,7 @@ const authenticateToken = (req:Request, res:Response, next:NextFunction) => {
     const authHeader = req.header('Authorization');
     const tokenMatch = authHeader?.match(/^(Bearer\s)?(.+)$/i);
     if (!tokenMatch?.[2]) {
-        return res.status(401).json({error: 'Invalid authorization format'});
+        return res.status(401).json({message: 'Invalid authorization format'});
     }
 
     const token = tokenMatch[2];
@@ -15,7 +15,8 @@ const authenticateToken = (req:Request, res:Response, next:NextFunction) => {
         res.locals.user = decoded;
         next();
     } catch (err) {
-        res.status(401).json({error: 'Invalid token'});
+        err.m
+        res.status(401).json({message: 'Invalid token'});
     }
 }
 

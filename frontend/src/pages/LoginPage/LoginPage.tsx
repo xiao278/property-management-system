@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "../../../../interface/Auth";
 import { post } from "../../api";
-import { AuthContext } from "../../components/AuthProvider";
+import { AuthContext } from "../../components/Auth/AuthProvider";
 import './LoginPage.css'
 import { mainPageRoute } from "../../Router";
 

@@ -12,7 +12,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
     const user:TokenUserInfo = res.locals.user
 
     if (!user.isAdmin) {
-        res.status(401).json({error: "Not an admin"});
+        res.status(401).json({message: "Not an admin"});
     }
 
     try {
@@ -48,7 +48,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
 
         const housingResult = await Housings.findOrCreate({where: {...newHousingFields}})
         if (!housingResult[1]) {
-            res.status(500).json({error: "failed to create housing"})
+            res.status(500).json({message: "failed to create housing"})
         }
         else {
             res.sendStatus(200);
@@ -56,7 +56,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
     } 
     catch (error) {
         console.log(error)
-        res.status(500).json({error: error.message});
+        res.status(500).json(error);
     }
 })
 

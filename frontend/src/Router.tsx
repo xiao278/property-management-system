@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom'
-import { RequireAuth } from './components/RequireAuth';
+import { RequireAuth } from './components/Auth/RequireAuth';
 import { useAuth } from './hooks/useAuth';
 import { LoginPage } from './pages/LoginPage/LoginPage';
 import { NavBar } from './components/Content/NavBar/NavBar';
-import { AuthProvider } from './components/AuthProvider';
+import { AuthProvider } from './components/Auth/AuthProvider';
 import { loginPageRoute } from './pages/LoginPage/LoginPage';
 import { HousingEntryPage, housingEntryPageRoute } from './pages/HousingEntryPage/HousingEntryPage';
 

@@ -1,14 +1,20 @@
 import React, { JSX } from 'react';
 import "./SmallCard.css"
+import { FlexWrapping } from '../FlexWrapping/FlexWrapping';
 
-export function SmallCard ({ children }: { children: JSX.Element | JSX.Element[] }) {
+interface SmallCardProps {
+    title?: string;
+    children: JSX.Element | JSX.Element[]
+}
+
+export function SmallCard (props: SmallCardProps) {
+    const { children, title } = props;
     return (
-        <div className="SmallCardContainer">
-            { React.Children.map(children, (child, index) => (
-                <div key={index} className='SmallCardContainerContent'>
-                    {child}
-                </div>
-            ))}
+        <div className='ScContainer'>
+            {title ? <h2>{title}</h2> : <></>}
+            <FlexWrapping>
+                {children}
+            </FlexWrapping>
         </div>
     );
 }

@@ -4,20 +4,6 @@
     gap: 25px;
 }
 
-.HfSection {
-    display: flex;
-    flex-direction: column;
-    border-color: rgb(40, 80, 40);
-    border-radius: 16px;
-    border-style: solid;
-    padding: 20px;
-    gap: 20px;
-}
-
-.HfSection h2 {
-    margin: 0;
-}
-
 .ClusteredInput {
     display: flex;
     flex-direction: row;
@@ -26,14 +12,23 @@
     width: 100%;
 }
 
-.HousingFormSubmitButton {
+.HfbContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 350px;
+}
+
+.HousingFormButton {
     background-color: rgb(232, 255, 232);
+    width: 100%;
+    border-style: solid;
+    border-color: rgb(40, 80, 40);
+    border-width: 1px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.HousingFormSubmitButton {
-    background-color: rgb(240, 245, 240);
-}
-
-.HousingFormSubmitButton:active {
+.HousingFormButton:active {
     background-color: rgb(220, 245, 230);
 }
