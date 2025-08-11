@@ -11,7 +11,7 @@ export function RequireAuth({ props, children }: {props?:RequireAuthProps, child
     const adminRequired = props ? props.requireAdmin : false;
     const {user, isAuthenticated} = useContext(AuthContext)
     const [isLoading, setIsLoading] = useState(true);
-    console.log(isLoading, isAuthenticated)
+    // console.log(isLoading, isAuthenticated)
     useEffect(() => {
         setIsLoading(false);
     }, [isAuthenticated])

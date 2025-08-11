@@ -3,6 +3,7 @@ import { FormInput } from "../../Template/FormInput/FormInput"
 import "./HousingForm.css"
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { HousingFormInput } from "../../../../../interface/Query";
+import { NumericFormat } from 'react-number-format';
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingFormInput>
@@ -19,16 +20,24 @@ export function HousingForm(props: HousingFormProps) {
                     <SmallCard>
                         <div className="ClusteredInput">
                             <FormInput fieldName="unit" hint="unit no." type="text" />
-                            <FormInput fieldName="bathrooms" hint="bathrooms" type="number" validation={{required: true}} />
-                            <FormInput fieldName="bedrooms" hint="bedrooms" type="number" validation={{required: true}} />
-                            <FormInput fieldName="size" hint="size (m^2)" type="number" validation={{required: true}} />
+                            <FormInput fieldName="bathrooms" hint="bathrooms" validation={{required: true}}> 
+                                <NumericFormat allowNegative={false} decimalScale={0} />
+                            </FormInput>
+                            <FormInput fieldName="bedrooms" hint="bedrooms" validation={{required: true}}>
+                                <NumericFormat allowNegative={false} decimalScale={0} />
+                            </FormInput>
+                            <FormInput fieldName="size" hint="size (m^2)" validation={{required: true}}>
+                                <NumericFormat allowNegative={false} />
+                            </FormInput>
                         </div>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
                                 <FormInput fieldName="purchase_currency" hint="currency" type="text" validation={{required: true}} />
                             </div>
                             <div style={{width: "100%"}}>
-                                <FormInput fieldName="purchase_price" hint="price" type="number" validation={{required: true}} />
+                                <FormInput fieldName="purchase_price" hint="price" validation={{required: true}}>
+                                    <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
+                                </FormInput>
                             </div>
                             <FormInput fieldName="purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
                         </div>
