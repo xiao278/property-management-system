@@ -4,13 +4,13 @@ import { Addresses } from './Addresses.model';
 import { Currencies } from './Currencies.model';
 
 interface HousingAttributes {
-    property_id: number;
+    property_id?: number;
     bathrooms: number;
     bedrooms: number;
     size: number; // m^2
     address_id: number;
     unit: string | null;
-    purchase_date: Date;
+    purchase_date: string;
     purchase_price: number;
     purchase_currency: string;
 }
@@ -24,6 +24,7 @@ const Housings = sequelize.define<HousingInstance>(
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
+            autoIncrement: true
         },
         bathrooms: {
             type: DataTypes.INTEGER,

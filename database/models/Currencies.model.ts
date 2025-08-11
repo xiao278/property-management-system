@@ -7,7 +7,7 @@ interface CurrencyAttributes {
 
 interface CurrencyInstance extends Model<CurrencyAttributes>, CurrencyAttributes{}
 
-const Currencies = sequelize.define(
+const Currencies = sequelize.define<CurrencyInstance>(
     'currencies',
     {
         currency: {

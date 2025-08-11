@@ -3,7 +3,7 @@ export const tokenName = "pms-token";
 
 export const post = async (endpoint: string, payload: object) => {
     const token = localStorage.getItem(tokenName);
-    return await fetch(`${API_URL}/api/auth/login`, {
+    return await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 const authRoutes = Router();
 
 authRoutes.post('/login', async (req, res) => {
-  const loginForm:LoginForm = req.body;
+  const loginForm = req.body as LoginForm;
   console.log(loginForm)
   const user = await Users.findOne({where: {username: loginForm.username}})
   if (!user || 

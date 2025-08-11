@@ -10,4 +10,4 @@ interface TokenUserInfo {
     lastname: string;
 }
 
-export { LoginForm, TokenUserInfo }
+export type { LoginForm, TokenUserInfo }

@@ -3,7 +3,7 @@ import { DataTypes, Model } from 'sequelize';
 import { Housings } from './Housings.model';
 
 interface AddressAttributes {
-    address_id: number;
+    address_id?: number;
     building_name: string | null;
     street_number: string | null;
     street_name: string;
@@ -21,7 +21,8 @@ const Addresses = sequelize.define<AddressInstance>(
         address_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
 
         },
         building_name: {

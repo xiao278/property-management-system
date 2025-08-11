@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { authRoutes } from './routes/auth';
+import { housingRoutes } from './routes/housing';
 import { sequelize } from '../../database/main';
-import { Users } from '../../database/models/Users.model'
 
 dotenv.config();
 
@@ -26,7 +26,8 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
-app.use('/api/auth',authRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/housing', housingRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
