@@ -12,9 +12,7 @@ export function SmallCard (props: SmallCardProps) {
     return (
         <div className='ScContainer'>
             {title ? <h2>{title}</h2> : <></>}
-            <FlexWrapping>
-                {children}
-            </FlexWrapping>
+            {children}
         </div>
     );
 }

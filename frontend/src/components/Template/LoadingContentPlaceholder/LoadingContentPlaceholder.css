@@ -1,0 +1,9 @@
+.LoadingContentPlaceholderContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    min-height: 100%;
+    color: #888;
+}

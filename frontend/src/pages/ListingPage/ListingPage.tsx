@@ -1,4 +1,4 @@
-import { HousingList } from "./HousingList";
+import { HousingList } from "./HousingList/HousingList";
 import { ListingForm } from "./ListingForm";
 import "./ListingPage.css";
 
