@@ -2,16 +2,16 @@ import { SmallCard } from "../../Template/SmallCard/SmallCard"
 import { FormInput } from "../../Template/FormInput/FormInput"
 import "./HousingForm.css"
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { HousingFormInput } from "../../../../../interface/Query";
+import { HousingInfo } from "../../../../../interface/Query";
 import { NumericFormat } from 'react-number-format';
 
 interface HousingFormProps {
-    onFormSubmit: SubmitHandler<HousingFormInput>
+    onFormSubmit: SubmitHandler<HousingInfo>
 }
 
 export function HousingForm(props: HousingFormProps) {
     const { onFormSubmit } = props;
-    const { handleSubmit, reset } = useFormContext<HousingFormInput>();
+    const { handleSubmit, reset } = useFormContext<HousingInfo>();
     return (
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="HousingFormContainer">

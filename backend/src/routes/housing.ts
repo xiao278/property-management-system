@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { HousingFormInput } from '../../../interface/Query';
+import { HousingInfo } from '../../../interface/Query';
 import { AddressAttributes, Addresses } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
@@ -9,14 +9,15 @@ import { Currencies } from '../../../database/models/Currencies.model';
 const housingRoutes = Router();
 
 housingRoutes.post('/create', authenticateToken, async (req, res) => {
-    const user:TokenUserInfo = res.locals.user
+    const user = res.locals.user as TokenUserInfo 
 
     if (!user.isAdmin) {
         res.status(401).json({message: "Not an admin"});
+        return;
     }
 
     try {
-        const form = req.body as HousingFormInput
+        const form = req.body as HousingInfo
         if (!form.address_id) {
             const newAddressFields:AddressAttributes = {
                 building_name: form.building_name.length < 1 ? null : form.building_name,
@@ -58,6 +59,10 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
         console.log(error)
         res.status(500).json(error);
     }
+})
+
+housingRoutes.post('/search', authenticateToken, async (req, res) => {
+    const housingResult = await Housings.findAll();
 })
 
 export { housingRoutes }

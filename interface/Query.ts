@@ -1,4 +1,4 @@
-interface HousingFormInput {
+interface HousingInfo {
     bathrooms: number;
     bedrooms: number;
     size: number;
@@ -17,4 +17,4 @@ interface HousingFormInput {
     country: string;
 }
 
-export type { HousingFormInput }
+export type { HousingInfo }
