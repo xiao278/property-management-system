@@ -24,16 +24,18 @@ export function HousingList() {
         fetchHousingListings();
     }, [])
 
+    const color1 = "rgba(229, 236, 203, 1)"
+    const color2 = "rgba(231, 238, 215, 1)"
+
     return (
-        <div className="HousingListContainer">
+        <div className="HousingListContainer" style={{ backgroundColor: (housingList ? housingList.length : 0) % 2 === 0 ? color1 : color2 }}>
             {housingList ? housingList.map((value, key) => {
                 return (
                     <>
                         <HousingSummaryCard housingData={value} key={key} itemNumber={key} />
-                        {(key < housingList.length - 1) ? 
                         <div className="HousingListSeparator">
                             <div />
-                        </div> : <></>}
+                        </div>
                     </>
                 )
             }) : <LoadingContentPlaceholder />}
