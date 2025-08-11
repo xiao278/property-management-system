@@ -4,7 +4,7 @@ import { LoginForm } from "../../../../interface/Auth";
 import { post } from "../../api";
 import { AuthContext } from "../../components/Auth/AuthProvider";
 import './LoginPage.css'
-import { mainPageRoute } from "../../Router";
+import { mainPageRoute } from "../../App";
 
 export const loginPageRoute = "/login";
 

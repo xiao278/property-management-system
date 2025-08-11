@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { mainPageRoute } from "../../../Router";
+import { mainPageRoute } from "../../../App";
 import "./NavOption.css";
 import { AuthContext } from "../../Auth/AuthProvider";
 import { useContext } from "react";

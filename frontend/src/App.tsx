@@ -6,6 +6,8 @@ import { NavBar } from './components/Content/NavBar/NavBar';
 import { AuthProvider } from './components/Auth/AuthProvider';
 import { loginPageRoute } from './pages/LoginPage/LoginPage';
 import { HousingEntryPage, housingEntryPageRoute } from './pages/HousingEntryPage/HousingEntryPage';
+import { ListingPage, listingPageRoute } from './pages/ListingPage/ListingPage';
+import './App.css';
 
 export const mainPageRoute = "/app"
 
@@ -20,12 +22,17 @@ function App() {
           {/* protected routes auth requird */}
           <Route path={`${mainPageRoute}/*`} element={
             <RequireAuth>
-              <NavBar />
-              <Routes>
-                <Route path={`${housingEntryPageRoute}`} element= {
-                  <HousingEntryPage />
-                } />
-              </Routes>
+              <div className='AppWrapper'>
+                <NavBar />
+                <Routes>
+                  <Route path={`${housingEntryPageRoute}`} element= {
+                    <HousingEntryPage />
+                  } />
+                  <Route path={`${listingPageRoute}`} element= {
+                    <ListingPage />
+                  } />           
+                </Routes>
+              </div>
             </RequireAuth>
           } />
           <Route path="*" element={ 

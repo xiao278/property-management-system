@@ -6,6 +6,7 @@ import { AccountButton } from "../AccountButton/AccountButton";
 import { FloatingMiniDropdown } from "../../Template/FloatingMiniDropdown/FloatingMiniDropdown";
 import { housingEntryPageRoute } from "../../../pages/HousingEntryPage/HousingEntryPage";
 import { AuthOrHide } from "../../Auth/AuthOrHide";
+import { listingPageRoute } from "../../../pages/ListingPage/ListingPage";
 
 export function NavBar () {
     const {logout} = useContext(AuthContext);
@@ -13,7 +14,7 @@ export function NavBar () {
         <div className="NavBarContainer">
             <div className="NavBarOptionsContainer WideOptionsContainer">
                 <NavOption pagename="Overview" pageroute="/overview"/>
-                <NavOption pagename="Listing" pageroute="/listing"/>
+                <NavOption pagename="Listing" pageroute={listingPageRoute}/>
                 <NavOption pagename="Filler1" pageroute="/invalid1"/> 
                 <NavOption pagename="Filler2" pageroute="/invalid2"/> 
                 
