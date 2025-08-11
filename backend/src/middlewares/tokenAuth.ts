@@ -15,7 +15,6 @@ const authenticateToken = (req:Request, res:Response, next:NextFunction) => {
         res.locals.user = decoded;
         next();
     } catch (err) {
-        err.m
         res.status(401).json({message: 'Invalid token'});
     }
 }

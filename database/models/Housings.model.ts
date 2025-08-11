@@ -9,7 +9,7 @@ interface HousingAttributes {
     bedrooms: number;
     size: number; // m^2
     address_id: number;
-    unit: string | null;
+    unit?: string | null;
     purchase_date: string;
     purchase_price: number;
     purchase_currency: string;

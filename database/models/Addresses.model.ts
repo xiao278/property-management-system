@@ -4,8 +4,8 @@ import { Housings } from './Housings.model';
 
 interface AddressAttributes {
     address_id?: number;
-    building_name: string | null;
-    street_number: string | null;
+    building_name?: string | null;
+    street_number?: string | null;
     street_name: string;
     postal_code: string;
     city: string;
