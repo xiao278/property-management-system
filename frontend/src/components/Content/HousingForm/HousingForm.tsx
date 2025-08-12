@@ -5,14 +5,21 @@ import { SubmitHandler, useFormContext } from "react-hook-form";
 import { HousingInfo } from "../../../../../interface/Query";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
+import { useEffect } from "react";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
+    prefillData?: HousingInfo
 }
 
 export function HousingForm(props: HousingFormProps) {
-    const { onFormSubmit } = props;
+    const { onFormSubmit, prefillData } = props;
     const { handleSubmit, reset } = useFormContext<HousingInfo>();
+
+    useEffect(() => {
+        reset(prefillData)
+    }, []);
+
     return (
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="HousingFormContainer">
@@ -65,7 +72,7 @@ export function HousingForm(props: HousingFormProps) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                     <div className="HfbContainer">
                         <button type="submit" className="HousingFormButton">Submit</button>
-                        <button type="reset" className="HousingFormButton" onClick={() => reset()}>Clear</button>
+                        <button className="HousingFormButton" onClick={() => reset(prefillData)}>Clear</button>
                     </div>
                 </div>
             </div>
