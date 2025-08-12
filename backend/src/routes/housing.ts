@@ -177,4 +177,33 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
     }
 })
 
+housingRoutes.post('/delete', authenticateToken, async (req, res) => {
+    const user = res.locals.user as TokenUserInfo 
+
+    if (!user.isAdmin) {
+        res.status(401).json({message: "Not an admin"});
+        return;
+    }
+
+    const t = await sequelize.transaction();
+    try {
+        const filter = req.body as HousingSearchFilters;
+        const housingResult = await Housings.destroy({
+            where: {
+                property_id: filter.property_id
+            }
+        });
+        if (housingResult < 1) {
+            throw {message: "Unit does not exist"};
+        }
+        t.commit();
+        res.sendStatus(200);
+    } 
+    catch (error) {
+        t.rollback();
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+})
+
 export { housingRoutes }

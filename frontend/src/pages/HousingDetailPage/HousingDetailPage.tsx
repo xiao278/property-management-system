@@ -1,7 +1,7 @@
 // this page is used to display the details of a housing unit + update & delete housing unit
 // it is a pop-up page that is opened when a housing unit is clicked in the housing list or elsewhere
 
-import { Accordion, AccordionDetails, AccordionSummary, Paper, SxProps } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Paper, SxProps } from "@mui/material";
 import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPagePopup";
 import "./HousingDetailPage.css";
 import { HousingInfo, HousingSearchFilters, HousingSearchResult, SearchHousingQueryResultFormatted } from "../../../../interface/Query";
@@ -47,7 +47,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
         }
         else {
             const error = await res.json()
-            alert(`Error: ${error.message}`)
+            alert(`Failed to update: ${error.message}`)
         }
     }
 
@@ -60,7 +60,19 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
         }
         else {
             const error = await res.json()
-            alert(`Error: ${error.message}`)
+            alert(`Failed to fetch: ${error.message}`)
+        }
+    }
+
+    const handleHousingDelete = async () => {
+        const searchFilters:HousingSearchFilters = {property_id: housingData.property_id};
+        const res = await post("/api/housing/delete", searchFilters);
+        if (res.ok) {
+            alert("Housing Deleted Successfully")
+        }
+        else {
+            const error = await res.json()
+            alert(`Failed to delete: ${error.message}`)
         }
     }
 
@@ -89,6 +101,10 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             </MyAccordionSummary>
                             <MyAccordionDetails>
                                 <FormProvider {...methods}>
+                                    <Button sx={{
+                                        margin: "10px",
+                                        color: "red"
+                                    }} onClick={() => handleHousingDelete()}> Delete </Button>
                                     <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
                                 </FormProvider>
                             </MyAccordionDetails>
