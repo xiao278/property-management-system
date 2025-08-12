@@ -17,7 +17,6 @@ export function FullPagePopup(props: FullPagePopupProps) {
                     {children}
                 </div>
             }
-        
         </>
     )
 }

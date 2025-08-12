@@ -44,8 +44,7 @@ export function HousingSummaryCard(props: HousingSummaryCardProps) {
                     <div>Notes: N/A</div>
                 </div>
             </div>
-            <HousingDetailPage show={showPopup} setShow={setShowPopup} />
-
+            <HousingDetailPage show={showPopup} setShow={setShowPopup} housingData={housingData} />
         </>
     )
 }
