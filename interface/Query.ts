@@ -1,4 +1,5 @@
 interface HousingInfo {
+    property_id?: number;
     bathrooms: number;
     bedrooms: number;
     size: number;
@@ -6,8 +7,8 @@ interface HousingInfo {
     purchase_date: string;
     purchase_price: number;
     purchase_currency: string;
+    
     address_id?: number;
-
     building_name: string;
     street_number: string;
     street_name: string;
@@ -48,4 +49,15 @@ interface HousingSearchResult {
     housingList: SearchHousingQueryResultFormatted[];
 }
 
-export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, HousingQueryAddress };
+interface HousingSearchFilters {
+    property_id?: number;
+    bathrooms?: number;
+    bedrooms?: number;
+    size?: number;
+    unit?: string;
+    purchase_date?: string;
+    purchase_price?: number;
+    purchase_currency?: string;
+}
+
+export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, HousingQueryAddress, HousingSearchFilters };

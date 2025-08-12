@@ -6,6 +6,7 @@ import { HousingInfo } from "../../../../../interface/Query";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";
+import { Autocomplete } from "@mui/material";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
@@ -27,22 +28,23 @@ export function HousingForm(props: HousingFormProps) {
                     <FlexWrapping>
                         <div className="ClusteredInput">
                             <FormInput fieldName="unit" hint="unit no." type="text" />
-                            <FormInput fieldName="bathrooms" hint="bathrooms" validation={{required: true}}> 
+                            <FormInput fieldName="bathrooms" hint="bathrooms" type="number" validation={{required: true}}> 
                                 <NumericFormat allowNegative={false} decimalScale={0} />
                             </FormInput>
-                            <FormInput fieldName="bedrooms" hint="bedrooms" validation={{required: true}}>
+                            <FormInput fieldName="bedrooms" hint="bedrooms" type="number" validation={{required: true}}>
                                 <NumericFormat allowNegative={false} decimalScale={0} />
                             </FormInput>
-                            <FormInput fieldName="size" hint="size (m^2)" validation={{required: true}}>
+                            <FormInput fieldName="size" hint="size (m^2)" type="number" validation={{required: true}}>
                                 <NumericFormat allowNegative={false} />
                             </FormInput>
                         </div>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
                                 <FormInput fieldName="purchase_currency" hint="currency" type="text" validation={{required: true}} />
+
                             </div>
                             <div style={{width: "100%"}}>
-                                <FormInput fieldName="purchase_price" hint="price" validation={{required: true}}>
+                                <FormInput fieldName="purchase_price" hint="price" type="number" validation={{required: true}}>
                                     <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
                                 </FormInput>
                             </div>
@@ -52,7 +54,7 @@ export function HousingForm(props: HousingFormProps) {
                 </SmallCard>
                 <SmallCard title="Address Information">
                     <FlexWrapping>
-                        <FormInput fieldName="building_name" hint="building name" type="text" />
+                        <FormInput fieldName="building_name" hint="building name" type="text"/>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
                                 <FormInput fieldName="street_number" hint="street no." type="text" />
@@ -72,7 +74,7 @@ export function HousingForm(props: HousingFormProps) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                     <div className="HfbContainer">
                         <button type="submit" className="HousingFormButton">Submit</button>
-                        <button className="HousingFormButton" onClick={() => reset(prefillData)}>Clear</button>
+                        <button type="button" className="HousingFormButton" onClick={() => reset(prefillData)}>Clear</button>
                     </div>
                 </div>
             </div>

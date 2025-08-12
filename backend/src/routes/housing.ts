@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { HousingInfo, HousingSearchResult } from '../../../interface/Query';
+import { HousingInfo, HousingSearchFilters, HousingSearchResult } from '../../../interface/Query';
 import { AddressAttributes, Addresses } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
@@ -9,6 +9,42 @@ import { sequelize } from '../../../database/main';
 import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/Query';
 
 const housingRoutes = Router();
+
+function emptyStringAsNull(input: string | null | undefined): string | null {
+    return (
+        input ? (
+            input.length < 1 ? null : input
+        ) : null
+    )
+    
+}
+
+function parseAddress(form: HousingInfo):AddressAttributes {
+    const newAddressFields:AddressAttributes = {
+        building_name: emptyStringAsNull(form.building_name),
+        street_number: emptyStringAsNull(form.street_number),
+        street_name: form.street_name,
+        postal_code: form.postal_code,
+        city: form.city,
+        state: form.state,
+        country: form.country
+    }
+    return newAddressFields;
+}
+
+function parseHousing(form: HousingInfo):HousingAttributes {
+    const newHousingFields: HousingAttributes = {
+        bathrooms: form.bathrooms,
+        bedrooms: form.bedrooms,
+        size: form.size,
+        address_id: form.address_id,
+        unit: emptyStringAsNull(form.unit),
+        purchase_date: form.purchase_date,
+        purchase_currency: form.purchase_currency,
+        purchase_price: form.purchase_price
+    }
+    return newHousingFields;
+}
 
 housingRoutes.post('/create', authenticateToken, async (req, res) => {
     const user = res.locals.user as TokenUserInfo 
@@ -23,15 +59,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
     try {
         const form = req.body as HousingInfo
         if (!form.address_id) {
-            const newAddressFields:AddressAttributes = {
-                building_name: form.building_name.length < 1 ? null : form.building_name,
-                street_number: form.street_number.length < 1 ? null : form.street_number,
-                street_name: form.street_name,
-                postal_code: form.postal_code,
-                city: form.city,
-                state: form.state,
-                country: form.country
-            }
+            const newAddressFields = parseAddress(form);
             const addressResult = await Addresses.findOrCreate({where: {...newAddressFields}});
             form.address_id = addressResult[0].address_id;
         }
@@ -40,17 +68,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
             currency: form.purchase_currency
         }})
 
-        const newHousingFields: HousingAttributes = {
-            bathrooms: form.bathrooms,
-            bedrooms: form.bedrooms,
-            size: form.size,
-            address_id: form.address_id,
-            unit: form.unit.length < 1 ? null : form.unit,
-            purchase_date: form.purchase_date,
-            purchase_currency: form.purchase_currency,
-            purchase_price: form.purchase_price
-        }
-
+        const newHousingFields = parseHousing(form);
         const housingResult = await Housings.findOrCreate({where: {...newHousingFields}})
         if (!housingResult[1]) {
             t.rollback();
@@ -70,6 +88,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
 
 housingRoutes.post('/search', authenticateToken, async (req, res) => {
     try {
+        const filters = req.body as HousingSearchFilters;
         const housingResult = await Housings.findAll({
             attributes: [
                 "property_id",
@@ -82,7 +101,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                 "purchase_currency"
             ],
             where: {
-                // Add filtering logic here if needed
+                ...(filters.property_id ? {property_id: filters.property_id} : undefined)
             },
             include: [
                 {
@@ -123,6 +142,38 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
         console.log(error);
         res.status(500).json({message: "error fetching housing data"});
         return;
+    }
+})
+
+housingRoutes.post('/update', authenticateToken, async (req, res) => {
+    const user = res.locals.user as TokenUserInfo 
+
+    if (!user.isAdmin) {
+        res.status(401).json({message: "Not an admin"});
+        return;
+    }
+
+    const t = await sequelize.transaction();
+    try {
+        const form = req.body as HousingInfo;
+        const newAddressFields = parseAddress(form);
+        const addressResult = await Addresses.findOrCreate({where: {...newAddressFields}});
+        if (addressResult[1]) {
+            form.address_id = addressResult[0].address_id;
+        }
+        const newHousingFields = parseHousing(form);
+        const housingResult = await Housings.update(newHousingFields,{
+            where: {
+                property_id: form.property_id
+            }
+        });
+        t.commit();
+        res.sendStatus(200);
+    } 
+    catch (error) {
+        t.rollback();
+        console.log(error);
+        res.status(500).json({message: error.message});
     }
 })
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { post } from "../../../api";
 import "./HousingList.css";
-import { HousingSearchResult } from "../../../../../interface/Query";
+import { HousingSearchFilters, HousingSearchResult } from "../../../../../interface/Query";
 import { LoadingContentPlaceholder } from "../../../components/Template/LoadingContentPlaceholder/LoadingContentPlaceholder";
 import { HousingSummaryCard } from "./HousingSummaryCard";
 
@@ -9,7 +9,8 @@ export function HousingList() {
     const [housingList, setHousingList] = useState<HousingSearchResult['housingList'] | null>(null);
 
     const fetchHousingListings = async () => {
-        const housingListResponse = await post("/api/housing/search", {});
+        const searchFilters:HousingSearchFilters = {}
+        const housingListResponse = await post("/api/housing/search", searchFilters);
         if (!housingListResponse.ok) {
             const error = await housingListResponse.json()
             alert(`Failed to fetch housing listings: ${error.message}`);
@@ -17,7 +18,6 @@ export function HousingList() {
         }
         const data = await housingListResponse.json() as HousingSearchResult;
         setHousingList(data.housingList);
-        console.log(data);
     }
 
     useEffect(() => {

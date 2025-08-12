@@ -4,11 +4,11 @@
 import { Accordion, AccordionDetails, AccordionSummary, Paper, SxProps } from "@mui/material";
 import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPagePopup";
 import "./HousingDetailPage.css";
-import { HousingInfo, SearchHousingQueryResultFormatted } from "../../../../interface/Query";
+import { HousingInfo, HousingSearchFilters, HousingSearchResult, SearchHousingQueryResultFormatted } from "../../../../interface/Query";
 import { AddressDisplay } from "../../components/Content/AddressDisplay/AddressDisplay";
 import { SmallCard } from "../../components/Template/SmallCard/SmallCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { JSX } from "react";
+import { JSX, useEffect, useState } from "react";
 import { HousingForm } from "../../components/Content/HousingForm/HousingForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { post } from "../../api";
@@ -37,19 +37,33 @@ function MyAccordion(props: { children: JSX.Element | JSX.Element[], sx?:SxProps
 
 export function HousingDetailPage(props: HousingDetailPageProps) {
     const { housingData } = props;
-
+    const [ newHousingData, setNewHousingData ] = useState(housingData);
     const methods = useForm<HousingInfo>();
     const onFormSubmit: SubmitHandler<HousingInfo> = async (data) => {
-        // const res = await post("/api/housing/create", data);
-        // if (res.ok) {
-        //     alert("Housing Added Successfully");
-        // }
-        // else {
-        //     const error = await res.json()
-        //     alert(`Error: ${error.message}`)
-        // }
-        console.log(data);
+        const res = await post("/api/housing/update", data);
+        if (res.ok) {
+            alert("Housing Updated Successfully");
+            await fetchUpdatedHousingData();
+        }
+        else {
+            const error = await res.json()
+            alert(`Error: ${error.message}`)
+        }
     }
+
+    const fetchUpdatedHousingData = async () => {
+        const searchFilters:HousingSearchFilters = {property_id: housingData.property_id};
+        const res = await post("/api/housing/search", searchFilters);
+        if (res.ok) {
+            const data = await res.json() as HousingSearchResult;
+            setNewHousingData(data.housingList[0]);
+        }
+        else {
+            const error = await res.json()
+            alert(`Error: ${error.message}`)
+        }
+    }
+
 
     return (
         <FullPagePopup {...props}>
@@ -67,7 +81,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                         backgroundColor: "rgba(250, 255, 245, 1)",
                     }}>
                         <MyAccordion sx={{padding: "20px"}}>
-                            <AddressDisplay address={housingData.address} unit={housingData.unit} />
+                            <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
                         <MyAccordion>
                             <MyAccordionSummary>
@@ -75,10 +89,11 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             </MyAccordionSummary>
                             <MyAccordionDetails>
                                 <FormProvider {...methods}>
-                                    <HousingForm onFormSubmit={onFormSubmit}/>
+                                    <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
                                 </FormProvider>
                             </MyAccordionDetails>
                         </MyAccordion>
+
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Status</h3>
@@ -87,6 +102,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
+
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Details</h3>
@@ -95,6 +111,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
+
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Details</h3>
@@ -103,6 +120,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
+
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Details</h3>
@@ -111,6 +129,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
+
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Details</h3>
@@ -119,7 +138,6 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
-                        
                     </Paper>
                 </div>
             </div>
