@@ -3,10 +3,13 @@
 }
 
 .FloatingDropdownMenu {
-    width: max-content;
-    position: absolute;
     display: flex;
     flex-direction: column;
+}
+
+.FloatingDropdownMenuWrapper {
+    width: max-content;
+    position: absolute;
     z-index: 100;
     top: 100%;
 }
