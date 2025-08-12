@@ -31,12 +31,7 @@ export function HousingList() {
         <div className="HousingListContainer" style={{ backgroundColor: (housingList ? housingList.length : 0) % 2 === 0 ? color1 : color2 }}>
             {housingList ? housingList.map((value, key) => {
                 return (
-                    <>
-                        <HousingSummaryCard housingData={value} key={key} itemNumber={key} />
-                        <div className="HousingListSeparator">
-                            <div />
-                        </div>
-                    </>
+                    <HousingSummaryCard housingData={value} key={key} itemNumber={key} />
                 )
             }) : <LoadingContentPlaceholder />}
         </div>
