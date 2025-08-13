@@ -34,7 +34,7 @@ export function SelectCountry(props: SelectCountryProps) {
                 {countries ? countries.map((value, index) => (
                     <MenuItem value={value.country} key={index}>{value.country}</MenuItem>
                 )
-                ) : <></>}
+                ) : []}
             </Select>
         </FormInput>
     )

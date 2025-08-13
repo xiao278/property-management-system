@@ -13,7 +13,6 @@ export function ListingPage() {
     const [ searchFilters, setSearchFilters ] = useState<HousingSearchFilters | null>(null);
     const onFormSubmit: SubmitHandler<HousingSearchFilters> = async (data) => {
         setSearchFilters(data);
-        console.log(data)
     }
     return (
         <div className="ListingPageContainer">
