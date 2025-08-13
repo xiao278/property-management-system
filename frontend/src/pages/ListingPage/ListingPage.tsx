@@ -2,8 +2,9 @@ import { HousingList } from "./HousingList/HousingList";
 import { HousingFilters } from "./HousingFilter/HousingFilters";
 import "./ListingPage.css";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { HousingSearchFilters } from "../../../../interface/HousingQuery";
-import { useState } from "react";
+import { HousingSearchFilters, HousingSearchResult } from "../../../../interface/HousingQuery";
+import { useEffect, useState } from "react";
+import { post } from "../../api";
 
 export const listingPageRoute = "/listing";
 
@@ -20,6 +21,23 @@ export function ListingPage() {
         console.log(formatted);
         setSearchFilters(formatted);
     }
+    const [ housingList, setHousingList ] = useState<HousingSearchResult['housingList'] | null>(null);
+    
+
+    useEffect(() => {
+        const fetchHousingListings = async () => {
+            const reqBody:HousingSearchFilters = searchFilters ? searchFilters : {};
+            const housingListResponse = await post("/api/housing/search", reqBody);
+            if (!housingListResponse.ok) {
+                const error = await housingListResponse.json()
+                alert(`Failed to fetch housing listings: ${error.message}`);
+                return;
+            }
+            const data = await housingListResponse.json() as HousingSearchResult;
+            setHousingList(data.housingList);
+        }
+        fetchHousingListings();
+    }, [searchFilters])
     return (
         <div className="ListingPageContainer">
             <FormProvider {...methods} {...onFormSubmit}>
@@ -27,7 +45,7 @@ export function ListingPage() {
                     <HousingFilters />
                 </form>
             </FormProvider>
-            <HousingList filters={searchFilters} />
+            <HousingList listing={housingList} />
         </div>
     );
 }

@@ -1,9 +1,7 @@
-import { useFormContext } from "react-hook-form";
 import { SmallCard } from "../../../components/Template/SmallCard/SmallCard";
 import "./HousingFilterForm.css";
 import { FormInput } from "../../../components/Template/FormInput/FormInput";
-import { Checkbox, FormControlLabel, MenuItem, Select, Switch, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { AddressSearchFilters } from "../../../../../interface/HousingQuery";
+import { Checkbox, FormControlLabel, MenuItem, Select } from "@mui/material";
 import { SelectCountry } from "../../../components/Template/FormInput/Implemented/SelectCountry";
 
 export function HousingFilterForm() {
@@ -38,6 +36,7 @@ export function HousingFilterForm() {
                 </FormInput>
             </SmallCard>
             <button type="submit">Apply Filters</button>
+            {/* <button type="button" onClick={() => reset()}>Reset Filters</button> */}
         </div>
     );
 }
