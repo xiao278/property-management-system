@@ -1,14 +1,20 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { HousingInfo, HousingSearchFilters, HousingSearchResult } from '../../../interface/Query';
-import { AddressAttributes, Addresses } from '../../../database/models/Addresses.model'
+import { CountrySearchFilters, CountrySearchResult, HousingInfo, HousingSearchFilters, HousingSearchResult } from '../../../interface/HousingQuery';
+import { AddressAttributes, Addresses, Countries } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
 import { sequelize } from '../../../database/main';
-import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/Query';
+import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/HousingQuery';
 
 const housingRoutes = Router();
+
+async function findOrCreateAddress(form: AddressAttributes): Promise<[AddressAttributes, Boolean]> {
+    const countriesResult = await Countries.findOrCreate({where: {country: form.country}});
+    const addressResult = await Addresses.findOrCreate({where: {...form}});
+    return addressResult;
+}
 
 function emptyStringAsNull(input: string | null | undefined): string | null {
     return (
@@ -60,7 +66,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
         const form = req.body as HousingInfo
         if (!form.address_id) {
             const newAddressFields = parseAddress(form);
-            const addressResult = await Addresses.findOrCreate({where: {...newAddressFields}});
+            const addressResult = await findOrCreateAddress(newAddressFields);
             form.address_id = addressResult[0].address_id;
         }
 
@@ -107,6 +113,9 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                 {
                     model: Addresses,
                     attributes: ['address_id', 'building_name', 'street_number', 'street_name', 'postal_code', 'city', 'state', 'country'],
+                    where: {
+                        ...(filters.address?.country ? {country: filters.address.country} : undefined)
+                    }
                 },
             ]
         });
@@ -157,7 +166,7 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
     try {
         const form = req.body as HousingInfo;
         const newAddressFields = parseAddress(form);
-        const addressResult = await Addresses.findOrCreate({where: {...newAddressFields}});
+        const addressResult = await findOrCreateAddress(newAddressFields);
         if (addressResult[1]) {
             form.address_id = addressResult[0].address_id;
         }
@@ -201,6 +210,30 @@ housingRoutes.post('/delete', authenticateToken, async (req, res) => {
     } 
     catch (error) {
         t.rollback();
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+})
+
+housingRoutes.post("/fetch-countries", authenticateToken, async (req, res) => {
+    try {
+        const filters = req.body as CountrySearchFilters;
+        const countriesResult = await Countries.findAll({
+            where: {
+                ...(filters.country ? {property_id: filters.country} : undefined)
+            }
+        });
+        const responseBody:CountrySearchResult = {
+            countryList: countriesResult.map((value) => {
+                const data = value.dataValues;
+                return {
+                    country: data.country
+                }
+            })
+        }
+        res.status(200).json(responseBody);
+    }
+    catch (error) {
         console.log(error);
         res.status(500).json({message: error.message});
     }

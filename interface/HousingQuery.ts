@@ -58,6 +58,31 @@ interface HousingSearchFilters {
     purchase_date?: string;
     purchase_price?: number;
     purchase_currency?: string;
+
+    address?: AddressSearchFilters
 }
 
-export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, HousingQueryAddress, HousingSearchFilters };
+interface AddressSearchFilters {
+    address_id?: number;
+    building_name?: string;
+    street_number?: string;
+    street_name?: string;
+    postal_code?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+}
+
+interface CountrySearchFilters {
+    country: string
+}
+
+interface CountryQueryResult {
+    country: string;
+}
+
+interface CountrySearchResult {
+    countryList: CountryQueryResult[];
+}
+
+export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, HousingQueryAddress, HousingSearchFilters, AddressSearchFilters, CountryQueryResult, CountrySearchFilters, CountrySearchResult };

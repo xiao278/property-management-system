@@ -1,5 +1,5 @@
 import "./AddressDisplay.css";
-import { HousingQueryAddress } from "../../../../../interface/Query";
+import { HousingQueryAddress } from "../../../../../interface/HousingQuery";
 
 interface AddressDisplayProps {
     address: HousingQueryAddress;

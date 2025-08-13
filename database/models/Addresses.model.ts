@@ -13,6 +13,24 @@ interface AddressAttributes {
     country: string;
 }
 
+interface CountryAttributes {
+    country: string;
+}
+
+interface CountryInstance extends Model<CountryAttributes>, CountryAttributes{}
+
+const Countries = sequelize.define<CountryInstance>(
+    'countries_table',
+    {
+        'country': {
+            type: DataTypes.STRING(64),
+            primaryKey: true,
+            allowNull: false,
+            unique: true
+        },
+    }
+);
+
 interface AddressInstance extends Model<AddressAttributes>, AddressAttributes{}
 
 const Addresses = sequelize.define<AddressInstance>(
@@ -51,9 +69,21 @@ const Addresses = sequelize.define<AddressInstance>(
         },
         country: {
             type: DataTypes.STRING(64),
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: Countries,
+                key: 'country'
+            }
         }
     },
 );
 
-export { Addresses, AddressAttributes }
+Addresses.belongsTo(Countries, {
+    foreignKey: 'country'
+})
+
+Countries.hasMany(Addresses, {
+    foreignKey: 'country'
+})
+
+export { Addresses, AddressAttributes, Countries, CountryAttributes }

@@ -9,7 +9,7 @@ function ToggleTab({children}: {children: JSX.Element | JSX.Element[]}) {
     return (
         <div className="ToggleTabContainer">
             <div className="ToggleTabButtonWrapper">
-                <button className="ToggleTabButton" onClick={() => setShow(!show)}>
+                <button type="button" className="ToggleTabButton" onClick={() => setShow(!show)}>
                                 
                 </button>
             </div>

@@ -1,5 +1,10 @@
+import { useFormContext } from "react-hook-form";
 import { SmallCard } from "../../../components/Template/SmallCard/SmallCard";
 import "./HousingFilterForm.css";
+import { FormInput } from "../../../components/Template/FormInput/FormInput";
+import { MenuItem, Select } from "@mui/material";
+import { AddressSearchFilters } from "../../../../../interface/HousingQuery";
+import { SelectCountry } from "../../../components/Template/FormInput/Implemented/SelectCountry";
 
 export function HousingFilterForm() {
     return (
@@ -8,7 +13,7 @@ export function HousingFilterForm() {
                 <div>Form content</div>
             </SmallCard>
             <SmallCard title="Location Filters">
-                <div>Form content</div>
+                <SelectCountry fieldName="address.country" />
             </SmallCard>
             <SmallCard title="Miscellaneous Filters">
                 <div>Form content</div>
@@ -16,6 +21,7 @@ export function HousingFilterForm() {
             <SmallCard title="Sorting Options">
                 <div>Form content</div>
             </SmallCard>
+            <button type="submit">Apply Filters</button>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { HousingInfo } from "../../../../interface/Query";
+import { HousingInfo } from "../../../../interface/HousingQuery";
 import { HousingForm } from "../../components/Content/HousingForm/HousingForm"
 import "./HousingEntryPage.css"
 import { post } from "../../api";

@@ -2,7 +2,7 @@ import { SmallCard } from "../../Template/SmallCard/SmallCard"
 import { FormInput } from "../../Template/FormInput/FormInput"
 import "./HousingForm.css"
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { HousingInfo } from "../../../../../interface/Query";
+import { HousingInfo } from "../../../../../interface/HousingQuery";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";

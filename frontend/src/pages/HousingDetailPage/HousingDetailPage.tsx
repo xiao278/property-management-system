@@ -4,7 +4,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Paper, SxProps } from "@mui/material";
 import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPagePopup";
 import "./HousingDetailPage.css";
-import { HousingInfo, HousingSearchFilters, HousingSearchResult, SearchHousingQueryResultFormatted } from "../../../../interface/Query";
+import { HousingInfo, HousingSearchFilters, HousingSearchResult, SearchHousingQueryResultFormatted } from "../../../../interface/HousingQuery";
 import { AddressDisplay } from "../../components/Content/AddressDisplay/AddressDisplay";
 import { SmallCard } from "../../components/Template/SmallCard/SmallCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -12,6 +12,7 @@ import { JSX, useEffect, useState } from "react";
 import { HousingForm } from "../../components/Content/HousingForm/HousingForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { post } from "../../api";
+import { AuthOrHide } from "../../components/Auth/AuthOrHide";
 
 interface HousingDetailPageProps {
     show: boolean;
@@ -95,20 +96,22 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                         <MyAccordion sx={{padding: "20px"}}>
                             <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
-                        <MyAccordion>
-                            <MyAccordionSummary>
-                                <h3>Manage Unit Information</h3>
-                            </MyAccordionSummary>
-                            <MyAccordionDetails>
-                                <FormProvider {...methods}>
-                                    <Button sx={{
-                                        margin: "10px",
-                                        color: "red"
-                                    }} onClick={() => handleHousingDelete()}> Delete </Button>
-                                    <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
-                                </FormProvider>
-                            </MyAccordionDetails>
-                        </MyAccordion>
+                        <AuthOrHide adminOnly={true}>
+                            <MyAccordion>
+                                <MyAccordionSummary>
+                                    <h3>Manage Unit Information</h3>
+                                </MyAccordionSummary>
+                                <MyAccordionDetails>
+                                    <FormProvider {...methods}>
+                                        <Button sx={{
+                                            margin: "10px",
+                                            color: "red"
+                                        }} onClick={() => handleHousingDelete()}> Delete </Button>
+                                        <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
+                                    </FormProvider>
+                                </MyAccordionDetails>
+                            </MyAccordion>
+                        </AuthOrHide>
 
                         <MyAccordion>
                             <MyAccordionSummary>

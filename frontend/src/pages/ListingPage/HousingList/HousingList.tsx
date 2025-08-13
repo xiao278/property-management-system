@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { post } from "../../../api";
 import "./HousingList.css";
-import { HousingSearchFilters, HousingSearchResult } from "../../../../../interface/Query";
+import { HousingSearchFilters, HousingSearchResult } from "../../../../../interface/HousingQuery";
 import { LoadingContentPlaceholder } from "../../../components/Template/LoadingContentPlaceholder/LoadingContentPlaceholder";
 import { HousingSummaryCard } from "./HousingSummaryCard";
 
-export function HousingList() {
-    const [housingList, setHousingList] = useState<HousingSearchResult['housingList'] | null>(null);
+interface HousingListProps {
+    filters?: HousingSearchFilters | null;
+}
+
+export function HousingList(props: HousingListProps) {
+    const [ housingList, setHousingList ] = useState<HousingSearchResult['housingList'] | null>(null);
+    const { filters } = props;
 
     const fetchHousingListings = async () => {
-        const searchFilters:HousingSearchFilters = {}
+        const searchFilters:HousingSearchFilters = filters ? filters : {};
         const housingListResponse = await post("/api/housing/search", searchFilters);
         if (!housingListResponse.ok) {
             const error = await housingListResponse.json()
@@ -22,7 +27,7 @@ export function HousingList() {
 
     useEffect(() => {
         fetchHousingListings();
-    }, [])
+    }, [filters])
 
     const color1 = "rgba(229, 236, 203, 1)"
     const color2 = "rgba(231, 238, 215, 1)"

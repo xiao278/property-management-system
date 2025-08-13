@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SearchHousingQueryResultFormatted } from "../../../../../interface/Query";
+import { SearchHousingQueryResultFormatted } from "../../../../../interface/HousingQuery";
 import { AddressDisplay } from "../../../components/Content/AddressDisplay/AddressDisplay";
 import { FlexWrapping } from "../../../components/Template/FlexWrapping/FlexWrapping";
 import "./HousingSummaryCard.css";

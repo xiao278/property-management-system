@@ -9,7 +9,7 @@ import { AutocompleteProps } from "@mui/material";
 interface FormInputProps {
     fieldName: string;
     hint: string;
-    type: "text" | "number" | "date" | "autocomplete";
+    type: "text" | "number" | "date" | "mui";
     validation?: RegisterOptions<FieldValues, string>;
     children?: JSX.Element;
 }
@@ -34,7 +34,19 @@ export function FormInput(props: FormInputProps) {
                         })
                     )}
                     rules={validation}
-                /> 
+                />
+            case "mui": return <Controller 
+                    control={control}
+                    name={fieldName}
+                    defaultValue={""}
+                    render={({ field, formState, fieldState }) => (
+                        React.cloneElement(children, {
+                            ...field,
+                            ...{placeholder: placeholder}
+                        })
+                    )}
+                    rules={validation}
+                />
             default: return <></>
         }
     }
