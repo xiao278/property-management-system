@@ -7,11 +7,12 @@ import { CountryQueryResult, CountrySearchResult } from "../../../../../../inter
 interface SelectCountryProps {
     sx?: SxProps | undefined;
     fieldName: string;
+    hint: string;
 }
 
 export function SelectCountry(props: SelectCountryProps) {
     const [ countries, setCountries ] = useState<CountryQueryResult[] | null>();
-    const { sx, fieldName } = props
+    const { sx, fieldName, hint } = props
 
     const fetchCountries = async () => {
         const res = await post("/api/housing/fetch-countries", {});        
@@ -26,7 +27,7 @@ export function SelectCountry(props: SelectCountryProps) {
     })
     
     return (
-        <FormInput fieldName={fieldName} hint="select country" type="mui">
+        <FormInput fieldName={fieldName} hint={hint} type="mui">
             <Select sx={{height: "30px", ...{sx}}}>
                 <MenuItem value={undefined}>
                     <em>None</em>

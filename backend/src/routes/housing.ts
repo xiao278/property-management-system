@@ -117,7 +117,12 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                         ...(filters.address?.country ? {country: filters.address.country} : undefined)
                     }
                 },
-            ]
+            ],
+            ...(emptyStringAsNull(filters.ordering?.orderBy) ? {
+                order: [
+                    [filters.ordering.orderBy, filters.ordering.ascending ? 'ASC' : 'DESC']
+                ]
+            } : undefined)
         });
         const responseBody:HousingSearchResult = {
             housingList: housingResult.map((housing) => {

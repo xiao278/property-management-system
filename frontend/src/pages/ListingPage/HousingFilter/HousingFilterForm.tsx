@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { SmallCard } from "../../../components/Template/SmallCard/SmallCard";
 import "./HousingFilterForm.css";
 import { FormInput } from "../../../components/Template/FormInput/FormInput";
-import { MenuItem, Select } from "@mui/material";
+import { Checkbox, FormControlLabel, MenuItem, Select, Switch, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { AddressSearchFilters } from "../../../../../interface/HousingQuery";
 import { SelectCountry } from "../../../components/Template/FormInput/Implemented/SelectCountry";
 
@@ -13,13 +13,29 @@ export function HousingFilterForm() {
                 <div>Form content</div>
             </SmallCard>
             <SmallCard title="Location Filters">
-                <SelectCountry fieldName="address.country" />
+                <SelectCountry fieldName="address.country" hint="Filter By Country" />
             </SmallCard>
             <SmallCard title="Miscellaneous Filters">
                 <div>Form content</div>
             </SmallCard>
             <SmallCard title="Sorting Options">
-                <div>Form content</div>
+                <FormInput fieldName="ordering.orderBy" hint="Ordering" type="mui">
+                    <Select sx={{height: "30px"}} defaultValue={undefined}>
+                        <MenuItem value={undefined}><em>None</em></MenuItem>
+                        <MenuItem value="purchase_date">Purchase Date</MenuItem>
+                        <MenuItem value="bathrooms">Num. Bathrooms</MenuItem>
+                        <MenuItem value="bedrooms">Num. Bedrooms</MenuItem>
+                        <MenuItem value="size">Unit Size</MenuItem>
+                        <MenuItem value="country">Country</MenuItem>
+                    </Select>
+                </FormInput>
+                <FormInput fieldName="ordering.ascending" type="mui">
+                    <FormControlLabel control={<Checkbox />} label="Ascending" sx={{
+                        '& .MuiFormControlLabel-label': {
+                            fontSize: "12px"
+                        }
+                    }} />
+                </FormInput>
             </SmallCard>
             <button type="submit">Apply Filters</button>
         </div>

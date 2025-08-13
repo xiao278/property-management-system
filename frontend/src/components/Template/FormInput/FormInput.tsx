@@ -1,21 +1,19 @@
 import { FieldValues, RegisterOptions, useFormContext, Controller } from "react-hook-form"
 import "./FormInput.css"
 import React, { JSX } from "react";
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import { AutocompleteProps } from "@mui/material";
-
-
+import { NumericFormatProps } from 'react-number-format';
 
 interface FormInputProps {
     fieldName: string;
-    hint: string;
+    hint?: string;
     type: "text" | "number" | "date" | "mui";
     validation?: RegisterOptions<FieldValues, string>;
     children?: JSX.Element;
+    containerStyle?: React.CSSProperties | undefined;
 }
 
 export function FormInput(props: FormInputProps) {
-    const { hint, type, fieldName, validation, children } = props;
+    const { hint, type, fieldName, validation, children, containerStyle } = props;
     const { register, control } = useFormContext();
     const placeholder = validation?.required ? undefined : "N/A"
     const renderChildren = () => {
@@ -51,16 +49,17 @@ export function FormInput(props: FormInputProps) {
         }
     }
     return (
-        <div className="FormInputContainer">
+        <div className="FormInputContainer" style={containerStyle}>
             {children ? 
                 renderChildren()
                 : 
                 <input className={"FormInput"} {...register(fieldName, validation)} type={type} placeholder={placeholder} />
             }
-
-            <div className="FormInputName"> {hint}
-                {(validation && validation.required) ? <span style={{color: "red"}}>*</span> : <></>}
-            </div>
+            {!hint ? <></> : 
+                <div className="FormInputName"> {hint}
+                    {(validation && validation.required) ? <span style={{color: "red"}}>*</span> : <></>}
+                </div>
+            }
         </div>
     )
 }

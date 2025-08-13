@@ -18,7 +18,7 @@ interface HousingInfo {
     country: string;
 }
 
-interface HousingQueryAddress {
+interface AddressQueryResult {
     address_id: number;
     building_name: string | null;
     street_number: string | null;
@@ -38,7 +38,7 @@ interface SearchHousingQueryResult {
     purchase_date: string;
     purchase_price: string;
     purchase_currency: string;
-    address: HousingQueryAddress;
+    address: AddressQueryResult;
 }
 
 type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price"> & {
@@ -60,6 +60,12 @@ interface HousingSearchFilters {
     purchase_currency?: string;
 
     address?: AddressSearchFilters
+    ordering?: OrderingOptions
+}
+
+interface OrderingOptions {
+    orderBy?: "country" | "purchase_date" | "bathrooms" | "bedrooms" | "size"
+    ascending: boolean
 }
 
 interface AddressSearchFilters {
@@ -85,4 +91,8 @@ interface CountrySearchResult {
     countryList: CountryQueryResult[];
 }
 
-export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, HousingQueryAddress, HousingSearchFilters, AddressSearchFilters, CountryQueryResult, CountrySearchFilters, CountrySearchResult };
+export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
+    HousingSearchFilters,
+    AddressSearchFilters, AddressQueryResult as HousingQueryAddress, 
+    CountryQueryResult, CountrySearchFilters, CountrySearchResult,
+    OrderingOptions };
