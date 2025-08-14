@@ -96,22 +96,6 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                         <MyAccordion sx={{padding: "20px"}}>
                             <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
-                        <AuthOrHide adminOnly={true}>
-                            <MyAccordion>
-                                <MyAccordionSummary>
-                                    <h3>Manage Unit Information</h3>
-                                </MyAccordionSummary>
-                                <MyAccordionDetails>
-                                    <FormProvider {...methods}>
-                                        <Button sx={{
-                                            margin: "10px",
-                                            color: "red"
-                                        }} onClick={() => handleHousingDelete()}> Delete </Button>
-                                        <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
-                                    </FormProvider>
-                                </MyAccordionDetails>
-                            </MyAccordion>
-                        </AuthOrHide>
 
                         <MyAccordion>
                             <MyAccordionSummary>
@@ -142,10 +126,10 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
 
                         <MyAccordion>
                             <MyAccordionSummary>
-                                <h3>Details</h3>
+                                <h3>Inventory</h3>
                             </MyAccordionSummary>
                             <MyAccordionDetails>
-                                <p>content</p>
+                                <p>Inventory page here</p>
                             </MyAccordionDetails>
                         </MyAccordion>
 
@@ -157,6 +141,23 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                 <p>content</p>
                             </MyAccordionDetails>
                         </MyAccordion>
+
+                        <AuthOrHide adminOnly={true}>
+                            <MyAccordion>
+                                <MyAccordionSummary>
+                                    <h3>Manage Unit Information</h3>
+                                </MyAccordionSummary>
+                                <MyAccordionDetails>
+                                    <FormProvider {...methods}>
+                                        <Button sx={{
+                                            margin: "10px",
+                                            color: "red"
+                                        }} onClick={() => handleHousingDelete()}> Delete </Button>
+                                        <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
+                                    </FormProvider>
+                                </MyAccordionDetails>
+                            </MyAccordion>
+                        </AuthOrHide>
                     </Paper>
                 </div>
             </div>
