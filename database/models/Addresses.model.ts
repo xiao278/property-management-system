@@ -1,42 +1,48 @@
 import { sequelize } from '../main';
 import { DataTypes, Model } from 'sequelize';
-import { Housings } from './Housings.model';
-
-interface AddressAttributes {
-    address_id?: number;
-    building_name?: string | null;
-    street_number?: string | null;
-    street_name: string;
-    postal_code: string;
-    city: string;
-    state: string;
-    country: string;
-}
 
 interface CountryAttributes {
-    country: string;
+    id?: number
+    name: string;
 }
 
 interface CountryInstance extends Model<CountryAttributes>, CountryAttributes{}
 
 const Countries = sequelize.define<CountryInstance>(
-    'countries_table',
+    'countries',
     {
-        'country': {
-            type: DataTypes.STRING(64),
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
             primaryKey: true,
+            autoIncrement: true
+        },
+        name: {
+            type: DataTypes.STRING(64),
             allowNull: false,
             unique: true
         },
     }
 );
 
+interface AddressAttributes {
+    id?: number;
+    building_name?: string | null;
+    street_number?: string | null;
+    street_name: string;
+    postal_code: string;
+    city: string;
+    state: string;
+    country_id: number;
+}
+
+
 interface AddressInstance extends Model<AddressAttributes>, AddressAttributes{}
 
 const Addresses = sequelize.define<AddressInstance>(
     'addresses',
     {
-        address_id: {
+        id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
@@ -67,23 +73,23 @@ const Addresses = sequelize.define<AddressInstance>(
             type: DataTypes.STRING(32),
             allowNull: false
         },
-        country: {
-            type: DataTypes.STRING(64),
+        country_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Countries,
-                key: 'country'
+                key: 'id'
             }
         }
     },
 );
 
 Addresses.belongsTo(Countries, {
-    foreignKey: 'country'
+    foreignKey: 'country_id'
 })
 
 Countries.hasMany(Addresses, {
-    foreignKey: 'country'
+    foreignKey: 'country_id'
 })
 
 export { Addresses, AddressAttributes, Countries, CountryAttributes }

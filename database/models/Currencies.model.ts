@@ -2,7 +2,8 @@ import { sequelize } from '../main';
 import { DataTypes, Model } from 'sequelize';
 
 interface CurrencyAttributes {
-    currency: string;
+    id?: number;
+    name: string;
 }
 
 interface CurrencyInstance extends Model<CurrencyAttributes>, CurrencyAttributes{}
@@ -10,10 +11,16 @@ interface CurrencyInstance extends Model<CurrencyAttributes>, CurrencyAttributes
 const Currencies = sequelize.define<CurrencyInstance>(
     'currencies',
     {
-        currency: {
-            type: DataTypes.STRING,
+        id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        name: {
+            type: DataTypes.STRING(3),
+            allowNull: false,
+            unique: true
         }
     }
 )

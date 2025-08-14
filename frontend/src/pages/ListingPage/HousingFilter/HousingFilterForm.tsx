@@ -11,7 +11,7 @@ export function HousingFilterForm() {
                 <div>Form content</div>
             </SmallCard>
             <SmallCard title="Location Filters">
-                <SelectCountry fieldName="address.country" hint="Filter By Country" />
+                <SelectCountry fieldName="address.country_id" hint="Filter By Country" />
             </SmallCard>
             <SmallCard title="Miscellaneous Filters">
                 <div>Form content</div>
@@ -24,7 +24,7 @@ export function HousingFilterForm() {
                         <MenuItem value="bathrooms">Num. Bathrooms</MenuItem>
                         <MenuItem value="bedrooms">Num. Bedrooms</MenuItem>
                         <MenuItem value="size">Unit Size</MenuItem>
-                        <MenuItem value="country">Country</MenuItem>
+                        <MenuItem value="countryName">Country</MenuItem>
                     </Select>
                 </FormInput>
                 <FormInput fieldName="ordering.ascending" type="mui">

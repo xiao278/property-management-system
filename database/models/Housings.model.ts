@@ -4,7 +4,7 @@ import { Addresses } from './Addresses.model';
 import { Currencies } from './Currencies.model';
 
 interface HousingAttributes {
-    property_id?: number;
+    id?: number;
     bathrooms: number;
     bedrooms: number;
     size: number; // m^2
@@ -12,7 +12,7 @@ interface HousingAttributes {
     unit?: string | null;
     purchase_date: string;
     purchase_price: number;
-    purchase_currency: string;
+    purchase_currency_id: string;
 }
 
 interface HousingInstance extends Model<HousingAttributes>, HousingAttributes{}
@@ -20,7 +20,7 @@ interface HousingInstance extends Model<HousingAttributes>, HousingAttributes{}
 const Housings = sequelize.define<HousingInstance>(
     'housings',
     {
-        property_id: {
+        id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
@@ -43,7 +43,7 @@ const Housings = sequelize.define<HousingInstance>(
             allowNull: false,
             references: {
                 model: Addresses,
-                key: 'address_id'
+                key: 'id'
             }
         },
         unit: {
@@ -58,12 +58,12 @@ const Housings = sequelize.define<HousingInstance>(
             type: DataTypes.DECIMAL(13,2),
             allowNull: false
         }, 
-        purchase_currency: {
-            type: DataTypes.STRING(3),
+        purchase_currency_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Currencies,
-                key: 'currency'
+                key: 'id'
             }
         }
     }
@@ -77,10 +77,10 @@ Addresses.hasMany(Housings, {
 })
 
 Housings.belongsTo(Currencies, {
-    foreignKey: 'purchase_currency'
+    foreignKey: 'purchase_currency_id'
 })
 Currencies.hasMany(Housings, {
-    foreignKey: 'purchase_currency'
+    foreignKey: 'purchase_currency_id'
 })
 
 export { Housings, HousingAttributes }

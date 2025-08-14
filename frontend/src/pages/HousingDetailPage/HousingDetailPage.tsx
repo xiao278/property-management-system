@@ -4,7 +4,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Paper, SxProps } from "@mui/material";
 import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPagePopup";
 import "./HousingDetailPage.css";
-import { HousingInfo, HousingSearchFilters, HousingSearchResult, SearchHousingQueryResultFormatted } from "../../../../interface/HousingQuery";
+import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo, SearchHousingQueryResultFormatted } from "../../../../interface/HousingQuery";
 import { AddressDisplay } from "../../components/Content/AddressDisplay/AddressDisplay";
 import { SmallCard } from "../../components/Template/SmallCard/SmallCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -53,7 +53,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
     }
 
     const fetchUpdatedHousingData = async () => {
-        const searchFilters:HousingSearchFilters = {property_id: housingData.property_id};
+        const searchFilters:HousingSearchFilters = {property_id: housingData.id};
         const res = await post("/api/housing/search", searchFilters);
         if (res.ok) {
             const data = await res.json() as HousingSearchResult;
@@ -66,7 +66,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
     }
 
     const handleHousingDelete = async () => {
-        const searchFilters:HousingSearchFilters = {property_id: housingData.property_id};
+        const searchFilters:HousingSearchFilters = {property_id: housingData.id};
         const res = await post("/api/housing/delete", searchFilters);
         if (res.ok) {
             alert("Housing Deleted Successfully")
@@ -153,7 +153,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                             margin: "10px",
                                             color: "red"
                                         }} onClick={() => handleHousingDelete()}> Delete </Button>
-                                        <HousingForm onFormSubmit={onFormSubmit} prefillData={{...newHousingData, ...newHousingData.address} as HousingInfo}/>
+                                        <HousingForm onFormSubmit={onFormSubmit} prefillData={{housing: newHousingData as HousingUnitInfo, address: newHousingData.address} as HousingInfo}/>
                                     </FormProvider>
                                 </MyAccordionDetails>
                             </MyAccordion>

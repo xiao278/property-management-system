@@ -1,16 +1,12 @@
-interface HousingInfo {
-    property_id?: number;
-    bathrooms: number;
-    bedrooms: number;
-    size: number;
-    unit: string;
-    purchase_date: string;
-    purchase_price: number;
-    purchase_currency: string;
-    
-    address_id?: number;
-    building_name: string;
-    street_number: string;
+import { CountryAttributes } from '../database/models/Addresses.model';
+import { CurrencyQueryResult } from './miscQuery/CurrencyQuery';
+
+
+/** fields required to create address */
+interface AddressInfo {
+    id?: number;
+    building_name?: string | null;
+    street_number?: string | null;
     street_name: string;
     postal_code: string;
     city: string;
@@ -18,31 +14,55 @@ interface HousingInfo {
     country: string;
 }
 
+/** fields required to create housing base */
+interface HousingUnitInfo {
+    id?: number;
+    bathrooms: number;
+    bedrooms: number;
+    size: number;
+    unit?: string | null;
+    purchase_date: string;
+    purchase_price: number;
+    purchase_currency: string;
+    address_id?: number;
+}
+
+/** fields required to create housing entry */
+interface HousingInfo {
+    housing: HousingUnitInfo
+    address: AddressInfo
+}
+
+/** Result of Address Queries */
 interface AddressQueryResult {
-    address_id: number;
+    id: number;
     building_name: string | null;
     street_number: string | null;
     street_name: string;
     postal_code: string;
     city: string;
     state: string;
-    country: string;
+    country: CountryAttributes;
 }
 
+type AddressQueryResultFormatted = Omit<AddressQueryResult, "country"> & { country: string };
+
 interface SearchHousingQueryResult {
-    property_id: number;
+    id: number;
     bathrooms: number;
     bedrooms: number;
     size: number;
     unit: string | null;
     purchase_date: string;
     purchase_price: string;
-    purchase_currency: string;
+    currency: CurrencyQueryResult;
     address: AddressQueryResult;
 }
 
-type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price"> & {
+type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" > & {
     purchase_price: number;
+    purchase_currency: string;
+    address: AddressQueryResultFormatted
 };
 
 interface HousingSearchResult {
@@ -64,35 +84,37 @@ interface HousingSearchFilters {
 }
 
 interface OrderingOptions {
-    orderBy?: "country" | "purchase_date" | "bathrooms" | "bedrooms" | "size"
+    orderBy?: "countryName" | "purchase_date" | "bathrooms" | "bedrooms" | "size"
     ascending: boolean
 }
 
 interface AddressSearchFilters {
-    address_id?: number;
+    id?: number;
     building_name?: string;
     street_number?: string;
     street_name?: string;
     postal_code?: string;
     city?: string;
     state?: string;
-    country?: string;
+    country_id?: number;
 }
 
 interface CountrySearchFilters {
-    country: string
+    name: string;
 }
 
 interface CountryQueryResult {
-    country: string;
+    id: number;
+    name: string;
 }
 
 interface CountrySearchResult {
     countryList: CountryQueryResult[];
 }
 
-export type { HousingInfo, HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
+export type { HousingInfo, AddressInfo, HousingUnitInfo,
+    HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
     HousingSearchFilters,
-    AddressSearchFilters, AddressQueryResult as HousingQueryAddress, 
+    AddressSearchFilters, AddressQueryResult, AddressQueryResultFormatted,
     CountryQueryResult, CountrySearchFilters, CountrySearchResult,
     OrderingOptions };

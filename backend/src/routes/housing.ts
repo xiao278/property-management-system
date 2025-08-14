@@ -1,18 +1,31 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { CountrySearchFilters, CountrySearchResult, HousingInfo, HousingSearchFilters, HousingSearchResult } from '../../../interface/HousingQuery';
+import { CountrySearchFilters, CountrySearchResult, HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo } from '../../../interface/HousingQuery';
 import { AddressAttributes, Addresses, Countries } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
 import { sequelize } from '../../../database/main';
 import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/HousingQuery';
+import { AddressInfo } from '../../../interface/HousingQuery';
+import { Sequelize } from 'sequelize';
 
 const housingRoutes = Router();
 
-async function findOrCreateAddress(form: AddressAttributes): Promise<[AddressAttributes, Boolean]> {
-    const countriesResult = await Countries.findOrCreate({where: {country: form.country}});
-    const addressResult = await Addresses.findOrCreate({where: {...form}});
+async function findOrCreateAddress(form: AddressInfo): Promise<[AddressAttributes, Boolean]> {
+    const countriesResult = await Countries.findOrCreate({where: {name: form.country}});
+    const address = {...form, ...{country_id: countriesResult[0].id}} as AddressAttributes;
+    const addressResult = await Addresses.findOrCreate({
+        where: {
+            street_name: address.street_name,
+            street_number: emptyStringAsNull(address.street_number),
+            building_name: emptyStringAsNull(address.building_name),
+            postal_code: address.postal_code,
+            state: address.state,
+            country_id: address.country_id
+        },
+        defaults: address
+    });
     return addressResult;
 }
 
@@ -25,8 +38,8 @@ function emptyStringAsNull(input: string | null | undefined): string | null {
     
 }
 
-function parseAddress(form: HousingInfo):AddressAttributes {
-    const newAddressFields:AddressAttributes = {
+function parseAddress(form: AddressInfo):AddressInfo {
+    const newAddressFields:AddressInfo = {
         building_name: emptyStringAsNull(form.building_name),
         street_number: emptyStringAsNull(form.street_number),
         street_name: form.street_name,
@@ -38,8 +51,8 @@ function parseAddress(form: HousingInfo):AddressAttributes {
     return newAddressFields;
 }
 
-function parseHousing(form: HousingInfo):HousingAttributes {
-    const newHousingFields: HousingAttributes = {
+function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
+    const newHousingFields: HousingUnitInfo = {
         bathrooms: form.bathrooms,
         bedrooms: form.bedrooms,
         size: form.size,
@@ -64,21 +77,29 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
 
     try {
         const form = req.body as HousingInfo
-        if (!form.address_id) {
-            const newAddressFields = parseAddress(form);
+        const housingBase = form.housing;
+        if (!form.address.id) {
+            const newAddressFields = parseAddress(form.address);
             const addressResult = await findOrCreateAddress(newAddressFields);
-            form.address_id = addressResult[0].address_id;
+            form.address.id = addressResult[0].id;
         }
 
         const currencyResult = await Currencies.findOrCreate({where: {
-            currency: form.purchase_currency
+            name: housingBase.purchase_currency
         }})
 
-        const newHousingFields = parseHousing(form);
-        const housingResult = await Housings.findOrCreate({where: {...newHousingFields}})
+        const newHousingFields = parseHousing(form.housing);
+        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}, ...{address_id: form.address.id}} as HousingAttributes
+        const housingResult = await Housings.findOrCreate({
+            where: {
+                address_id: formattedHousingFields.address_id,
+                unit: emptyStringAsNull(formattedHousingFields.unit)
+            },
+            defaults: formattedHousingFields
+        });
         if (!housingResult[1]) {
             t.rollback();
-            res.status(500).json({message: "failed to create housing"})
+            res.status(500).json({message: "This housing already exists!"})
         }
         else {
             t.commit();
@@ -88,7 +109,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
     catch (error) {
         console.log(error)
         t.rollback();
-        res.status(500).json(error);
+        res.status(500).json({message: error.message});
     }
 })
 
@@ -96,55 +117,61 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
     try {
         const filters = req.body as HousingSearchFilters;
         const housingResult = await Housings.findAll({
-            attributes: [
-                "property_id",
-                "bathrooms",
-                "bedrooms",
-                "size",
-                "unit",
-                "purchase_date",
-                "purchase_price",
-                "purchase_currency"
-            ],
+            attributes: {
+                include: [[Sequelize.col('address.country.name'), 'countryName']]
+            },
             where: {
-                ...(filters.property_id ? {property_id: filters.property_id} : undefined)
+                ...(filters.property_id ? {id: filters.property_id} : undefined)
             },
             include: [
                 {
                     model: Addresses,
-                    attributes: ['address_id', 'building_name', 'street_number', 'street_name', 'postal_code', 'city', 'state', 'country'],
+                    as: "address",
+                    required: true,
                     where: {
-                        ...(filters.address?.country ? {country: filters.address.country} : undefined)
-                    }
+                        ...(filters.address?.country_id ? {country_id: filters.address.country_id} : undefined)
+                    },
+                    include: [{ model: Countries, as: "country" }]
                 },
+                { model: Currencies }
             ],
             ...(emptyStringAsNull(filters.ordering?.orderBy) ? {
                 order: [
                     [filters.ordering.orderBy, filters.ordering.ascending ? 'ASC' : 'DESC']
                 ]
             } : undefined)
-        });
+        })
         const responseBody:HousingSearchResult = {
             housingList: housingResult.map((housing) => {
-                const data = housing.dataValues as unknown as SearchHousingQueryResult;
+                const data = housing.get({plain: true}) as unknown as SearchHousingQueryResult;
+                // const formattedData:SearchHousingQueryResultFormatted = {
+                //     id: data.id,
+                //     bathrooms: data.bathrooms,
+                //     bedrooms: data.bedrooms,
+                //     unit: data.unit,
+                //     size: data.size,
+                //     purchase_currency: data.currency.name,
+                //     purchase_price: Number(data.purchase_price),
+                //     purchase_date: data.purchase_date,
+                //     address: {
+                //         id: addr.id,
+                //         building_name: addr.building_name,
+                //         street_number: addr.street_number,
+                //         street_name: addr.street_name,
+                //         city: addr.city,
+                //         state: addr.state,
+                //         postal_code: addr.postal_code,
+                //         country: addr.country.name
+                //     }
+                // }
+
                 const formattedData:SearchHousingQueryResultFormatted = {
-                    property_id: data.property_id,
-                    bathrooms: data.bathrooms,
-                    bedrooms: data.bedrooms,
-                    size: data.size,
-                    unit: data.unit,
-                    purchase_date: data.purchase_date,
+                    ...data,
+                    purchase_currency: data.currency.name,
                     purchase_price: Number(data.purchase_price),
-                    purchase_currency: data.purchase_currency,
                     address: {
-                        address_id: data.address.address_id,
-                        building_name: data.address.building_name,
-                        street_number: data.address.street_number,
-                        street_name: data.address.street_name,
-                        postal_code: data.address.postal_code,
-                        city: data.address.city,
-                        state: data.address.state,
-                        country: data.address.country
+                        ...data.address,
+                        country: data.address.country.name
                     }
                 }
                 return formattedData;
@@ -154,7 +181,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        res.status(500).json({message: "error fetching housing data"});
+        res.status(500).json({message: error.message});
         return;
     }
 })
@@ -170,15 +197,17 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
     const t = await sequelize.transaction();
     try {
         const form = req.body as HousingInfo;
-        const newAddressFields = parseAddress(form);
+        const newAddressFields = parseAddress(form.address);
+        const newHousingFields = parseHousing(form.housing);
         const addressResult = await findOrCreateAddress(newAddressFields);
         if (addressResult[1]) {
-            form.address_id = addressResult[0].address_id;
+            const newId = addressResult[0].id;
+            form.address.id = newId;
+            newHousingFields.address_id = newId;
         }
-        const newHousingFields = parseHousing(form);
         const housingResult = await Housings.update(newHousingFields,{
             where: {
-                property_id: form.property_id
+                id: form.housing.id
             }
         });
         t.commit();
@@ -204,7 +233,7 @@ housingRoutes.post('/delete', authenticateToken, async (req, res) => {
         const filter = req.body as HousingSearchFilters;
         const housingResult = await Housings.destroy({
             where: {
-                property_id: filter.property_id
+                id: filter.property_id
             }
         });
         if (housingResult < 1) {
@@ -225,15 +254,16 @@ housingRoutes.post("/fetch-countries", authenticateToken, async (req, res) => {
         const filters = req.body as CountrySearchFilters;
         const countriesResult = await Countries.findAll({
             where: {
-                ...(filters.country ? {property_id: filters.country} : undefined)
+                ...(filters.name ? {name: filters.name} : undefined)
             }
         });
         const responseBody:CountrySearchResult = {
             countryList: countriesResult.map((value) => {
                 const data = value.dataValues;
                 return {
-                    country: data.country
-                }
+                    id: data.id,
+                    name: data.name
+                };
             })
         }
         res.status(200).json(responseBody);

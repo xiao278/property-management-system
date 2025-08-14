@@ -2,6 +2,7 @@ import { sequelize } from '../main';
 import { DataTypes, Model } from 'sequelize';
 
 interface UserAttributes {
+    id?: number
     username: string,
     password: string,
     role: 'admin' | 'operator',
@@ -14,10 +15,16 @@ interface UserInstance extends Model<UserAttributes>, UserAttributes{}
 const Users = sequelize.define<UserInstance>(
     'users',
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
         username: {
             type: DataTypes.STRING(32),
             allowNull: false,
-            primaryKey: true
+            unique: true,
         },
         password: {
             type: DataTypes.STRING(60),

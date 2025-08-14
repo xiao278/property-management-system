@@ -33,7 +33,7 @@ export function SelectCountry(props: SelectCountryProps) {
                     <em>None</em>
                 </MenuItem>
                 {countries ? countries.map((value, index) => (
-                    <MenuItem value={value.country} key={index}>{value.country}</MenuItem>
+                    <MenuItem value={value.id} key={index}>{value.name}</MenuItem>
                 )
                 ) : []}
             </Select>

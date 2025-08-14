@@ -1,8 +1,8 @@
 import "./AddressDisplay.css";
-import { HousingQueryAddress } from "../../../../../interface/HousingQuery";
+import { AddressQueryResultFormatted } from "../../../../../interface/HousingQuery";
 
 interface AddressDisplayProps {
-    address: HousingQueryAddress;
+    address: AddressQueryResultFormatted;
     unit?: string | null;
 }
 

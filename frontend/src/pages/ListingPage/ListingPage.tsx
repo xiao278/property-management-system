@@ -10,9 +10,14 @@ export const listingPageRoute = "/listing";
 
 export function ListingPage() {
     const methods = useForm<HousingSearchFilters>({
-        defaultValues: {ordering: {
-            ascending: false
-        }}
+        defaultValues: {
+            ordering: {
+                ascending: false
+            },
+            address: {
+                country_id: undefined
+            }
+        }
     });
     const { handleSubmit } = methods;
     const [ searchFilters, setSearchFilters ] = useState<HousingSearchFilters | null>(null);
@@ -34,6 +39,7 @@ export function ListingPage() {
                 return;
             }
             const data = await housingListResponse.json() as HousingSearchResult;
+            console.log(data)
             setHousingList(data.housingList);
         }
         fetchHousingListings();
