@@ -12,6 +12,25 @@ import { Sequelize } from 'sequelize';
 
 const housingRoutes = Router();
 
+/* Gives back a object that can be directly used to create or update Housing.
+ * Note that this does try to create address and currency
+ **/
+async function formatHousingFields(form: HousingInfo): Promise<HousingAttributes> {
+    const newAddressFields = parseAddress(form.address);
+    const newHousingFields = parseHousing(form.housing);
+    
+    const addressResult = await findOrCreateAddress(newAddressFields);
+    newHousingFields.address_id = addressResult[0].id;
+
+    const currencyResult = await Currencies.findOrCreate({where: {
+        name: newHousingFields.purchase_currency
+    }})
+
+    const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}};
+    delete formattedHousingFields.purchase_currency;
+    return formattedHousingFields as HousingAttributes;
+}
+
 async function findOrCreateAddress(form: AddressInfo): Promise<[AddressAttributes, Boolean]> {
     const countriesResult = await Countries.findOrCreate({where: {name: form.country}});
     const address = {...form, ...{country_id: countriesResult[0].id}}
@@ -78,19 +97,8 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
 
     try {
         const form = req.body as HousingInfo
-        const housingBase = form.housing;
-        if (!form.address.id) {
-            const newAddressFields = parseAddress(form.address);
-            const addressResult = await findOrCreateAddress(newAddressFields);
-            form.address.id = addressResult[0].id;
-        }
+        const formattedHousingFields = await formatHousingFields(form);
 
-        const currencyResult = await Currencies.findOrCreate({where: {
-            name: housingBase.purchase_currency
-        }})
-
-        const newHousingFields = parseHousing(form.housing);
-        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}} as HousingAttributes
         const housingResult = await Housings.findOrCreate({
             where: {
                 address_id: formattedHousingFields.address_id,
@@ -177,21 +185,11 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
     const t = await sequelize.transaction();
     try {
         const form = req.body as HousingInfo;
-        const newAddressFields = parseAddress(form.address);
-        const newHousingFields = parseHousing(form.housing);
-        const addressResult = await findOrCreateAddress(newAddressFields);
-
-        const newId = addressResult[0].id;
-        newHousingFields.address_id = newId;
-
-        const currencyResult = await Currencies.findOrCreate({where: {
-            name: newHousingFields.purchase_currency
-        }})
-        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}} as HousingAttributes
+        const formattedHousingFields = await formatHousingFields(form);
         const housingResult = await Housings.update(formattedHousingFields,{
             where: {
                 id: form.housing.id
-            },
+            }
         });
         t.commit();
         res.sendStatus(200);
