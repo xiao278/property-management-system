@@ -14,7 +14,8 @@ const housingRoutes = Router();
 
 async function findOrCreateAddress(form: AddressInfo): Promise<[AddressAttributes, Boolean]> {
     const countriesResult = await Countries.findOrCreate({where: {name: form.country}});
-    const address = {...form, ...{country_id: countriesResult[0].id}} as AddressAttributes;
+    const address = {...form, ...{country_id: countriesResult[0].id}}
+    if (address.country) {delete address.country};
     const addressResult = await Addresses.findOrCreate({
         where: {
             street_name: address.street_name,
@@ -24,7 +25,7 @@ async function findOrCreateAddress(form: AddressInfo): Promise<[AddressAttribute
             state: address.state,
             country_id: address.country_id
         },
-        defaults: address
+        defaults: address as AddressAttributes
     });
     return addressResult;
 }
@@ -89,7 +90,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
         }})
 
         const newHousingFields = parseHousing(form.housing);
-        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}, ...{address_id: form.address.id}} as HousingAttributes
+        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}} as HousingAttributes
         const housingResult = await Housings.findOrCreate({
             where: {
                 address_id: formattedHousingFields.address_id,
@@ -144,27 +145,6 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
         const responseBody:HousingSearchResult = {
             housingList: housingResult.map((housing) => {
                 const data = housing.get({plain: true}) as unknown as SearchHousingQueryResult;
-                // const formattedData:SearchHousingQueryResultFormatted = {
-                //     id: data.id,
-                //     bathrooms: data.bathrooms,
-                //     bedrooms: data.bedrooms,
-                //     unit: data.unit,
-                //     size: data.size,
-                //     purchase_currency: data.currency.name,
-                //     purchase_price: Number(data.purchase_price),
-                //     purchase_date: data.purchase_date,
-                //     address: {
-                //         id: addr.id,
-                //         building_name: addr.building_name,
-                //         street_number: addr.street_number,
-                //         street_name: addr.street_name,
-                //         city: addr.city,
-                //         state: addr.state,
-                //         postal_code: addr.postal_code,
-                //         country: addr.country.name
-                //     }
-                // }
-
                 const formattedData:SearchHousingQueryResultFormatted = {
                     ...data,
                     purchase_currency: data.currency.name,
@@ -200,15 +180,18 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
         const newAddressFields = parseAddress(form.address);
         const newHousingFields = parseHousing(form.housing);
         const addressResult = await findOrCreateAddress(newAddressFields);
-        if (addressResult[1]) {
-            const newId = addressResult[0].id;
-            form.address.id = newId;
-            newHousingFields.address_id = newId;
-        }
-        const housingResult = await Housings.update(newHousingFields,{
+
+        const newId = addressResult[0].id;
+        newHousingFields.address_id = newId;
+
+        const currencyResult = await Currencies.findOrCreate({where: {
+            name: newHousingFields.purchase_currency
+        }})
+        const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}} as HousingAttributes
+        const housingResult = await Housings.update(formattedHousingFields,{
             where: {
                 id: form.housing.id
-            }
+            },
         });
         t.commit();
         res.sendStatus(200);
