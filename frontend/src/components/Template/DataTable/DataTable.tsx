@@ -83,9 +83,9 @@ interface DataTableProps {
 }
 
 export function DataTable(props: DataTableProps) {
-    const {children} = props;
+    const {children, style} = props;
     return (
-        <table className="DataTable">
+        <table className="DataTable" style={style}>
             {children}
         </table>
     )

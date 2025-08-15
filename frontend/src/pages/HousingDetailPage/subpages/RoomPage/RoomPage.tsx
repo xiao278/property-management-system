@@ -68,11 +68,12 @@ export function RoomPage(props: RoomPageProps) {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onFormSubmit)}>
                     <div className="RoomTableWrapper">
-                        <DataTable style={{borderCollapse: "separate"}}>
+                        <DataTable style={{borderCollapse: "separate", borderSpacing: "5px 10px"}}>
                             <colgroup>
                                 <col style={{width: "12px"}}/>
                                 <col />
-                                <col style={{width: "60px"}}/>
+                                <col style={{minWidth: "60px", width: 0}}/>
+                                <col style={{maxWidth: 0, width: 0}}/>
                             </colgroup>
                             <DtHeader>
                                 <DtRow rowStyle={{}}>

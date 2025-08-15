@@ -21,7 +21,8 @@ export function CreateRoomPanel () {
                             <NumericFormat defaultValue={undefined}/>
                         </FormInput>
                     </DtRow>
-                    <DtRow colSpans={{0:3}}>
+                    <DtRow colSpans={{1:2}}>
+                        <div></div>
                         <div>
                             <Button variant="contained" type="submit">Add Room</Button>
                             <Button variant="text" type="button" onClick={() => setInUse(false)}> <CloseIcon /> </Button>
@@ -30,14 +31,14 @@ export function CreateRoomPanel () {
                 </>
                 
             : 
-                <DtRow colSpans={{0:2}}>
+                <DtRow colSpans={{0:3}}>
                     <Button onClick={() => setInUse(true)} sx={{
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "flex-start",
                         boxSizing: "border-box",
-                        width: "100%"
+                        width: "100%",
                     }}>
                         <AddIcon />
                         <div>
