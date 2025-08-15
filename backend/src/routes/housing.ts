@@ -49,7 +49,7 @@ async function findOrCreateAddress(form: AddressInfo): Promise<[AddressAttribute
     return addressResult;
 }
 
-function emptyStringAsNull(input: string | null | undefined): string | null {
+export function emptyStringAsNull(input: string | null | undefined): string | null {
     return (
         input ? (
             input.length < 1 ? null : input

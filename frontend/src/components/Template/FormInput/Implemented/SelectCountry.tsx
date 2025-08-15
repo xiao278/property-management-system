@@ -29,7 +29,7 @@ export function SelectCountry(props: SelectCountryProps) {
     return (
         <FormInput fieldName={fieldName} hint={hint} type="mui">
             <Select sx={{height: "30px", ...{sx}}}>
-                <MenuItem value={undefined}>
+                <MenuItem value={""}>
                     <em>None</em>
                 </MenuItem>
                 {countries ? countries.map((value, index) => (

@@ -18,8 +18,8 @@ export function HousingFilterForm() {
             </SmallCard>
             <SmallCard title="Sorting Options">
                 <FormInput fieldName="ordering.orderBy" hint="Ordering" type="mui">
-                    <Select sx={{height: "30px"}} defaultValue={undefined}>
-                        <MenuItem value={undefined}><em>None</em></MenuItem>
+                    <Select sx={{height: "30px"}}>
+                        <MenuItem value={""}><em>None</em></MenuItem>
                         <MenuItem value="purchase_date">Purchase Date</MenuItem>
                         <MenuItem value="bathrooms">Num. Bathrooms</MenuItem>
                         <MenuItem value="bedrooms">Num. Bedrooms</MenuItem>

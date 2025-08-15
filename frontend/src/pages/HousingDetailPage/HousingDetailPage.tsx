@@ -6,13 +6,13 @@ import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPageP
 import "./HousingDetailPage.css";
 import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo, SearchHousingQueryResultFormatted } from "../../../../interface/HousingQuery";
 import { AddressDisplay } from "../../components/Content/AddressDisplay/AddressDisplay";
-import { SmallCard } from "../../components/Template/SmallCard/SmallCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { JSX, useEffect, useState } from "react";
+import { JSX, useState } from "react";
 import { HousingForm } from "../../components/Content/HousingForm/HousingForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { post } from "../../api";
 import { AuthOrHide } from "../../components/Auth/AuthOrHide";
+import { RoomPage } from "./subpages/RoomPage/RoomPage";
 
 interface HousingDetailPageProps {
     show: boolean;
@@ -32,7 +32,7 @@ function MyAccordionDetails(props: { children: JSX.Element | JSX.Element[] }) {
 
 function MyAccordion(props: { children: JSX.Element | JSX.Element[], sx?:SxProps | undefined }) {
     const { children, sx } = props;
-    const style: SxProps = {backgroundColor: "rgb(244, 244, 244)"}
+    const style: SxProps = {backgroundColor: "rgb(244, 246, 244)", borderColor: "rgb(160,195,160)", borderWidth: "1px", borderStyle: "solid"}
     return (<Accordion sx={{...style, ...sx}} elevation={2} disableGutters>{children}</Accordion>) 
 }
 
@@ -99,10 +99,10 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
 
                         <MyAccordion>
                             <MyAccordionSummary>
-                                <h3>Status</h3>
+                                <h3>Rooms</h3>
                             </MyAccordionSummary>
                             <MyAccordionDetails>
-                                <p>content</p>
+                                <RoomPage housingData={housingData} />
                             </MyAccordionDetails>
                         </MyAccordion>
 

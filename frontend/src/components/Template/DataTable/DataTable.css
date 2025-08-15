@@ -1,0 +1,6 @@
+.DataTable {
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, auto));
+    gap: 16px; */
+    width: 100%;
+}

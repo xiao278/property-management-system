@@ -23,7 +23,6 @@ export function ListingPage() {
     const [ searchFilters, setSearchFilters ] = useState<HousingSearchFilters | null>(null);
     const onFormSubmit: SubmitHandler<HousingSearchFilters> = async (data) => {
         const formatted = data as HousingSearchFilters;
-        console.log(formatted);
         setSearchFilters(formatted);
     }
     const [ housingList, setHousingList ] = useState<HousingSearchResult['housingList'] | null>(null);
@@ -39,7 +38,6 @@ export function ListingPage() {
                 return;
             }
             const data = await housingListResponse.json() as HousingSearchResult;
-            console.log(data)
             setHousingList(data.housingList);
         }
         fetchHousingListings();
