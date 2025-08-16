@@ -1,7 +1,7 @@
 // this page is used to display the details of a housing unit + update & delete housing unit
 // it is a pop-up page that is opened when a housing unit is clicked in the housing list or elsewhere
 
-import { Accordion, AccordionDetails, AccordionSummary, Button, Paper, SxProps } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionProps, AccordionSummary, Button, Paper, SxProps } from "@mui/material";
 import { FullPagePopup } from "../../components/Template/FullPagePopup/FullPagePopup";
 import "./HousingDetailPage.css";
 import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo, SearchHousingQueryResultFormatted } from "../../../../interface/HousingQuery";
@@ -30,10 +30,12 @@ function MyAccordionDetails(props: { children: JSX.Element | JSX.Element[] }) {
     return (<AccordionDetails>{children}</AccordionDetails>) 
 }
 
-function MyAccordion(props: { children: JSX.Element | JSX.Element[], sx?:SxProps | undefined }) {
-    const { children, sx } = props;
+function MyAccordion(props: AccordionProps) {
+    const { children } = props;
     const style: SxProps = {backgroundColor: "rgb(244, 246, 244)", borderColor: "rgb(160,195,160)", borderWidth: "1px", borderStyle: "solid"}
-    return (<Accordion sx={{...style, ...sx}} elevation={2} disableGutters>{children}</Accordion>) 
+    const newSx = {...style, ...props.sx};
+    const newElevation = props.elevation ?? 2;
+    return (<Accordion {...props} sx={newSx} elevation={newElevation} disableGutters>{children}</Accordion>) 
 }
 
 export function HousingDetailPage(props: HousingDetailPageProps) {
@@ -97,7 +99,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
 
-                        <MyAccordion>
+                        <MyAccordion slotProps={{ transition: { unmountOnExit: true } }}>
                             <MyAccordionSummary>
                                 <h3>Rooms</h3>
                             </MyAccordionSummary>
