@@ -6,7 +6,7 @@ import { HousingInfo } from "../../../../../interface/HousingQuery";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, FormControl, MenuItem, Select } from "@mui/material";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
@@ -26,30 +26,35 @@ export function HousingForm(props: HousingFormProps) {
             <div className="HousingFormContainer">
                 <SmallCard title="Housing Information">
                     <FlexWrapping>
-                        <div className="ClusteredInput">
-                            <FormInput fieldName="housing.unit" hint="unit no." type="text" />
-                            <FormInput fieldName="housing.bathrooms" hint="bathrooms" type="number" validation={{required: true}}> 
-                                <NumericFormat allowNegative={false} decimalScale={0} />
-                            </FormInput>
-                            <FormInput fieldName="housing.bedrooms" hint="bedrooms" type="number" validation={{required: true}}>
-                                <NumericFormat allowNegative={false} decimalScale={0} />
-                            </FormInput>
-                            <FormInput fieldName="housing.size" hint="size (m^2)" type="number" validation={{required: true}}>
-                                <NumericFormat allowNegative={false} />
-                            </FormInput>
-                        </div>
+                        <FormInput fieldName="housing.unit" hint="unit no." type="text" />
+                        <FormInput fieldName="housing.bathrooms" hint="bathrooms" type="number" validation={{required: true}}> 
+                        <NumericFormat allowNegative={false} decimalScale={0} />
+                        </FormInput>
+                        <FormInput fieldName="housing.bedrooms" hint="bedrooms" type="number" validation={{required: true}}>
+                            <NumericFormat allowNegative={false} decimalScale={0} />
+                        </FormInput>
+                        <FormInput fieldName="housing.size" hint="size (m^2)" type="number" validation={{required: true}}>
+                            <NumericFormat allowNegative={false} />
+                        </FormInput>
+                        <FormInput fieldName="housing.type" hint="type" type="text" validation={{required: true}}/>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
                                 <FormInput fieldName="housing.purchase_currency" hint="currency" type="text" validation={{required: true}} />
-
                             </div>
                             <div style={{width: "100%"}}>
                                 <FormInput fieldName="housing.purchase_price" hint="price" type="number" validation={{required: true}}>
                                     <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
                                 </FormInput>
                             </div>
-                            <FormInput fieldName="housing.purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
                         </div>
+                        <FormInput fieldName="housing.utility" hint="utility billing" type="mui" validation={{required: true}}>
+                                <Select sx={{height: "19.5px"}}>
+                                    <MenuItem value="Fixed">Fixed</MenuItem>
+                                    <MenuItem value="Individual">Individual</MenuItem>
+                                    <MenuItem value="Shared">Shared</MenuItem>
+                                </Select>
+                        </FormInput>
+                        <FormInput fieldName="housing.purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
                     </FlexWrapping>
                 </SmallCard>
                 <SmallCard title="Address Information">

@@ -1,4 +1,5 @@
 import { CountryAttributes } from '../database/models/Addresses.model';
+import { HousingAttributes, HousingTypeAttributes } from '../database/models/Housings.model';
 import { CurrencyQueryResult } from './miscQuery/CurrencyQuery';
 
 
@@ -20,10 +21,12 @@ interface HousingUnitInfo {
     bathrooms: number;
     bedrooms: number;
     size: number;
+    type: string;
     unit?: string | null;
     purchase_date: string;
     purchase_price: number;
     purchase_currency: string;
+    utility: HousingAttributes['utility'];
     address_id?: number;
 }
 
@@ -55,13 +58,16 @@ interface SearchHousingQueryResult {
     unit: string | null;
     purchase_date: string;
     purchase_price: string;
+    utility: HousingAttributes['utility'];
     currency: CurrencyQueryResult;
     address: AddressQueryResult;
+    housing_type: HousingTypeAttributes;
 }
 
-type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" > & {
+type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" | "housing_type" > & {
     purchase_price: number;
     purchase_currency: string;
+    type: string;
     address: AddressQueryResultFormatted
 };
 

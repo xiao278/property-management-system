@@ -3,16 +3,43 @@ import { DataTypes, Model } from 'sequelize';
 import { Addresses } from './Addresses.model';
 import { Currencies } from './Currencies.model';
 
+interface HousingTypeAttributes {
+    id?: number;
+    name: string;
+}
+
+interface HousingTypeInstance extends Model<HousingTypeAttributes>, HousingTypeAttributes{}
+
+const HousingTypes = sequelize.define<HousingTypeInstance>(
+    'housing_types',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: {
+            type: DataTypes.STRING(32),
+            allowNull: false,
+            unique: true
+        }
+    }
+);
+
+
 interface HousingAttributes {
     id?: number;
     bathrooms: number;
     bedrooms: number;
+    type_id: number;
     size: number; // m^2
     address_id: number;
     unit?: string | null;
     purchase_date: string;
     purchase_price: number;
-    purchase_currency_id: string;
+    purchase_currency_id: number;
+    utility: "Fixed" | "Shared" | "Individual";
 }
 
 interface HousingInstance extends Model<HousingAttributes>, HousingAttributes{}
@@ -65,6 +92,18 @@ const Housings = sequelize.define<HousingInstance>(
                 model: Currencies,
                 key: 'id'
             }
+        },
+        type_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: HousingTypes,
+                key: 'id'
+            }
+        },
+        utility: {
+            type: DataTypes.ENUM("Fixed", "Shared", "Individual"),
+            allowNull: false,
         }
     }
 );
@@ -83,4 +122,15 @@ Currencies.hasMany(Housings, {
     foreignKey: 'purchase_currency_id'
 })
 
-export { Housings, HousingAttributes }
+Housings.belongsTo(HousingTypes, {
+    foreignKey: 'type_id'
+})
+
+HousingTypes.hasMany(Housings, {
+    foreignKey: 'type_id'
+})
+
+export { 
+    Housings, HousingAttributes, 
+    HousingTypes, HousingTypeAttributes 
+}

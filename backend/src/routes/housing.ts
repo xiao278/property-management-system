@@ -3,7 +3,7 @@ import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
 import { CountrySearchFilters, CountrySearchResult, HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo } from '../../../interface/HousingQuery';
 import { AddressAttributes, Addresses, Countries } from '../../../database/models/Addresses.model'
-import { HousingAttributes, Housings } from '../../../database/models/Housings.model';
+import { HousingAttributes, Housings, HousingTypes } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
 import { sequelize } from '../../../database/main';
 import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/HousingQuery';
@@ -22,12 +22,21 @@ async function formatHousingFields(form: HousingInfo): Promise<HousingAttributes
     const addressResult = await findOrCreateAddress(newAddressFields);
     newHousingFields.address_id = addressResult[0].id;
 
+
     const currencyResult = await Currencies.findOrCreate({where: {
         name: newHousingFields.purchase_currency
     }})
 
-    const formattedHousingFields = {...newHousingFields, ...{purchase_currency_id: String(currencyResult[0].id)}};
+    const typeResult = await HousingTypes.findOrCreate({where: {
+        name: newHousingFields.type
+    }})
+
+    const formattedHousingFields = {...newHousingFields, 
+        ...{purchase_currency_id: (currencyResult[0].id)},
+        ...{type_id: (typeResult[0].id)}
+    };
     delete formattedHousingFields.purchase_currency;
+    delete formattedHousingFields.type
     return formattedHousingFields as HousingAttributes;
 }
 
@@ -66,7 +75,7 @@ function parseAddress(form: AddressInfo):AddressInfo {
         postal_code: form.postal_code,
         city: form.city,
         state: form.state,
-        country: form.country
+        country: emptyStringAsNull(form.country)
     }
     return newAddressFields;
 }
@@ -76,10 +85,12 @@ function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
         bathrooms: form.bathrooms,
         bedrooms: form.bedrooms,
         size: form.size,
+        type: emptyStringAsNull(form.type),
         address_id: form.address_id,
+        utility: form.utility,
         unit: emptyStringAsNull(form.unit),
         purchase_date: form.purchase_date,
-        purchase_currency: form.purchase_currency,
+        purchase_currency: emptyStringAsNull(form.purchase_currency),
         purchase_price: form.purchase_price
     }
     return newHousingFields;
@@ -142,7 +153,8 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                     },
                     include: [{ model: Countries, as: "country" }]
                 },
-                { model: Currencies }
+                { model: Currencies },
+                { model: HousingTypes },
             ],
             ...(emptyStringAsNull(filters.ordering?.orderBy) ? {
                 order: [
@@ -157,6 +169,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                     ...data,
                     purchase_currency: data.currency.name,
                     purchase_price: Number(data.purchase_price),
+                    type: data.housing_type.name,
                     address: {
                         ...data.address,
                         country: data.address.country.name
