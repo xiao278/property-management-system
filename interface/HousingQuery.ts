@@ -27,6 +27,7 @@ interface HousingUnitInfo {
     purchase_price: number;
     purchase_currency: string;
     utility: HousingAttributes['utility'];
+    furnish: HousingAttributes['furnish'];
     address_id?: number;
 }
 
@@ -59,6 +60,7 @@ interface SearchHousingQueryResult {
     purchase_date: string;
     purchase_price: string;
     utility: HousingAttributes['utility'];
+    furnish: HousingAttributes['furnish'];
     currency: CurrencyQueryResult;
     address: AddressQueryResult;
     housing_type: HousingTypeAttributes;

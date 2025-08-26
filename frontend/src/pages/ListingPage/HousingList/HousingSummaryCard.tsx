@@ -4,6 +4,14 @@ import { AddressDisplay } from "../../../components/Content/AddressDisplay/Addre
 import { FlexWrapping } from "../../../components/Template/FlexWrapping/FlexWrapping";
 import "./HousingSummaryCard.css";
 import { HousingDetailPage } from "../../HousingDetailPage/HousingDetailPage";
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import ChairIcon from '@mui/icons-material/Chair';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import ElectricMeterIcon from '@mui/icons-material/ElectricMeter';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 // Recommended fields for a summary card:
 
@@ -43,14 +51,14 @@ export function HousingSummaryCard(props: HousingSummaryCardProps) {
                     <div>Type: N/A</div>
                     <div>Status: N/A</div>
                     <div>Notes: N/A</div> */}
-                    <div>{`${housingData.bedrooms}BR ${housingData.type}`}</div>
-                    <div>Parking</div>
-                    <div>Furnishing</div>
-                    <div>Last Renovated</div>
-                    <div>Rent</div>
-                    <div>Rent Status</div>
-                    <div>{`${housingData.utility} Billing`}</div>
-                    <div>Purchased {`${purchase_date.getFullYear()}`}</div>
+                    <div><ApartmentIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.bedrooms}BR ${housingData.type}`}</div>
+                    <div><DirectionsCarIcon sx={{verticalAlign: "bottom"}} /> Parking todo</div>
+                    <div><ChairIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.furnish} Furnished`}</div>
+                    <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> Last Renovated todo</div>
+                    <div><PaymentsIcon sx={{verticalAlign: "bottom"}} /> Rent todo</div>
+                    <div><MonitorHeartIcon sx={{verticalAlign: "bottom"}} /> Rent Status todo</div>
+                    <div><ElectricMeterIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.utility} Billing`}</div>
+                    <div><AccessTimeIcon sx={{verticalAlign: "bottom"}} /> Acquired {`${purchase_date.getFullYear()}`}</div>
                 </div>
             </div>
             <HousingDetailPage show={showPopup} setShow={setShowPopup} housingData={housingData} />

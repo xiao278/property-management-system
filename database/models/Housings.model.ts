@@ -40,6 +40,7 @@ interface HousingAttributes {
     purchase_price: number;
     purchase_currency_id: number;
     utility: "Fixed" | "Shared" | "Individual";
+    furnish: "Bare" | "Semi" | "Fully";
 }
 
 interface HousingInstance extends Model<HousingAttributes>, HousingAttributes{}
@@ -103,6 +104,10 @@ const Housings = sequelize.define<HousingInstance>(
         },
         utility: {
             type: DataTypes.ENUM("Fixed", "Shared", "Individual"),
+            allowNull: false,
+        },
+        furnish: {
+            type: DataTypes.ENUM("Bare", "Semi", "Fully"),
             allowNull: false,
         }
     }

@@ -54,6 +54,13 @@ export function HousingForm(props: HousingFormProps) {
                                     <MenuItem value="Shared">Shared</MenuItem>
                                 </Select>
                         </FormInput>
+                        <FormInput fieldName="housing.furnish" hint="furnish status" type="mui" validation={{required: true}}>
+                                <Select sx={{height: "19.5px"}}>
+                                    <MenuItem value="Bare">Bare Furnishing</MenuItem>
+                                    <MenuItem value="Semi">Semi Furnished</MenuItem>
+                                    <MenuItem value="Fully">Fully Furnished</MenuItem>
+                                </Select>
+                        </FormInput>
                         <FormInput fieldName="housing.purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
                     </FlexWrapping>
                 </SmallCard>

@@ -88,6 +88,7 @@ function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
         type: emptyStringAsNull(form.type),
         address_id: form.address_id,
         utility: form.utility,
+        furnish: form.furnish,
         unit: emptyStringAsNull(form.unit),
         purchase_date: form.purchase_date,
         purchase_currency: emptyStringAsNull(form.purchase_currency),
