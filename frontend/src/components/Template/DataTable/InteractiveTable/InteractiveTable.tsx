@@ -35,7 +35,7 @@ function TableRowDetailPage<T extends BasicRowType> (props: TableRowDetailPagePr
                             const realFieldname = fieldName as keyof T;
                             fieldDisplayName = fieldDisplayName as string;
                             return (
-                                <div key={index}>{!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
+                                <div key={index}>{fieldDisplayName}: {!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
                             )
                         })}
                     </div>
@@ -86,10 +86,10 @@ export function InteractiveTable<T extends BasicRowType>(props: InteractiveTable
                         {/* <col />
                         <col style={{minWidth: "60px", width: 0}}/> */}
                         <>
-                            {Object.entries(columns).map(([fieldName, colProps]) => {
+                            {Object.entries(columns).map(([fieldName, colProps], index) => {
                                 const formattedColProps = colProps as ItColumns;
                                 return (
-                                    <col style={formattedColProps.style}/>
+                                    <col key={index} style={formattedColProps.style}/>
                                 )
                             })}
                         </>
