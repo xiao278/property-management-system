@@ -4,6 +4,7 @@ import { Addresses, Countries } from "../models/Addresses.model";
 import { Currencies } from "../models/Currencies.model";
 import { ItemCategories, ItemManufacturers, ItemModels } from "../models/ItemModel.model";
 import { Rooms } from "../models/Rooms.model";
+import { Renovations } from "../models/Renovations.model";
 
 async function syncUsers() {
   await Users.sync({alter: true});
@@ -35,14 +36,15 @@ async function syncHousings() {
   await Housings.sync({alter: true});
 }
 
-async function syncRooms() {
+async function syncHousingExtras() {
   await syncHousings();
+  await Renovations.sync({alter: true});
   await Rooms.sync({alter: true});
 }
 
 (async () => {
   await syncUsers();
-  await syncRooms();
+  await syncHousingExtras();
   await syncItemModels();
   console.log("tables synced");
 })();

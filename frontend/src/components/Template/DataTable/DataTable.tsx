@@ -1,6 +1,7 @@
 import { JSX } from "react"
 import "./DataTable.css"
 import React from "react";
+import flattenChildren from "react-keyed-flatten-children";
 
 
 interface RowWrapperProps {
@@ -25,7 +26,7 @@ export function DtRow(props: DtRowProps) {
     const {children, colSpans, rowStyle} = props;
     return (
         <RowWrapper rowStyle={rowStyle}>
-            {React.Children.map(children, (child, index) => {
+            {flattenChildren(children).map((child, index) => {
                 return (
                     <td key={index} className="DtCell" {...{colSpan: (colSpans && colSpans[index]) ? colSpans[index] : undefined}}>
                         {child}

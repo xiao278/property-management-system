@@ -3,7 +3,7 @@ import "./FormInput.css"
 import React, { JSX } from "react";
 import { NumericFormatProps } from 'react-number-format';
 
-interface FormInputProps {
+export interface FormInputProps {
     fieldName: string;
     hint?: string;
     type: "text" | "number" | "date" | "mui";

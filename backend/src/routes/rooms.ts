@@ -55,7 +55,7 @@ roomRoutes.post('/create', authenticateToken, async (req, res) => {
     const t = await sequelize.transaction()
 
     try {
-        const form = req.body as RoomAttributes
+        const form = await parseRoom(req.body as RoomAttributes)
 
         const roomResult = await Rooms.findOrCreate({
             where: {
