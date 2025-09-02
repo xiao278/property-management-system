@@ -13,4 +13,17 @@ export const post = async (endpoint: string, payload: object) => {
     });
 }
 
-
+export const get = async (endpoint: string, query?: string | Record<string, string> | URLSearchParams | string[][]) => {
+    const token = localStorage.getItem(tokenName);
+    var queryURL = "";
+    if (query) {
+        const params = new URLSearchParams(query);
+        queryURL = "?" + params.toString();
+    }
+    return await fetch(`${API_URL}${endpoint}${queryURL}`, {
+        method: 'GET',
+        headers: {
+            ...(token && {'Authorization':`Bearer ${token}`})
+        },
+    });
+}

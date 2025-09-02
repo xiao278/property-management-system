@@ -65,14 +65,16 @@ export function RoomPage(props: RoomPageProps) {
     return (
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onFormSubmit)}>
-                    <InteractiveTable<RoomAttributes> columns={{
+                    <InteractiveTable<RoomAttributes> primaryColumn={"name"} columns={{
                         name: {displayName: "Room Name", input: <FormInput fieldName="name" type="text" hint="Room name" validation={{required: true}}/>}, 
-                        size: {displayName: "Size", style: {minWidth: "60px", width: 0}, input: 
+                        size: {displayName: "Size", columnStyle: {minWidth: "60px", width: 0}, input: 
                             <FormInput containerStyle={{maxWidth: "55px"}} fieldName="size" type="number" hint="Size (m^2)" validation={{required: false}}>
                                 <NumericFormat defaultValue={undefined}/>
                             </FormInput>
                         },
-                    }} detailedFields={{size: "Size", floor: "Floor", notes: "Notes"}} rows={rooms} />
+                    }} 
+                    detailedFields={{size: "Size", floor: "Floor", notes: "Notes"}} 
+                    rows={rooms} />
                 </form>
             </FormProvider>
     )

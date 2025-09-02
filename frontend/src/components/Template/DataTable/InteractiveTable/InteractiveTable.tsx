@@ -7,61 +7,84 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { FormInput } from "../../FormInput/FormInput";
 import { CreateRowPanel } from "./CreateRowPanel";
 
-
-type BasicRowType = {name: string};
-
-interface TableRowDetailPageProps<T extends BasicRowType> {
-    focusRow: T & BasicRowType | null;
+interface TableRowDetailPageProps<T extends object> {
+    focusRow: T | null;
     setFocusRow: (focusRow: TableRowDetailPageProps<T>['focusRow']) => void;
     overlayRef: RefObject<HTMLDivElement | null>;
     detailedFields: Partial<Record<keyof T, string>>
+    primaryField: keyof T;
 }
 
-function TableRowDetailPage<T extends BasicRowType> (props: TableRowDetailPageProps<T>) {
-    const { focusRow, setFocusRow, overlayRef, detailedFields } = props;
+function TableRowDetailPage<T extends object> (props: TableRowDetailPageProps<T>) {
+    const { focusRow, setFocusRow, overlayRef, detailedFields, primaryField } = props;
     useEffect(() => {
         const overlay = overlayRef.current;
         if (!overlay) return;
         const height = overlay.offsetHeight;
         overlay.style.top = `calc(50vh - ${height / 2}px)`;
     }, []);
+
+    const divRef = useRef<HTMLDivElement>(null);
+
+    function handleClickOutside(event: MouseEvent) {
+        if (divRef.current && !divRef.current.contains(event.target as Node)) {
+            dismissPopup();
+        }
+    };
+
+    function dismissPopup() {
+        setFocusRow(null);
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    useEffect(() => {
+        if (focusRow) {
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }
+    }, [focusRow]);
+
     return (
-        <div className="RoomDetailWrapper">
-            <div className="RoomDetailContent" ref={overlayRef}>
-                <Paper sx={{height: "100%", padding: "10px", position: "relative", minHeight: "100%", display: "flex", flexDirection: "column", gap: "10px"}}>
-                    <div className="RoomDetailRow"><h3>{focusRow?.name}</h3></div>
-                    <div className="RoomDetailRow RoomDetailData">
-                        {Object.entries(detailedFields).map(([fieldName, fieldDisplayName], index) => {
-                            const realFieldname = fieldName as keyof T;
-                            fieldDisplayName = fieldDisplayName as string;
-                            return (
-                                <div key={index}>{fieldDisplayName}: {!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
-                            )
-                        })}
-                    </div>
-                    <Button sx={{position: "absolute", top: "5px", right: "5px", minWidth: 0}} onClick={() => setFocusRow(null)}><KeyboardReturnIcon sx={{height: "15px", width: "15px"}} /></Button>
-                </Paper>
+        !focusRow ? <></> :
+            <div className="RoomDetailWrapper">
+                {/* <div style={{display: "fixed", height: "100vh", width: "100vw"}} /> */}
+                <div className="RoomDetailContent" ref={overlayRef}>
+                    <Paper sx={{height: "100%", padding: "10px", position: "relative", minHeight: "100%", display: "flex", flexDirection: "column", gap: "10px"}} ref={divRef}>
+                        <div className="RoomDetailRow"><h3>{String(focusRow[primaryField])}</h3></div>
+                        <div className="RoomDetailRow RoomDetailData">
+                            {Object.entries(detailedFields).map(([fieldName, fieldDisplayName], index) => {
+                                const realFieldname = fieldName as keyof T;
+                                return (
+                                    <div key={index} style={{userSelect: "none"}}>{String(fieldDisplayName)}: {!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
+                                )
+                            })}
+                        </div>
+                        <Button sx={{position: "absolute", top: "5px", right: "5px", minWidth: 0}} onClick={dismissPopup}><KeyboardReturnIcon sx={{height: "15px", width: "15px"}} /></Button>
+                    </Paper>
+                </div>
             </div>
-        </div>
     )
 }
 
 export interface ItColumns {
     displayName: string;
-    style?: React.CSSProperties;
+    columnStyle?: React.CSSProperties;
     input?: React.ReactElement<React.ComponentProps<typeof FormInput>>;
 }
 
-interface InteractiveTableProps<T extends BasicRowType> {
+interface InteractiveTableProps<T extends object> {
     rows?: T[] | null;
     columns: Partial<Record<keyof T, ItColumns>>
     detailedFields: Partial<Record<keyof T, string>>
+    primaryColumn: keyof T;
 }
 
 
-export function InteractiveTable<T extends BasicRowType>(props: InteractiveTableProps<T>) {
-    const { rows, columns, detailedFields } = props;
-    const [ focusRow, setFocusRow ] = useState<T | null>();
+export function InteractiveTable<T extends object>(props: InteractiveTableProps<T>) {
+    const { rows, columns, detailedFields, primaryColumn } = props;
+    const [ focusRow, setFocusRow ] = useState<T | null>(null);
     const overlayRef = useRef<HTMLDivElement | null>(null);
     const paperRef = useRef<HTMLDivElement | null>(null);
 
@@ -79,7 +102,7 @@ export function InteractiveTable<T extends BasicRowType>(props: InteractiveTable
     return (
         <Paper elevation={3} sx={{padding: "10px", position: "relative"}} ref={paperRef}>
             <div className="RoomTableWrapper">
-                { focusRow ? <TableRowDetailPage overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields}/> : <></>}
+                <TableRowDetailPage<T> overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields} primaryField={primaryColumn}/>
                 <DataTable style={{borderCollapse: "separate", borderSpacing: "5px 10px"}}>
                     <colgroup>
                         <col style={{width: "12px"}}/>
@@ -89,7 +112,7 @@ export function InteractiveTable<T extends BasicRowType>(props: InteractiveTable
                             {Object.entries(columns).map(([fieldName, colProps], index) => {
                                 const formattedColProps = colProps as ItColumns;
                                 return (
-                                    <col key={index} style={formattedColProps.style}/>
+                                    <col key={index} style={formattedColProps.columnStyle}/>
                                 )
                             })}
                         </>

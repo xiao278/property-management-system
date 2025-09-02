@@ -13,6 +13,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { post } from "../../api";
 import { AuthOrHide } from "../../components/Auth/AuthOrHide";
 import { RoomPage } from "./subpages/RoomPage/RoomPage";
+import { RenovationPage } from "./subpages/RenovationPage/RenovationPage";
 
 interface HousingDetailPageProps {
     show: boolean;
@@ -99,15 +100,6 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
 
-                        <MyAccordion slotProps={{ transition: { unmountOnExit: true } }}>
-                            <MyAccordionSummary>
-                                <h3>Rooms</h3>
-                            </MyAccordionSummary>
-                            <MyAccordionDetails>
-                                <RoomPage housingData={housingData} />
-                            </MyAccordionDetails>
-                        </MyAccordion>
-
                         <MyAccordion>
                             <MyAccordionSummary>
                                 <h3>Details</h3>
@@ -135,12 +127,21 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             </MyAccordionDetails>
                         </MyAccordion>
 
-                        <MyAccordion>
+                        <MyAccordion slotProps={{ transition: { unmountOnExit: false } }}>
                             <MyAccordionSummary>
-                                <h3>Details</h3>
+                                <h3>Renovations</h3>
                             </MyAccordionSummary>
                             <MyAccordionDetails>
-                                <p>content</p>
+                                <RenovationPage housingData={housingData}/>
+                            </MyAccordionDetails>
+                        </MyAccordion>
+
+                        <MyAccordion slotProps={{ transition: { unmountOnExit: false } }}>
+                            <MyAccordionSummary>
+                                <h3>Rooms</h3>
+                            </MyAccordionSummary>
+                            <MyAccordionDetails>
+                                <RoomPage housingData={housingData} />
                             </MyAccordionDetails>
                         </MyAccordion>
 

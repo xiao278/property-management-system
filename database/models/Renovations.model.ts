@@ -6,7 +6,7 @@ import { Currencies } from "./Currencies.model";
 interface RenovationAttributes {
     id?: number;
     housing_id: number;
-    date: string;
+    end_date: string; /** date of finish */
     notes: string;
 }
 
@@ -29,9 +29,10 @@ const Renovations = sequelize.define<RenovationInstance>(
                 key: 'id'
             }
         },
-        date: {
+        end_date: {
             type: DataTypes.DATEONLY,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         notes: {
             type: DataTypes.STRING(256),
