@@ -100,7 +100,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
         paper.style.minHeight = `${overlayHeight}px`;
     }, [focusRow]);
     return (
-        <Paper elevation={3} sx={{padding: "10px", position: "relative", overflow: "hidden"}} ref={paperRef}>
+        <Paper elevation={3} sx={{padding: "10px", position: "relative", borderRadius: 0}} ref={paperRef}>
             <div className="RoomTableWrapper">
                 <TableRowDetailPage<T> overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields} primaryField={primaryColumn}/>
                 <DataTable style={{borderCollapse: "separate", borderSpacing: "5px 10px"}}>
