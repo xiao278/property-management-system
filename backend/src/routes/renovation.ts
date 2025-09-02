@@ -31,7 +31,10 @@ renovationRoutes.get("/fetch-all", authenticateToken, async (req, res) => {
     const queryResult = await Renovations.findAll({
         where: {
             housing_id: formattedHousingId
-        }
+        },
+        order: [
+            ['end_date', 'DESC']
+        ]
     })
     const responseBody:RenovationQueryResult = {
         renovations: queryResult.map((value) => {
