@@ -34,7 +34,7 @@ export function CreateRowPanel<T> (props: CreateRowPanelProps<T>) {
                     </DtRow>
                     <DtRow colSpans={{0:n + 1}}>
                         <div>
-                            <Button variant="contained" type="submit">Add Room</Button>
+                            <Button variant="contained" type="submit">Add entry</Button>
                             <Button variant="text" type="button" onClick={() => setInUse(false)}> <CloseIcon /> </Button>
                         </div>
                     </DtRow>
@@ -52,7 +52,7 @@ export function CreateRowPanel<T> (props: CreateRowPanelProps<T>) {
                     }}>
                         <AddIcon />
                         <div>
-                            Add a room
+                            Add an entry
                         </div>     
                     </Button>
                 </DtRow>

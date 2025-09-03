@@ -47,24 +47,23 @@ function TableRowDetailPage<T extends object> (props: TableRowDetailPageProps<T>
     }, [focusRow]);
 
     return (
-        !focusRow ? <></> :
-            <div className="RoomDetailWrapper">
-                {/* <div style={{display: "fixed", height: "100vh", width: "100vw"}} /> */}
-                <div className="RoomDetailContent" ref={overlayRef}>
-                    <Paper sx={{height: "100%", padding: "10px", position: "relative", minHeight: "100%", display: "flex", flexDirection: "column", gap: "10px"}} ref={divRef}>
-                        <div className="RoomDetailRow"><h3>{String(focusRow[primaryField])}</h3></div>
-                        <div className="RoomDetailRow RoomDetailData">
-                            {Object.entries(detailedFields).map(([fieldName, fieldDisplayName], index) => {
-                                const realFieldname = fieldName as keyof T;
-                                return (
-                                    <div key={index} style={{userSelect: "none"}}>{String(fieldDisplayName)}: {!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
-                                )
-                            })}
-                        </div>
-                        <Button sx={{position: "absolute", top: "5px", right: "5px", minWidth: 0}} onClick={dismissPopup}><KeyboardReturnIcon sx={{height: "15px", width: "15px"}} /></Button>
-                    </Paper>
-                </div>
+        <div className="RoomDetailWrapper">
+            {/* <div style={{display: "fixed", height: "100vh", width: "100vw"}} /> */}
+            <div className="RoomDetailContent" ref={overlayRef}>
+                <Paper sx={{height: "100%", padding: "10px", position: "relative", minHeight: "100%", display: "flex", flexDirection: "column", gap: "10px"}} ref={divRef}>
+                    <div className="RoomDetailRow"><h3>{String(focusRow ? focusRow[primaryField] : "null")}</h3></div>
+                    <div className="RoomDetailRow RoomDetailData">
+                        {Object.entries(detailedFields).map(([fieldName, fieldDisplayName], index) => {
+                            const realFieldname = fieldName as keyof T;
+                            return (
+                                <div key={index} style={{userSelect: "none"}}>{String(fieldDisplayName)}: {!(focusRow == null || focusRow[realFieldname] == null) ? (focusRow[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
+                            )
+                        })}
+                    </div>
+                    <Button sx={{position: "absolute", top: "5px", right: "5px", minWidth: 0}} onClick={dismissPopup}><KeyboardReturnIcon sx={{height: "15px", width: "15px"}} /></Button>
+                </Paper>
             </div>
+        </div>
     )
 }
 
@@ -102,7 +101,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
     return (
         <Paper elevation={3} sx={{padding: "10px", position: "relative", borderRadius: 0}} ref={paperRef}>
             <div className="RoomTableWrapper">
-                <TableRowDetailPage<T> overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields} primaryField={primaryColumn}/>
+                { focusRow ? <TableRowDetailPage<T> overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields} primaryField={primaryColumn}/> : <></> }
                 <DataTable style={{borderCollapse: "separate", borderSpacing: "5px 10px"}}>
                     <colgroup>
                         <col style={{width: "12px"}}/>
