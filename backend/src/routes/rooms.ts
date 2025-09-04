@@ -14,7 +14,7 @@ async function parseRoom(form: RoomAttributes):Promise<RoomAttributes> {
         housing_id: form.housing_id,
         name: form.name,
         notes: emptyStringAsNull(form.notes),
-        size: form.size,
+        size: form.size ?? null,
         floor: form.floor
     })
 }

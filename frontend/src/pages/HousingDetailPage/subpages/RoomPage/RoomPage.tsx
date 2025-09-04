@@ -24,9 +24,9 @@ export function RoomPage(props: RoomPageProps) {
     const [ rooms, setRooms ] = useState<RoomQueryResult['rooms'] | null>();
     const [ formData, setFormData ] = useState<RoomAttributes | null>();
     const methods = useForm<RoomAttributes>({
-        // defaultValues: {
-        //     floor: undefined
-        // }
+        defaultValues: {
+            size: NaN
+        }
     });
     const { handleSubmit, reset } = methods;
     const onFormSubmit: SubmitHandler<RoomAttributes> = async (data) => {
