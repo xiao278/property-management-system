@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SearchHousingQueryResultFormatted } from "../../../../../interface/HousingQuery";
 import { AddressDisplay } from "../../../components/Content/AddressDisplay/AddressDisplay";
 import { FlexWrapping } from "../../../components/Template/FlexWrapping/FlexWrapping";
+import { DateTime } from "luxon";
 import "./HousingSummaryCard.css";
 import { HousingDetailPage } from "../../HousingDetailPage/HousingDetailPage";
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -26,18 +27,26 @@ import TollIcon from '@mui/icons-material/Toll';
 // Occupancy status (vacant, occupied, under maintenance)
 // Notes or tags (e.g., “needs repairs”, “premium unit”)
 
+function timeFromNow(date: DateTime) {
+    const diff = DateTime.now().diff(date, ['years', 'months', 'days']);
+    if (diff.years)   return { unit: "years",   value: Math.floor(diff.years) };
+    if (diff.months)  return { unit: "months",  value: Math.floor(diff.months) };
+    if (diff.days)    return { unit: "days",    value: Math.floor(diff.days) };
+}
+
 interface HousingSummaryCardProps {
     housingData: SearchHousingQueryResultFormatted
     itemNumber: number;
 }
-
 
 export function HousingSummaryCard(props: HousingSummaryCardProps) {
     const { housingData, itemNumber } = props;
     const [ showPopup, setShowPopup ] = useState(false);
     const color1 = "rgba(229, 236, 203, 1)"
     const color2 = "rgba(231, 238, 215, 1)"
-    const purchase_date = new Date(housingData.purchase_date);
+    const purchase_date = DateTime.fromISO(housingData.purchase_date);
+    const renovation_date = housingData.renovation_date ? DateTime.fromISO(housingData.renovation_date) : null;
+    const renovation_ago =  renovation_date ? timeFromNow(renovation_date) : null;
     return (
         <>
             <div className="HousingSummaryCardContainer" style={{backgroundColor: itemNumber % 2 === 0 ? color1 : color2}} onClick={() => setShowPopup(true)}>
@@ -46,11 +55,11 @@ export function HousingSummaryCard(props: HousingSummaryCardProps) {
                     <div><ApartmentIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.bedrooms}BR ${housingData.type}`}</div>
                     <div><DirectionsCarIcon sx={{verticalAlign: "bottom"}} /> Parking todo</div>
                     <div><ChairIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.furnish} Furnished`}</div>
-                    <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> Last Renovated todo</div>
+                    <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> {`Renovated ${renovation_ago ? `${renovation_ago.value} ${renovation_ago.unit} ago` : "never"}`} </div>
                     <div><PaymentsIcon sx={{verticalAlign: "bottom"}} /> Rent todo</div>
                     <div><MonitorHeartIcon sx={{verticalAlign: "bottom"}} /> Rent Status todo</div>
                     <div><TollIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.dues_per_m2 ? `${housingData.dues_per_m2 * housingData.size} ${housingData.purchase_currency}` : "N/A"} monthly fee`}</div>
-                    <div><AccessTimeIcon sx={{verticalAlign: "bottom"}} /> Acquired {`${purchase_date.getFullYear()}`}</div>
+                    <div><AccessTimeIcon sx={{verticalAlign: "bottom"}} /> Acquired {`${purchase_date.year}`}</div>
                 </div>
             </div>
             <HousingDetailPage show={showPopup} setShow={setShowPopup} housingData={housingData} />

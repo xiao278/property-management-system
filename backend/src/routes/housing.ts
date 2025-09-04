@@ -9,6 +9,7 @@ import { sequelize } from '../../../database/main';
 import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../../../interface/HousingQuery';
 import { AddressInfo } from '../../../interface/HousingQuery';
 import { Sequelize } from 'sequelize';
+import { Renovations } from '../../../database/models/Renovations.model';
 
 const housingRoutes = Router();
 
@@ -156,6 +157,13 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                 },
                 { model: Currencies },
                 { model: HousingTypes },
+                {
+                    model: Renovations,
+                    order: [
+                        ['end_date', 'DESC']
+                    ],
+                    limit: 1
+                }
             ],
             ...(emptyStringAsNull(filters.ordering?.orderBy) ? {
                 order: [
@@ -172,6 +180,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                     purchase_price: Number(data.purchase_price),
                     dues_per_m2: data.dues_per_m2 ? Number(data.dues_per_m2) : null,
                     type: data.housing_type.name,
+                    renovation_date: data.renovations.length < 1 ? null : data.renovations[0].end_date,
                     address: {
                         ...data.address,
                         country: data.address.country.name
