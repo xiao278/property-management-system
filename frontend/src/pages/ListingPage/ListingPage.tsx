@@ -39,6 +39,7 @@ export function ListingPage() {
             }
             const data = await housingListResponse.json() as HousingSearchResult;
             setHousingList(data.housingList);
+            console.log(data.housingList)
         }
         fetchHousingListings();
     }, [searchFilters])

@@ -13,6 +13,12 @@ interface HousingFormProps {
     prefillData?: HousingInfo
 }
 
+export const housingFormDefaultValues = {
+    housing: {
+        dues_per_m2: NaN
+    }
+}
+
 export function HousingForm(props: HousingFormProps) {
     const { onFormSubmit, prefillData } = props;
     const { handleSubmit, reset } = useFormContext<HousingInfo>();
@@ -47,12 +53,8 @@ export function HousingForm(props: HousingFormProps) {
                                 </FormInput>
                             </div>
                         </div>
-                        <FormInput fieldName="housing.utility" hint="utility billing" type="mui" validation={{required: true}}>
-                                <Select sx={{height: "19.5px"}}>
-                                    <MenuItem value="Fixed">Fixed</MenuItem>
-                                    <MenuItem value="Individual">Individual</MenuItem>
-                                    <MenuItem value="Shared">Shared</MenuItem>
-                                </Select>
+                        <FormInput fieldName="housing.dues_per_m2" hint="monthly dues per m^2" type="number" validation={{required: false}}>
+                            <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
                         </FormInput>
                         <FormInput fieldName="housing.furnish" hint="furnish status" type="mui" validation={{required: true}}>
                                 <Select sx={{height: "19.5px"}}>

@@ -23,11 +23,11 @@ interface HousingUnitInfo {
     size: number;
     type: string;
     unit?: string | null;
+    furnish: HousingAttributes['furnish'];
     purchase_date: string;
     purchase_price: number;
     purchase_currency: string;
-    utility: HousingAttributes['utility'];
-    furnish: HousingAttributes['furnish'];
+    dues_per_m2?: number;
     address_id?: number;
 }
 
@@ -59,7 +59,7 @@ interface SearchHousingQueryResult {
     unit: string | null;
     purchase_date: string;
     purchase_price: string;
-    utility: HousingAttributes['utility'];
+    dues_per_m2: number | null;
     furnish: HousingAttributes['furnish'];
     currency: CurrencyQueryResult;
     address: AddressQueryResult;

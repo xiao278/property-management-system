@@ -1,6 +1,6 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { HousingInfo } from "../../../../interface/HousingQuery";
-import { HousingForm } from "../../components/Content/HousingForm/HousingForm"
+import { HousingForm, housingFormDefaultValues } from "../../components/Content/HousingForm/HousingForm"
 import "./HousingEntryPage.css"
 import { post } from "../../api";
 
@@ -8,7 +8,9 @@ import { post } from "../../api";
 export const housingEntryPageRoute = "/insert"
 
 export function HousingEntryPage() {
-    const methods = useForm<HousingInfo>();
+    const methods = useForm<HousingInfo>({
+        defaultValues: housingFormDefaultValues
+    });
     const onFormSubmit: SubmitHandler<HousingInfo> = async (data) => {
         const res = await post("/api/housing/create", data);
         if (res.ok) {

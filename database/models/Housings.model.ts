@@ -39,7 +39,7 @@ interface HousingAttributes {
     purchase_date: string;
     purchase_price: number;
     purchase_currency_id: number;
-    utility: "Fixed" | "Shared" | "Individual";
+    dues_per_m2?: number;
     furnish: "Bare" | "Semi" | "Fully";
 }
 
@@ -102,9 +102,9 @@ const Housings = sequelize.define<HousingInstance>(
                 key: 'id'
             }
         },
-        utility: {
-            type: DataTypes.ENUM("Fixed", "Shared", "Individual"),
-            allowNull: false,
+        dues_per_m2: {
+            type: DataTypes.DECIMAL(10,2),
+            allowNull: true
         },
         furnish: {
             type: DataTypes.ENUM("Bare", "Semi", "Fully"),

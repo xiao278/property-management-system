@@ -87,12 +87,12 @@ function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
         size: form.size,
         type: emptyStringAsNull(form.type),
         address_id: form.address_id,
-        utility: form.utility,
         furnish: form.furnish,
         unit: emptyStringAsNull(form.unit),
         purchase_date: form.purchase_date,
         purchase_currency: emptyStringAsNull(form.purchase_currency),
-        purchase_price: form.purchase_price
+        purchase_price: form.purchase_price,
+        dues_per_m2: form.dues_per_m2 ?? null
     }
     return newHousingFields;
 }
@@ -170,6 +170,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                     ...data,
                     purchase_currency: data.currency.name,
                     purchase_price: Number(data.purchase_price),
+                    dues_per_m2: data.dues_per_m2 ? Number(data.dues_per_m2) : null,
                     type: data.housing_type.name,
                     address: {
                         ...data.address,
