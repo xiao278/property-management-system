@@ -1,4 +1,5 @@
-export const API_URL = process.env.REACT_APP_API_URL;
+// export const API_URL = process.env.REACT_APP_API_URL;
+export const API_URL = `${window.location.protocol}//${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
 export const tokenName = "pms-token";
 
 export const post = async (endpoint: string, payload: object) => {

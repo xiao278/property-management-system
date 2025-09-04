@@ -33,7 +33,7 @@ app.use('/api/housing', housingRoutes);
 app.use('/api/room', roomRoutes);
 app.use('/api/renovation', renovationRoutes);
 
-app.listen(PORT, () => {
+app.listen(Number(PORT), "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
