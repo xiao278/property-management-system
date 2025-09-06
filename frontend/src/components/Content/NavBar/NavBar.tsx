@@ -30,7 +30,7 @@ function AdaptiveNavbar (props: AdaptiveNavbarProps) {
             if (!dropdownOverlayRef.current || !show) return;
             const rect = dropdownOverlayRef.current.getBoundingClientRect();
             const offsetY = rect.bottom;
-            dropdownOverlayRef.current.style.height = `calc(100vh - ${offsetY}px)`;
+            dropdownOverlayRef.current.style.height = `calc(100dvh - ${offsetY}px)`;
             dropdownOverlayRef.current.style.width = "100vw";
         }
         moveToViewportLeft();

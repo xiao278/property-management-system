@@ -156,7 +156,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                                     <FormProvider {...methods}>
                                         <Button sx={{
                                             margin: "10px",
-                                            color: "red"
+                                            color: "red",
                                         }} onClick={() => handleHousingDelete()}> Delete </Button>
                                         <HousingForm onFormSubmit={onFormSubmit} prefillData={{housing: newHousingData as HousingUnitInfo, address: newHousingData.address} as HousingInfo}/>
                                     </FormProvider>

@@ -12,5 +12,5 @@
 }
 
 .HousingDetailPageContainer {
-    width: calc(100% - 100px);
+    width: min(max(calc(100% - 100px), 600px), 100%);
 }

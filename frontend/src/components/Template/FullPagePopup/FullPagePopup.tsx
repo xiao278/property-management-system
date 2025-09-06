@@ -15,7 +15,7 @@ export function FullPagePopup(props: FullPagePopupProps) {
         <>
             {(!show) ? <></> : 
                 <div className="FullPagePopupContainer">
-                    <Button color="error" sx={{right: "20px", top: "20px", position: "fixed"}} onClick={() => setShow(false)}><CloseIcon color="error" sx={{width: "50px", height: "50px"}}/></Button>
+                    <Button color="error" sx={{right: "20px", top: "20px", position: "fixed", zIndex: "20"}} onClick={() => setShow(false)}><CloseIcon color="error" sx={{width: "50px", height: "50px"}}/></Button>
                     {children}
                 </div>
             }
