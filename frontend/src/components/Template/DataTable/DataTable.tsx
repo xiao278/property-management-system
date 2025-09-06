@@ -7,12 +7,14 @@ import flattenChildren from "react-keyed-flatten-children";
 interface RowWrapperProps {
     children: JSX.Element | JSX.Element[];
     rowStyle?: React.CSSProperties
+    className?: string;
+    onClick?: () => void;
 }
 
 function RowWrapper(props: RowWrapperProps) {
-    const {children, rowStyle} = props;
+    const {children, rowStyle, className, onClick} = props;
     return (
-        <tr className="DtRow" style={{...rowStyle}}>{children}</tr>
+        <tr className={className} style={{...rowStyle}} onClick={onClick}>{children}</tr>
     )
 }
 
@@ -20,15 +22,17 @@ interface DtRowProps {
     children: JSX.Element | JSX.Element[];
     colSpans?: { [key: number]: number };
     rowStyle?: React.CSSProperties;
+    className?: string;
+    onClick?: () => void;
 }
 
 export function DtRow(props: DtRowProps) {
-    const {children, colSpans, rowStyle} = props;
+    const {children, colSpans, rowStyle, className, onClick} = props;
     return (
-        <RowWrapper rowStyle={rowStyle}>
+        <RowWrapper className={className} rowStyle={rowStyle} onClick={onClick}>
             {flattenChildren(children).map((child, index) => {
                 return (
-                    <td key={index} className="DtCell" {...{colSpan: (colSpans && colSpans[index]) ? colSpans[index] : undefined}}>
+                    <td key={index} {...{colSpan: (colSpans && colSpans[index]) ? colSpans[index] : undefined}}>
                         {child}
                     </td>
                 )
@@ -45,7 +49,7 @@ interface DtBodyProps {
 export function DtBody(props: DtBodyProps) {
     const {children} = props;
     return (
-        <tbody className="DtBody">
+        <tbody>
             {/* {React.Children.map(children, (child, index) => {
                 return (
                     <RowWrapper itemKey={index}>
@@ -65,7 +69,7 @@ interface DtHeaderProps {
 export function DtHeader(props: DtHeaderProps) {
     const {children} = props;
     return (
-        <thead className="DtHeader">
+        <thead>
             {/* {React.Children.map(children, (child, index) => {
                 return (
                     <RowWrapper key={index}>

@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
 import { AuthOrHide } from "../../../Auth/AuthOrHide";
 import { DataTable, DtBody, DtHeader, DtRow } from "../DataTable";
 import { Button, Paper } from "@mui/material";
@@ -78,14 +78,17 @@ interface InteractiveTableProps<T extends object> {
     columns: Partial<Record<keyof T, ItColumns>>
     detailedFields: Partial<Record<keyof T, string>>
     primaryColumn: keyof T;
+    columnPadding?: number;
 }
 
 
 export function InteractiveTable<T extends object>(props: InteractiveTableProps<T>) {
-    const { rows, columns, detailedFields, primaryColumn } = props;
+    const { rows, columns, detailedFields, primaryColumn, columnPadding } = props;
     const [ focusRow, setFocusRow ] = useState<T | null>(null);
     const overlayRef = useRef<HTMLDivElement | null>(null);
     const paperRef = useRef<HTMLDivElement | null>(null);
+    const actualColumnPadding = columnPadding ?? 12;
+    const defaultSecondaryColumnStyle:CSSProperties = {width: 0, minWidth: `50px`};
 
     useEffect(() => {
         const paper = paperRef.current;
@@ -102,20 +105,23 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
         <Paper elevation={3} sx={{padding: "10px", position: "relative", borderRadius: 0}} ref={paperRef}>
             <div className="RoomTableWrapper">
                 { focusRow ? <TableRowDetailPage<T> overlayRef={overlayRef} focusRow={focusRow} setFocusRow={setFocusRow} detailedFields={detailedFields} primaryField={primaryColumn}/> : <></> }
-                <DataTable style={{borderCollapse: "separate", borderSpacing: "5px 10px"}}>
+                <DataTable style={{borderCollapse: "separate", borderSpacing: "0px 10px"}}>
                     <colgroup>
-                        <col style={{width: "12px"}}/>
+                        <col style={{width: `${actualColumnPadding}px`}}/>
                         {/* <col />
                         <col style={{minWidth: "60px", width: 0}}/> */}
                         <>
                             {Object.entries(columns).map(([fieldName, colProps], index) => {
                                 const formattedColProps = colProps as ItColumns;
                                 return (
-                                    <col key={index} style={formattedColProps.columnStyle}/>
+                                    <col key={index} style={
+                                        formattedColProps.columnStyle ?? 
+                                            (fieldName == primaryColumn ? {} : defaultSecondaryColumnStyle)
+                                    }/>
                                 )
                             })}
                         </>
-                        <col style={{maxWidth: 0, width: 0}}/>
+                        <col style={{width: `${actualColumnPadding}px`}}/>
                     </colgroup>
                     <DtHeader>
                         <DtRow rowStyle={{}}>
@@ -136,8 +142,8 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                             { rows ? 
                                 rows.map((data, index) => {
                                     return (
-                                        <DtRow key={index} rowStyle={{position: "relative"}}>
-                                            <div></div>
+                                        <DtRow key={index} className="ItRow" onClick={() => {setFocusRow(data)}}>
+                                            <div />
                                             <>
                                                 {Object.entries(columns).map(([fieldName, colProps], index) => {
                                                     const realFieldname = fieldName as keyof T;
@@ -146,7 +152,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                                     )
                                                 })}
                                             </>
-                                            <div className="RoomRowDisplay" onClick={() => {setFocusRow(data)}}/>
+                                            <div />
                                         </DtRow>
                                     );
                                 })
