@@ -14,6 +14,12 @@
 
 .WideOptionsContainer {
     flex-direction: row;
+    position: relative;
+}
+
+.NarrowOptionsContainer {
+    display: none;
+    position: relative;
 }
 
 .MiscContainer {
@@ -24,4 +30,26 @@
 
 .MiscContainer > * {
     height: min-content;
+}
+
+@media (max-width: 768px) {
+    .WideOptionsContainer {
+        display: none;
+    }
+    .NarrowOptionsContainer {
+        display: flex;
+    }
+}
+
+.NavBarDropdownContainer {
+    top: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    background-color: rgb(10,60,50);
+}
+
+.NavBarDropdownContainer > * {
+    padding: 10px
 }
