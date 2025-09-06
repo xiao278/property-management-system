@@ -31,7 +31,7 @@ export function HousingForm(props: HousingFormProps) {
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="HousingFormContainer">
                 <SmallCard title="Housing Information">
-                    <FlexWrapping minWidth={250}>
+                    <FlexWrapping minWidth={280}>
                         <FormInput fieldName="housing.unit" hint="unit no." type="text" />
                         <FormInput fieldName="housing.type" hint="unit type" type="text" validation={{required: true}}/>
                         <FormInput fieldName="housing.bathrooms" hint="bathrooms" type="number" validation={{required: true}}> 
@@ -73,7 +73,7 @@ export function HousingForm(props: HousingFormProps) {
                     </FlexWrapping>
                 </SmallCard>
                 <SmallCard title="Address Information">
-                    <FlexWrapping minWidth={180}>
+                    <FlexWrapping minWidth={280}>
                         <FormInput fieldName="address.building_name" hint="building name" type="text"/>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
@@ -87,8 +87,8 @@ export function HousingForm(props: HousingFormProps) {
                                 <FormInput fieldName="address.postal_code" hint="zip code" type="text" validation={{required: true}} />
                             </div>
                             <FormInput fieldName="address.state" hint="state" type="text" validation={{required: true}} />
-                            <FormInput fieldName="address.country" hint="country" type="text" validation={{required: true}} />
                         </div>
+                        <FormInput fieldName="address.country" hint="country" type="text" validation={{required: true}} />
                     </FlexWrapping>
                 </SmallCard>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>

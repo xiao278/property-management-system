@@ -19,8 +19,7 @@ export function FlexWrapping(props:FlexWrappingProps) {
         <div className="FlexContainer">
             { React.Children.map(children, (child, index) => (
                 <div key={index} className='FlexContentWrapper' style={{
-                    flex: `1 1 calc(${basisWidthPercent}% - ${actualLeniency}px)`,
-                    minWidth: `${actualMinWidth}px`,
+                    flex: `1 1 max(${actualMinWidth}px, ${basisWidthPercent}% - ${actualLeniency}px)`,
                 }}>
                     {child}
                 </div>
