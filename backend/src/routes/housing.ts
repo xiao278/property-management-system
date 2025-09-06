@@ -102,7 +102,7 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
     const user = res.locals.user as TokenUserInfo 
 
     if (!user.isAdmin) {
-        res.status(401).json({message: "Not an admin"});
+        res.status(403).json({message: "Not an admin"});
         return;
     }
 
@@ -202,7 +202,7 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
     const user = res.locals.user as TokenUserInfo 
 
     if (!user.isAdmin) {
-        res.status(401).json({message: "Not an admin"});
+        res.status(403).json({message: "Not an admin"});
         return;
     }
 
@@ -229,7 +229,7 @@ housingRoutes.post('/delete', authenticateToken, async (req, res) => {
     const user = res.locals.user as TokenUserInfo 
 
     if (!user.isAdmin) {
-        res.status(401).json({message: "Not an admin"});
+        res.status(403).json({message: "Not an admin"});
         return;
     }
 

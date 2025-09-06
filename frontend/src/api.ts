@@ -2,29 +2,37 @@
 export const API_URL = `${window.location.protocol}//${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
 export const tokenName = "pms-token";
 
-export const post = async (endpoint: string, payload: object) => {
+const request = async (endpoint: string, requestParams: RequestInit) => {
     const token = localStorage.getItem(tokenName);
-    return await fetch(`${API_URL}${endpoint}`, {
+    if (token) {
+        if (!requestParams.headers) requestParams.headers = {};
+        (requestParams.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+    }
+    const result = await fetch(endpoint, requestParams);
+    if (result.status == 401) {
+        localStorage.removeItem(tokenName);
+    }
+    return result;
+}
+
+export const post = async (endpoint: string, payload: object) => {
+    return await request(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            ...(token && {'Authorization':`Bearer ${token}`})
         },
         body: JSON.stringify(payload)
     });
 }
 
 export const get = async (endpoint: string, query?: string | Record<string, string> | URLSearchParams | string[][]) => {
-    const token = localStorage.getItem(tokenName);
     var queryURL = "";
     if (query) {
         const params = new URLSearchParams(query);
         queryURL = "?" + params.toString();
     }
-    return await fetch(`${API_URL}${endpoint}${queryURL}`, {
+    return await request(`${API_URL}${endpoint}${queryURL}`, {
         method: 'GET',
-        headers: {
-            ...(token && {'Authorization':`Bearer ${token}`})
-        },
+        headers: {}
     });
 }
