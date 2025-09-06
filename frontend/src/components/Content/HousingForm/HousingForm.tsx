@@ -31,8 +31,9 @@ export function HousingForm(props: HousingFormProps) {
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className="HousingFormContainer">
                 <SmallCard title="Housing Information">
-                    <FlexWrapping>
+                    <FlexWrapping minWidth={250}>
                         <FormInput fieldName="housing.unit" hint="unit no." type="text" />
+                        <FormInput fieldName="housing.type" hint="unit type" type="text" validation={{required: true}}/>
                         <FormInput fieldName="housing.bathrooms" hint="bathrooms" type="number" validation={{required: true}}> 
                         <NumericFormat allowNegative={false} decimalScale={0} />
                         </FormInput>
@@ -42,7 +43,9 @@ export function HousingForm(props: HousingFormProps) {
                         <FormInput fieldName="housing.size" hint="size (m^2)" type="number" validation={{required: true}}>
                             <NumericFormat allowNegative={false} />
                         </FormInput>
-                        <FormInput fieldName="housing.type" hint="type" type="text" validation={{required: true}}/>
+                        <FormInput fieldName="housing.dues_per_m2" hint="monthly dues per m^2" type="number" validation={{required: false}}>
+                            <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
+                        </FormInput>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>
                                 <FormInput fieldName="housing.purchase_currency" hint="currency" type="text" validation={{required: true}} />
@@ -53,9 +56,7 @@ export function HousingForm(props: HousingFormProps) {
                                 </FormInput>
                             </div>
                         </div>
-                        <FormInput fieldName="housing.dues_per_m2" hint="monthly dues per m^2" type="number" validation={{required: false}}>
-                            <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true}/>
-                        </FormInput>
+                        <FormInput fieldName="housing.purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
                         <FormInput fieldName="housing.furnish" hint="furnish status" type="mui" validation={{required: true}}>
                                 <Select sx={{height: "19.5px"}}>
                                     <MenuItem value="Bare">Bare Furnishing</MenuItem>
@@ -63,11 +64,16 @@ export function HousingForm(props: HousingFormProps) {
                                     <MenuItem value="Fully">Fully Furnished</MenuItem>
                                 </Select>
                         </FormInput>
-                        <FormInput fieldName="housing.purchase_date" hint="date of purchase" type="date" validation={{required: true}} />
+                        <FormInput fieldName="housing.parking_lots" hint="parking" type="number" validation={{required: true}}>
+                            <NumericFormat allowNegative={false}/>
+                        </FormInput>
+                        <FormInput fieldName="housing.rent_price" hint="monthly rent" type="number" validation={{required: false}}>
+                            <NumericFormat allowNegative={false} thousandSeparator={true} decimalScale={2} fixedDecimalScale={true}/>
+                        </FormInput>
                     </FlexWrapping>
                 </SmallCard>
                 <SmallCard title="Address Information">
-                    <FlexWrapping>
+                    <FlexWrapping minWidth={180}>
                         <FormInput fieldName="address.building_name" hint="building name" type="text"/>
                         <div className="ClusteredInput">
                             <div style={{width: "100%", maxWidth:"60px", minWidth:"0"}}>

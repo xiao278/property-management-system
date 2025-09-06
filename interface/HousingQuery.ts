@@ -30,6 +30,8 @@ interface HousingUnitInfo {
     purchase_currency: string;
     dues_per_m2?: number;
     address_id?: number;
+    parking_lots: number;
+    rent_price?: number;
 }
 
 /** fields required to create housing entry */
@@ -66,6 +68,8 @@ interface SearchHousingQueryResult {
     currency: CurrencyQueryResult;
     address: AddressQueryResult;
     housing_type: HousingTypeAttributes;
+    rent_price: number | null;
+    parking_lots: number;
 }
 
 type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" | "housing_type" | "renovation"> & {

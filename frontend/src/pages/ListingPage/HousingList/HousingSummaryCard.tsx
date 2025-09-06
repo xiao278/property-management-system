@@ -53,12 +53,12 @@ export function HousingSummaryCard(props: HousingSummaryCardProps) {
                 <AddressDisplay address={housingData.address} unit={housingData.unit} ></AddressDisplay>
                 <div className="HousingSummaryCardDetailsContainer">   
                     <div><ApartmentIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.bedrooms}BR ${housingData.type}`}</div>
-                    <div><DirectionsCarIcon sx={{verticalAlign: "bottom"}} /> Parking todo</div>
+                    <div><DirectionsCarIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.parking_lots ? housingData.parking_lots : "No"} Parking`}</div>
                     <div><ChairIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.furnish} Furnished`}</div>
-                    <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> {`Renovated ${renovation_ago ? `${renovation_ago.value} ${renovation_ago.unit} ago` : "never"}`} </div>
-                    <div><PaymentsIcon sx={{verticalAlign: "bottom"}} /> Rent todo</div>
-                    <div><MonitorHeartIcon sx={{verticalAlign: "bottom"}} /> Rent Status todo</div>
-                    <div><TollIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.dues_per_m2 ? `${housingData.dues_per_m2 * housingData.size} ${housingData.purchase_currency}` : "N/A"} monthly fee`}</div>
+                    <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> {`Renovated ${renovation_ago ? `${renovation_ago.value} ${renovation_ago.unit} ago` : "never"}`}</div>
+                    <div><PaymentsIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.rent_price ? `${Math.round(housingData.rent_price)} ${housingData.purchase_currency}` : "N/A"} Monthly Rent`}</div>
+                    <div><MonitorHeartIcon sx={{verticalAlign: "bottom"}} /> Rent Status N/A</div>
+                    <div><TollIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.dues_per_m2 ? `${Math.round(housingData.dues_per_m2 * housingData.size)} ${housingData.purchase_currency}` : "N/A"} Monthly Fee`}</div>
                     <div><AccessTimeIcon sx={{verticalAlign: "bottom"}} /> Acquired {`${purchase_date.year}`}</div>
                 </div>
             </div>

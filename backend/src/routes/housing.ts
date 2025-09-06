@@ -93,7 +93,9 @@ function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
         purchase_date: form.purchase_date,
         purchase_currency: emptyStringAsNull(form.purchase_currency),
         purchase_price: form.purchase_price,
-        dues_per_m2: form.dues_per_m2 ?? null
+        dues_per_m2: form.dues_per_m2 ?? null,
+        rent_price: form.rent_price ?? null,
+        parking_lots: form.parking_lots
     }
     return newHousingFields;
 }

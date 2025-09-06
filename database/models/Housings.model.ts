@@ -40,6 +40,8 @@ interface HousingAttributes {
     purchase_price: number;
     purchase_currency_id: number;
     dues_per_m2?: number;
+    parking_lots: number;
+    rent_price?: number;
     furnish: "Bare" | "Semi" | "Fully";
 }
 
@@ -109,6 +111,14 @@ const Housings = sequelize.define<HousingInstance>(
         furnish: {
             type: DataTypes.ENUM("Bare", "Semi", "Fully"),
             allowNull: false,
+        },
+        parking_lots: {
+            type: DataTypes.SMALLINT,
+            allowNull: false
+        },
+        rent_price: {
+            type: DataTypes.DECIMAL(10,2),
+            allowNull: true
         }
     }
 );
