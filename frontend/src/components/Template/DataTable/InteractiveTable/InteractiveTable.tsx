@@ -114,9 +114,9 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                             {Object.entries(columns).map(([fieldName, colProps], index) => {
                                 const formattedColProps = colProps as ItColumns;
                                 return (
-                                    <col key={index} style={
+                                    <col className={fieldName === primaryColumn ? "ItPrimaryColumn" : "ItSecondaryColumn"} key={index} style={
                                         formattedColProps.columnStyle ?? 
-                                            (fieldName == primaryColumn ? {} : defaultSecondaryColumnStyle)
+                                            (fieldName === primaryColumn ? {} : defaultSecondaryColumnStyle)
                                     }/>
                                 )
                             })}
@@ -130,7 +130,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                 {Object.entries(columns).map(([fieldName, colProps]) => {
                                     const formattedColProps = colProps as ItColumns;
                                     return (
-                                        <h5>{formattedColProps.displayName}</h5>
+                                        <h5 className={fieldName === primaryColumn ? "ItPrimaryColumn" : "ItSecondaryColumn"}>{formattedColProps.displayName}</h5>
                                     )
                                 })}
                             </>
@@ -148,7 +148,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                                 {Object.entries(columns).map(([fieldName, colProps], index) => {
                                                     const realFieldname = fieldName as keyof T;
                                                     return (
-                                                        <div key={index}>{!(data[realFieldname] == null) ? (data[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
+                                                        <div key={index} className={fieldName === primaryColumn ? "ItPrimaryColumn" : "ItSecondaryColumn"}>{!(data[realFieldname] == null) ? (data[realFieldname] as string) : <span style={{color: "rgba(0,0,0,0.3)"}}>N/A</span>}</div>
                                                     )
                                                 })}
                                             </>
@@ -159,7 +159,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                             : <></>}
                         </>
                         <AuthOrHide adminOnly={true}>
-                            <CreateRowPanel<T> columns={columns} />
+                            <CreateRowPanel<T> columns={columns} primaryColumn={primaryColumn}/>
                         </AuthOrHide>
                     </DtBody>
                 </DataTable>

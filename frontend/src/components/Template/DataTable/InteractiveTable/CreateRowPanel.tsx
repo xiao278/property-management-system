@@ -10,10 +10,11 @@ import { ItColumns } from "./InteractiveTable";
 
 interface CreateRowPanelProps<T> {
     columns: Partial<Record<keyof T, ItColumns>>
+    primaryColumn: keyof T;
 }
 
 export function CreateRowPanel<T> (props: CreateRowPanelProps<T>) {
-    const { columns } = props;
+    const { columns, primaryColumn } = props;
     const [ inUse, setInUse ] = useState(false);
     const n = Object.keys(columns).length;
     return (
@@ -27,7 +28,7 @@ export function CreateRowPanel<T> (props: CreateRowPanelProps<T>) {
                             {Object.entries(columns).map(([fieldName, colProps]) => {
                                 const formattedColProps = colProps as ItColumns;
                                 return (
-                                    formattedColProps.input ?? <div></div>
+                                    <div className={fieldName === primaryColumn ? "ItPrimaryColumn" : "ItSecondaryColumn"}>{formattedColProps.input ?? <></>}</div>
                                 )
                             })}
                         </>
