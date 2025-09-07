@@ -102,33 +102,6 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                             <AddressDisplay address={newHousingData.address} unit={newHousingData.unit} />
                         </MyAccordion>
 
-                        <MyAccordion>
-                            <MyAccordionSummary>
-                                <h3>Details</h3>
-                            </MyAccordionSummary>
-                            <MyAccordionDetails>
-                                <p>content</p>
-                            </MyAccordionDetails>
-                        </MyAccordion>
-
-                        <MyAccordion>
-                            <MyAccordionSummary>
-                                <h3>Details</h3>
-                            </MyAccordionSummary>
-                            <MyAccordionDetails>
-                                <p>content</p>
-                            </MyAccordionDetails>
-                        </MyAccordion>
-
-                        <MyAccordion>
-                            <MyAccordionSummary>
-                                <h3>Inventory</h3>
-                            </MyAccordionSummary>
-                            <MyAccordionDetails>
-                                <p>Inventory page here</p>
-                            </MyAccordionDetails>
-                        </MyAccordion>
-
                         <MyAccordion slotProps={{ transition: { unmountOnExit: false } }}>
                             <MyAccordionSummary>
                                 <h3>Renovations</h3>
@@ -150,7 +123,7 @@ export function HousingDetailPage(props: HousingDetailPageProps) {
                         <AuthOrHide adminOnly={true}>
                             <MyAccordion>
                                 <MyAccordionSummary>
-                                    <h3>Manage Unit Information</h3>
+                                    <h3>Edit Unit Information</h3>
                                 </MyAccordionSummary>
                                 <MyAccordionDetails>
                                     <FormProvider {...methods}>

@@ -65,14 +65,11 @@ export function NavBar () {
     return (
         <div className="NavBarContainer">
             <AdaptiveNavbar>
-                <NavOption pagename="Overview" pageroute="/overview"/>
-                <NavOption pagename="Listing" pageroute={listingPageRoute}/>
-                <NavOption pagename="Filler1" pageroute="/invalid1"/> 
-                <NavOption pagename="Filler2" pageroute="/invalid2"/> 
+                <NavOption pagename="Overview (WIP)" pageroute="/overview"/>
+                <NavOption pagename="Property List" pageroute={listingPageRoute}/>
                 
                 <AuthOrHide adminOnly={true}> 
-                    <NavOption pagename="HiddenTest" pageroute="/hiddentest"/>
-                    <NavOption pagename="New Entry" pageroute={housingEntryPageRoute}/>
+                    <NavOption pagename="New Property" pageroute={housingEntryPageRoute}/>
                 </AuthOrHide>
             </AdaptiveNavbar>
             <div className="MiscContainer">
