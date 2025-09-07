@@ -17,13 +17,6 @@ interface TableRowDetailPageProps<T extends object> {
 
 function TableRowDetailPage<T extends object> (props: TableRowDetailPageProps<T>) {
     const { focusRow, setFocusRow, overlayRef, detailedFields, primaryField } = props;
-    useEffect(() => {
-        const overlay = overlayRef.current;
-        if (!overlay) return;
-        const height = overlay.offsetHeight;
-        overlay.style.top = `calc(50vh - ${height / 2}px)`;
-    }, []);
-
     const divRef = useRef<HTMLDivElement>(null);
 
     function handleClickOutside(event: MouseEvent) {
@@ -100,6 +93,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
         };
         const overlayHeight = overlay.offsetHeight;
         paper.style.minHeight = `${overlayHeight}px`;
+        overlay.style.top = `calc(50dvh - ${overlayHeight / 2}px)`;
     }, [focusRow]);
     return (
         <Paper elevation={3} sx={{padding: "10px", position: "relative", borderRadius: 0}} ref={paperRef}>
