@@ -4,3 +4,7 @@
     align-items: stretch;
     height: 100%;
 }
+
+.WhyDoIHaveToAnimateThis {
+    display: flex;
+}

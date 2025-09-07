@@ -45,7 +45,7 @@ export function ListingPage() {
     return (
         <div className="ListingPageContainer">
             <FormProvider {...methods} {...onFormSubmit}>
-                <form onSubmit={handleSubmit(onFormSubmit)}>
+                <form onSubmit={handleSubmit(onFormSubmit)} style={{position: "relative"}}>
                     <HousingFilters />
                 </form>
             </FormProvider>

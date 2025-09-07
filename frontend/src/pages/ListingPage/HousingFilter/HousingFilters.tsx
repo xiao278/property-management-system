@@ -5,15 +5,19 @@ import { SmallCard } from "../../../components/Template/SmallCard/SmallCard";
 import { HousingFilterForm } from "./HousingFilterForm";
 
 function ToggleTab({children}: {children: JSX.Element | JSX.Element[]}) {
-    const [show, setShow] = React.useState(true);
+    const [show, setShow] = React.useState(false);
     return (
-        <div className="ToggleTabContainer">
-            <div className="ToggleTabButtonWrapper">
+        <div className={`ToggleTabContainer ${show ? "TabContainerShow" : "TabContainerHide"}`}>
+            <div className={`ToggleTabButtonWrapper ${show ? "TabButtonRetracting" : "TabButtonExpanding"}`}>
                 <button type="button" className="ToggleTabButton" onClick={() => setShow(!show)}>
                                 
                 </button>
             </div>
-            {show ? children : <></>}
+            <div className={`ToggleTabContentContainer`}>
+                <div className="ToggleTabContentWrapper">
+                    {children}
+                </div>
+            </div>
         </div>
     );
 
