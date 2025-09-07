@@ -6,7 +6,7 @@ import { HousingInfo } from "../../../../../interface/HousingQuery";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";
-import { Autocomplete, FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
