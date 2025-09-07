@@ -1,4 +1,4 @@
-import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
+import { CSSProperties, RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { AuthOrHide } from "../../../Auth/AuthOrHide";
 import { DataTable, DtBody, DtHeader, DtRow } from "../DataTable";
 import { Button, Paper } from "@mui/material";
@@ -18,17 +18,20 @@ interface TableRowDetailPageProps<T extends object> {
 function TableRowDetailPage<T extends object> (props: TableRowDetailPageProps<T>) {
     const { focusRow, setFocusRow, overlayRef, detailedFields, primaryField } = props;
     const divRef = useRef<HTMLDivElement>(null);
+    const handleClickOutsideRef = useRef<(event: MouseEvent) => void>((e) => {});
 
-    function handleClickOutside(event: MouseEvent) {
+    const dismissPopup = useCallback(() => {
+        setFocusRow(null);
+        document.removeEventListener("mousedown", handleClickOutsideRef.current);
+    }, [setFocusRow]);
+
+    const handleClickOutside = useCallback((event: MouseEvent) => {
         if (divRef.current && !divRef.current.contains(event.target as Node)) {
             dismissPopup();
         }
-    };
+    }, [dismissPopup]);
 
-    function dismissPopup() {
-        setFocusRow(null);
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
+    handleClickOutsideRef.current = handleClickOutside;
 
     useEffect(() => {
         if (focusRow) {
@@ -37,7 +40,7 @@ function TableRowDetailPage<T extends object> (props: TableRowDetailPageProps<T>
                 document.removeEventListener("mousedown", handleClickOutside);
             };
         }
-    }, [focusRow]);
+    }, [focusRow, handleClickOutside]);
 
     return (
         <div className="RoomDetailWrapper">
