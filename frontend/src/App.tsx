@@ -8,6 +8,8 @@ import { loginPageRoute } from './pages/LoginPage/LoginPage';
 import { HousingEntryPage, housingEntryPageRoute } from './pages/HousingEntryPage/HousingEntryPage';
 import { ListingPage, listingPageRoute } from './pages/ListingPage/ListingPage';
 import './App.css';
+import { AdminRoutes } from './routes/AdminRoutes';
+import { adminPageRoute } from './pages/AdministrationPage/AdministrationPage';
 
 export const mainPageRoute = "/app"
 
@@ -30,7 +32,8 @@ function App() {
                   } />
                   <Route path={`${listingPageRoute}`} element= {
                     <ListingPage />
-                  } />           
+                  } />
+                  {AdminRoutes()}
                 </Routes>
               </div>
             </RequireAuth>

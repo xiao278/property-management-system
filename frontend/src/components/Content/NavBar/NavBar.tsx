@@ -8,6 +8,7 @@ import { housingEntryPageRoute } from "../../../pages/HousingEntryPage/HousingEn
 import { AuthOrHide } from "../../Auth/AuthOrHide";
 import { listingPageRoute } from "../../../pages/ListingPage/ListingPage";
 import MenuIcon from '@mui/icons-material/Menu';
+import { adminPageRoute } from "../../../pages/AdministrationPage/AdministrationPage";
 
 interface AdaptiveNavbarProps {
     children: JSX.Element | JSX.Element[];
@@ -67,9 +68,9 @@ export function NavBar () {
             <AdaptiveNavbar>
                 <NavOption pagename="Overview (WIP)" pageroute="/overview"/>
                 <NavOption pagename="Property List" pageroute={listingPageRoute}/>
-                
                 <AuthOrHide adminOnly={true}> 
                     <NavOption pagename="New Property" pageroute={housingEntryPageRoute}/>
+                    <NavOption pagename="Admin" pageroute={adminPageRoute} />
                 </AuthOrHide>
             </AdaptiveNavbar>
             <div className="MiscContainer">
