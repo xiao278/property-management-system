@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { JSX, useCallback, useEffect, useRef, useState } from "react";
 import "./FloatingMiniDropdown.css"
 
 interface MenuItemActions {
@@ -10,6 +10,32 @@ export function FloatingMiniDropdown({ actions, children }: { actions: MenuItemA
     // const windowWidth = document.body.getBoundingClientRect().width
     // const boxRight = menuRef.current.getBoundingClientRect().right
     // const exceeding = windowWidth < boxRight
+
+    const divRef = useRef<HTMLDivElement>(null);
+    const handleClickOutsideRef = useRef<(event: MouseEvent) => void>((e) => {});
+    
+    const dismissPopup = useCallback(() => {
+        setShow(false);
+        document.removeEventListener("mousedown", handleClickOutsideRef.current);
+    }, [setShow]);
+
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+        if (divRef.current && !divRef.current.contains(event.target as Node)) {
+            dismissPopup();
+        }
+    }, [dismissPopup]);
+
+    handleClickOutsideRef.current = handleClickOutside;
+
+    useEffect(() => {
+        if (show) {
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }
+    }, [show, handleClickOutside]);
+    
 
     //trigger spacing
     const detectionRegionThickness = 40; //px
@@ -30,7 +56,7 @@ export function FloatingMiniDropdown({ actions, children }: { actions: MenuItemA
             </div>
             {show ? 
                 <div className="FloatingDropdownMenuWrapper" >
-                    <div className="FloatingDropdownMenu">
+                    <div className="FloatingDropdownMenu" ref={divRef}>
                         {Object.entries(actions).map(([actionName, actionCallback]) => (
                             <button className="FloatingDropdownMenuButtons" key={actionName} onClick={actionCallback}>
                                 {actionName}
