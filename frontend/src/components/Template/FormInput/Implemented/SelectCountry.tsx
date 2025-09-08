@@ -1,8 +1,8 @@
 import { MenuItem, Select, SxProps } from "@mui/material";
 import { FormInput } from "../FormInput";
 import { useEffect, useState } from "react";
-import { post } from "../../../../api";
-import { CountryQueryResult, CountrySearchResult } from "../../../../../../interface/HousingQuery";
+import { CountryQueryResult } from "../../../../../../interface/HousingQuery";
+import { fetchCountries } from "../../../../apiCalls/country";
 
 interface SelectCountryProps {
     sx?: SxProps | undefined;
@@ -14,17 +14,14 @@ export function SelectCountry(props: SelectCountryProps) {
     const [ countries, setCountries ] = useState<CountryQueryResult[] | null>();
     const { sx, fieldName, hint } = props
 
-    const fetchCountries = async () => {
-        const res = await post("/api/housing/fetch-countries", {});        
-        if (res.ok) {
-            const data = await res.json() as CountrySearchResult;
-            setCountries(data.countryList);
-        }
-    }
-
     useEffect(() => {
-        fetchCountries();
-    })
+        const loadCountries = async () => {
+            const res = await fetchCountries();
+            setCountries(res);
+        }
+
+        loadCountries();
+    }, [])
     
     return (
         <FormInput fieldName={fieldName} hint={hint} type="mui">

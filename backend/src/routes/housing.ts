@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { CountrySearchFilters, CountrySearchResult, HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo } from '../../../interface/HousingQuery';
+import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo } from '../../../interface/HousingQuery';
 import { AddressAttributes, Addresses, Countries } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings, HousingTypes } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
@@ -122,17 +122,17 @@ housingRoutes.post('/create', authenticateToken, async (req, res) => {
             defaults: formattedHousingFields
         });
         if (!housingResult[1]) {
-            t.rollback();
+            await t.rollback();
             res.status(500).json({message: "This housing already exists!"})
         }
         else {
-            t.commit();
+            await t.commit();
             res.sendStatus(200);
         }   
     } 
     catch (error) {
         console.log(error)
-        t.rollback();
+        await t.rollback();
         res.status(500).json({message: error.message});
     }
 })
@@ -217,11 +217,11 @@ housingRoutes.post('/update', authenticateToken, async (req, res) => {
                 id: form.housing.id
             }
         });
-        t.commit();
+        await t.commit();
         res.sendStatus(200);
     } 
     catch (error) {
-        t.rollback();
+        await t.rollback();
         console.log(error);
         res.status(500).json({message: error.message});
     }
@@ -246,36 +246,11 @@ housingRoutes.post('/delete', authenticateToken, async (req, res) => {
         if (housingResult < 1) {
             throw {message: "Unit does not exist"};
         }
-        t.commit();
+        await t.commit();
         res.sendStatus(200);
     } 
     catch (error) {
-        t.rollback();
-        console.log(error);
-        res.status(500).json({message: error.message});
-    }
-})
-
-housingRoutes.post("/fetch-countries", authenticateToken, async (req, res) => {
-    try {
-        const filters = req.body as CountrySearchFilters;
-        const countriesResult = await Countries.findAll({
-            where: {
-                ...(filters.name ? {name: filters.name} : undefined)
-            }
-        });
-        const responseBody:CountrySearchResult = {
-            countryList: countriesResult.map((value) => {
-                const data = value.dataValues;
-                return {
-                    id: data.id,
-                    name: data.name
-                };
-            })
-        }
-        res.status(200).json(responseBody);
-    }
-    catch (error) {
+        await t.rollback();
         console.log(error);
         res.status(500).json({message: error.message});
     }

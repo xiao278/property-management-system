@@ -65,17 +65,17 @@ roomRoutes.post('/create', authenticateToken, async (req, res) => {
             defaults: form
         });
         if (!roomResult[1]) {
-            t.rollback();
+            await t.rollback();
             res.status(500).json({message: "This room already exists!"})
         }
         else {
-            t.commit();
+            await t.commit();
             res.sendStatus(200);
         }
     } 
     catch (error) {
         console.log(error)
-        t.rollback();
+        await t.rollback();
         res.status(500).json({message: error.message});
     }
 })

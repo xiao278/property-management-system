@@ -114,10 +114,6 @@ interface AddressSearchFilters {
     country_id?: number;
 }
 
-interface CountrySearchFilters {
-    name: string;
-}
-
 interface CountryQueryResult {
     id: number;
     name: string;
@@ -131,5 +127,5 @@ export type { HousingInfo, AddressInfo, HousingUnitInfo,
     HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
     HousingSearchFilters,
     AddressSearchFilters, AddressQueryResult, AddressQueryResultFormatted,
-    CountryQueryResult, CountrySearchFilters, CountrySearchResult,
+    CountryQueryResult, CountrySearchResult,
     OrderingOptions };
