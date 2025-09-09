@@ -52,7 +52,7 @@ export function HousingSummaryCard(props: HousingSummaryCardProps) {
             <div className="HousingSummaryCardContainer" style={{backgroundColor: itemNumber % 2 === 0 ? color1 : color2}} onClick={() => setShowPopup(true)}>
                 <AddressDisplay address={housingData.address} unit={housingData.unit} ></AddressDisplay>
                 <div className="HousingSummaryCardDetailsContainer">   
-                    <div><ApartmentIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.bedrooms}BR ${housingData.type}`}</div>
+                    <div><ApartmentIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.bedrooms}BR ${housingData.housing_type.name}`}</div>
                     <div><DirectionsCarIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.parking_lots ? housingData.parking_lots : "No"} Parking`}</div>
                     <div><ChairIcon sx={{verticalAlign: "bottom"}} /> {`${housingData.furnish} Furnished`}</div>
                     <div><ConstructionIcon sx={{verticalAlign: "bottom"}} /> {`Renovated ${renovation_ago ? `${renovation_ago.value} ${renovation_ago.unit} ago` : "never"}`}</div>

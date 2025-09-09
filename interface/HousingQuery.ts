@@ -22,7 +22,7 @@ interface HousingUnitInfo {
     bathrooms: number;
     bedrooms: number;
     size: number;
-    type: string;
+    housing_type: HousingTypeAttributes
     unit?: string | null;
     furnish: HousingAttributes['furnish'];
     purchase_date: string;
@@ -72,10 +72,9 @@ interface SearchHousingQueryResult {
     parking_lots: number;
 }
 
-type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" | "housing_type" | "renovation"> & {
+type SearchHousingQueryResultFormatted = Omit<SearchHousingQueryResult, "purchase_price" | "currency" | "address" | "renovation"> & {
     purchase_price: number;
     purchase_currency: string;
-    type: string;
     address: AddressQueryResultFormatted;
     renovation_date: string | null;
 };
@@ -123,9 +122,16 @@ interface CountrySearchResult {
     countryList: CountryQueryResult[];
 }
 
+interface HousingTypeQueryResult {
+    id: number;
+    name: string;
+}
+
 export type { HousingInfo, AddressInfo, HousingUnitInfo,
     HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
     HousingSearchFilters,
     AddressSearchFilters, AddressQueryResult, AddressQueryResultFormatted,
     CountryQueryResult, CountrySearchResult,
-    OrderingOptions };
+    OrderingOptions,
+    HousingTypeQueryResult
+};

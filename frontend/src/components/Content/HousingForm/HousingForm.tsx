@@ -2,11 +2,13 @@ import { SmallCard } from "../../Template/SmallCard/SmallCard"
 import { FormInput } from "../../Template/FormInput/FormInput"
 import "./HousingForm.css"
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { HousingInfo } from "../../../../../interface/HousingQuery";
+import { HousingInfo, HousingTypeQueryResult } from "../../../../../interface/HousingQuery";
 import { NumericFormat } from 'react-number-format';
 import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";
 import { MenuItem, Select } from "@mui/material";
+import { Selection } from "../../Template/FormInput/Implemented/Selection";
+import { fetchPropertyTypes } from "../../../apiCalls/propertyTypes";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
@@ -15,7 +17,8 @@ interface HousingFormProps {
 
 export const housingFormDefaultValues = {
     housing: {
-        dues_per_m2: NaN
+        dues_per_m2: NaN,
+        housing_type: {id: undefined}
     }
 }
 
@@ -33,7 +36,7 @@ export function HousingForm(props: HousingFormProps) {
                 <SmallCard title="Property Information">
                     <FlexWrapping minWidth={280}>
                         <FormInput fieldName="housing.unit" hint="Unit Number" type="text" />
-                        <FormInput fieldName="housing.type" hint="Unit Type" type="text" validation={{required: true}}/>
+                        <Selection<HousingTypeQueryResult> fieldName={"housing.housing_type.id"} hint="Unit Type" displayFromField="name" fetchCallback={fetchPropertyTypes} required/>
                         <FormInput fieldName="housing.bathrooms" hint="Bathrooms" type="number" validation={{required: true}}> 
                         <NumericFormat allowNegative={false} decimalScale={0} />
                         </FormInput>

@@ -1,0 +1,46 @@
+import { MenuItem, Select, SxProps } from "@mui/material";
+import { FormInput } from "../FormInput";
+import { useEffect, useState } from "react";
+import { CountryQueryResult } from "../../../../../../interface/HousingQuery";
+import { fetchCountries } from "../../../../apiCalls/country";
+
+interface SelectionProps<T> {
+    sx?: SxProps | undefined;
+    fetchCallback: () => Promise<T[] | null>;
+    required?: boolean;
+    displayFromField: keyof T;
+    fieldName: string;
+    hint: string;
+}
+
+export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
+    const [ entries, setEntries ] = useState<T[] | null>();
+    const [ loaded, setLoaded ] = useState(false);
+    const { sx, fieldName, hint, fetchCallback, displayFromField, required } = props
+
+    useEffect(() => {
+        const loadEntries = async () => {
+            const res = await fetchCallback();
+            setEntries(res);
+            setLoaded(true);
+        }
+
+        loadEntries();
+    }, [])
+    
+    return (
+        <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required}}>
+            <Select sx={{height: "19.5px", ...sx}}>
+                {!required && 
+                    <MenuItem value={""}>
+                        <em>None</em>
+                    </MenuItem>
+                }
+                {entries ? entries.map((value, index) => (
+                    <MenuItem value={value.id} key={index}>{String(value[displayFromField])}</MenuItem>
+                )
+                ) : []}
+            </Select>
+        </FormInput>
+    )
+}

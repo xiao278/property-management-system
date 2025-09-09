@@ -23,21 +23,17 @@ async function formatHousingFields(form: HousingInfo): Promise<HousingAttributes
     const addressResult = await findOrCreateAddress(newAddressFields);
     newHousingFields.address_id = addressResult[0].id;
 
-
     const currencyResult = await Currencies.findOrCreate({where: {
         name: newHousingFields.purchase_currency
     }})
 
-    const typeResult = await HousingTypes.findOrCreate({where: {
-        name: newHousingFields.type
-    }})
-
     const formattedHousingFields = {...newHousingFields, 
-        ...{purchase_currency_id: (currencyResult[0].id)},
-        ...{type_id: (typeResult[0].id)}
+        purchase_currency_id: (currencyResult[0].id),
+        type_id: newHousingFields.housing_type.id
     };
+
+    delete formattedHousingFields.housing_type;
     delete formattedHousingFields.purchase_currency;
-    delete formattedHousingFields.type
     return formattedHousingFields as HousingAttributes;
 }
 
@@ -86,7 +82,7 @@ function parseHousing(form: HousingUnitInfo):HousingUnitInfo {
         bathrooms: form.bathrooms,
         bedrooms: form.bedrooms,
         size: form.size,
-        type: emptyStringAsNull(form.type),
+        housing_type: form.housing_type,
         address_id: form.address_id,
         furnish: form.furnish,
         unit: emptyStringAsNull(form.unit),
@@ -181,13 +177,13 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
                     purchase_currency: data.currency.name,
                     purchase_price: Number(data.purchase_price),
                     dues_per_m2: data.dues_per_m2 ? Number(data.dues_per_m2) : null,
-                    type: data.housing_type.name,
                     renovation_date: data.renovations.length < 1 ? null : data.renovations[0].end_date,
                     address: {
                         ...data.address,
                         country: data.address.country.name
                     }
                 }
+                delete (formattedData as any).type_id;
                 return formattedData;
             })
         }

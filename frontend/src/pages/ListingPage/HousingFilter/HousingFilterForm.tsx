@@ -2,7 +2,9 @@ import { SmallCard } from "../../../components/Template/SmallCard/SmallCard";
 import "./HousingFilterForm.css";
 import { FormInput } from "../../../components/Template/FormInput/FormInput";
 import { Checkbox, FormControlLabel, MenuItem, Select } from "@mui/material";
-import { SelectCountry } from "../../../components/Template/FormInput/Implemented/SelectCountry";
+import { Selection } from "../../../components/Template/FormInput/Implemented/Selection";
+import { fetchCountries } from "../../../apiCalls/country";
+import { CountryQueryResult } from "../../../../../interface/HousingQuery";
 
 export function HousingFilterForm() {
     return (
@@ -11,7 +13,7 @@ export function HousingFilterForm() {
                 <div>Form content</div>
             </SmallCard>
             <SmallCard title="Location Filters">
-                <SelectCountry fieldName="address.country_id" hint="Filter By Country" />
+                <Selection<CountryQueryResult> fieldName="address.country_id" hint="Filter By Country" fetchCallback={fetchCountries} displayFromField="name" sx={{height: "30px"}} />
             </SmallCard>
             <SmallCard title="Miscellaneous Filters">
                 <div>Form content</div>
