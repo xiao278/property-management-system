@@ -1,0 +1,8 @@
+.ManageCategoriesPageContainer {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    height: 100%;
+    background-color: rgb(238, 246, 235);
+}
