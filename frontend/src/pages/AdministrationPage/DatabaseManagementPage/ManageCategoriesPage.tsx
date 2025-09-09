@@ -4,7 +4,7 @@ import { post } from "../../../api";
 import { useEffect, useState } from "react";
 import { CategoryResult } from "../../../../../interface/CategoryQuery";
 import { CountryQueryResult } from "../../../../../interface/HousingQuery";
-import { fetchCountries } from "../../../apiCalls/country";
+import { deleteCountry, fetchCountries } from "../../../apiCalls/country";
 import { InteractiveTable } from "../../../components/Template/DataTable/InteractiveTable/InteractiveTable";
 
 
@@ -12,6 +12,8 @@ export const manageCategoriesPageExtension = "manage-categories"
 
 export function ManageCategoriesPage() {
     const [countries, setCountries] = useState<CountryQueryResult[] | null>(null);
+    const [countryUpdateTrigger, setCountryUpdateTrigger] = useState(false);
+    const updateCountries = () => {setCountryUpdateTrigger(!countryUpdateTrigger)};
 
     useEffect(() => {
         const loadCountries = async () => {
@@ -20,7 +22,12 @@ export function ManageCategoriesPage() {
         }
 
         loadCountries();
-    }, []);
+    }, [countryUpdateTrigger]);
+
+    const handleDeleteCountry = async (id: number) => {
+        await deleteCountry(id);
+        updateCountries();
+    }
 
     return (
         <div>
@@ -33,7 +40,16 @@ export function ManageCategoriesPage() {
                     <Typography component="span">Countries</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <InteractiveTable<CountryQueryResult> columns={{name: {displayName: "Name"}}} detailedFields={{}} primaryColumn="name" rows={countries} />
+                    <InteractiveTable<CountryQueryResult> 
+                        columns={{name: {displayName: "Name"}}} 
+                        detailedFields={{}} 
+                        primaryColumn="name" 
+                        rows={countries}
+                        deleteRow={{
+                            callback: handleDeleteCountry,
+                            field: "id"
+                        }}
+                    />
                 </AccordionDetails>
             </Accordion>
         </div>

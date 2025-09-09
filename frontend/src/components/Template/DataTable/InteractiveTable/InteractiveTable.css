@@ -49,13 +49,9 @@
     cursor: pointer;
 }
 
-.RoomRowDisplay:hover {
-    box-shadow: 0px 0px 0px 3px rgb(111, 162, 239);
-}
-
 .ItRow > * {
     background-color: rgba(0,0,0,0.1);
-    border: 3px solid transparent;
+    border: 1px solid transparent;
     border-left: none;
     border-right: none;
     cursor: pointer;
@@ -64,18 +60,22 @@
 .ItRow > *:last-child {
     border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
-    border-right: 3px solid transparent;
+    border-right: 1px solid transparent;
 }
 
 .ItRow > *:first-child {
     border-top-left-radius: 100px;
     border-bottom-left-radius: 100px;
-    border-left: 3px solid transparent;
+    border-left: 1px solid transparent;
 }
 
 .ItRow:hover > * {
     /* box-shadow: 0px 0px 0px 3px rgb(111, 162, 239); */
     border-color: rgb(111, 162, 239);
+}
+
+.ItSecondaryColumn {
+    width: 0.1px;
 }
 
 @media (max-width: 600px) {

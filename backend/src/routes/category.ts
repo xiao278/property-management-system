@@ -6,14 +6,17 @@ import { CategoryResult } from "../../../interface/CategoryQuery";
 import { TokenUserInfo } from "../../../interface/Auth";
 import { sequelize } from "../../../database/main";
 import { Housings } from "../../../database/models/Housings.model";
+import { Op } from "sequelize";
 
 export const categoryRoutes = Router();
+const deletedId = -1;
 
 categoryRoutes.post("/country/fetch", authenticateToken, async (req, res) => {
     try {
         const filters = req.body as Partial<CountryAttributes>;
         const countriesResult = await Countries.findAll({
             where: {
+                id: {[Op.ne]: deletedId},
                 ...(filters.name ? {name: filters.name} : undefined)
             }
         });
@@ -52,10 +55,13 @@ categoryRoutes.post("/country/delete", authenticateToken, async (req, res) => {
 
     try {
         await Countries.findOrCreate({
-            where: {id: 0},
-            defaults: {name: "Deleted"}
+            where: {id: deletedId},
+            defaults: {
+                id: deletedId,
+                name: "Deleted"
+            }
         })
-        await Addresses.update({country_id: 0}, {where: {country_id: filters.id}})
+        await Addresses.update({country_id: deletedId}, {where: {country_id: filters.id}})
         await Countries.destroy({where: {id: filters.id}});
         await t.commit();
         res.sendStatus(200);

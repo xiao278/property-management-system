@@ -6,6 +6,7 @@ import "./InteractiveTable.css";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { FormInput } from "../../FormInput/FormInput";
 import { CreateRowPanel } from "./CreateRowPanel";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TableRowDetailPageProps<T extends object> {
     focusRow: T | null;
@@ -75,11 +76,15 @@ interface InteractiveTableProps<T extends object> {
     detailedFields: Partial<Record<keyof T, string>>
     primaryColumn: keyof T;
     columnPadding?: number;
+    deleteRow?: {
+        callback: (rowId: number) => void;
+        field: keyof T;
+    }
 }
 
 
 export function InteractiveTable<T extends object>(props: InteractiveTableProps<T>) {
-    const { rows, columns, detailedFields, primaryColumn, columnPadding } = props;
+    const { rows, columns, detailedFields, primaryColumn, columnPadding, deleteRow } = props;
     const [ focusRow, setFocusRow ] = useState<T | null>(null);
     const overlayRef = useRef<HTMLDivElement | null>(null);
     const paperRef = useRef<HTMLDivElement | null>(null);
@@ -118,6 +123,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                 )
                             })}
                         </>
+                        <col style={{width: "0.1px"}} />
                         <col style={{width: `${actualColumnPadding}px`}}/>
                     </colgroup>
                     <DtHeader>
@@ -131,6 +137,7 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                     )
                                 })}
                             </>
+                            <div>{deleteRow ? <h5>Actions</h5> : <></>}</div>
                             <div></div>
                         </DtRow>
                     </DtHeader>
@@ -149,6 +156,17 @@ export function InteractiveTable<T extends object>(props: InteractiveTableProps<
                                                     )
                                                 })}
                                             </>
+                                            <div style={{display: "flex", flexDirection: "row", alignItems: "stretch", justifyContent: "center"}}>
+                                                {deleteRow ? 
+                                                <Button onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteRow.callback(data[deleteRow.field] as number)
+                                                }} sx={{
+                                                    padding: 0, height: "100%", minWidth: 0,
+                                                }} color="error" variant="outlined">
+                                                    <DeleteIcon sx={{fontSize: "100%"}} />
+                                                </Button> : <></>}
+                                            </div>
                                             <div />
                                         </DtRow>
                                     );

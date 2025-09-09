@@ -1,3 +1,4 @@
+import { CountryAttributes } from "../../../database/models/Addresses.model";
 import { CategoryResult } from "../../../interface/CategoryQuery";
 import { CountryQueryResult } from "../../../interface/HousingQuery";
 import { post } from "../api";
@@ -9,4 +10,13 @@ export async function fetchCountries() {
         return data.list;
     }
     return null;
+}
+
+export async function deleteCountry(id: number) {
+    const form: Partial<CountryAttributes> = {id: id};
+    const res = await post("/api/category/country/delete", form);
+    if (!res.ok) {
+        const error = await res.json();
+        alert(`Failed to delete country ${error.message}`)
+    }
 }
