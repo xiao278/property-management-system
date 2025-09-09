@@ -8,26 +8,29 @@ import { sequelize } from "../../../database/main";
 import { Housings } from "../../../database/models/Housings.model";
 import { Op } from "sequelize";
 import { Currencies, CurrencyAttributes } from "../../../database/models/Currencies.model";
+import { ModelStatic } from "sequelize";
 
 export const categoryRoutes = Router();
 const deletedId = -1;
 
+async function categoryFetch<T extends {id: number, name: string}>(model: ModelStatic<any>) {
+    const countriesResult = await model.findAll({
+        where: {
+            id: {[Op.ne]: deletedId},
+        }
+    });
+    const responseBody:CategoryResult<T> = {
+        list: countriesResult.map((value) => {
+            const data = value.dataValues;
+            return data;
+        })
+    }
+    return responseBody
+}
+
 categoryRoutes.get("/country/fetch", authenticateToken, async (req, res) => {
     try {
-        const countriesResult = await Countries.findAll({
-            where: {
-                id: {[Op.ne]: deletedId},
-            }
-        });
-        const responseBody:CategoryResult<CountryAttributes> = {
-            list: countriesResult.map((value) => {
-                const data = value.dataValues;
-                return {
-                    id: data.id,
-                    name: data.name
-                };
-            })
-        }
+        const responseBody = await categoryFetch(Countries);
         res.status(200).json(responseBody);
     }
     catch (error) {
@@ -75,20 +78,7 @@ categoryRoutes.post("/country/delete", authenticateToken, async (req, res) => {
 
 categoryRoutes.get("/currency/fetch", authenticateToken, async (req, res) => {
     try {
-        const countriesResult = await Currencies.findAll({
-            where: {
-                id: {[Op.ne]: deletedId},
-            }
-        });
-        const responseBody:CategoryResult<CurrencyAttributes> = {
-            list: countriesResult.map((value) => {
-                const data = value.dataValues;
-                return {
-                    id: data.id,
-                    name: data.name
-                };
-            })
-        }
+        const responseBody = await categoryFetch(Currencies);
         res.status(200).json(responseBody);
     }
     catch (error) {

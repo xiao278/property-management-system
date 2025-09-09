@@ -142,7 +142,7 @@ housingRoutes.post('/search', authenticateToken, async (req, res) => {
         const filters = req.body as HousingSearchFilters;
         const housingResult = await Housings.findAll({
             attributes: {
-                include: [[Sequelize.col('address.country.name'), 'countryName']]
+                include: [[sequelize.col('address.country.name'), 'countryName']]
             },
             where: {
                 ...(filters.property_id ? {id: filters.property_id} : undefined)
