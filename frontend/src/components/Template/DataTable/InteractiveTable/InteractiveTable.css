@@ -74,10 +74,6 @@
     border-color: rgb(111, 162, 239);
 }
 
-.ItSecondaryColumn {
-    width: 0.1px;
-}
-
 @media (max-width: 600px) {
     .ItSecondaryColumn {
         display: none;
