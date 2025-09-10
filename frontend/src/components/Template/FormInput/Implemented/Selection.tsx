@@ -30,17 +30,22 @@ export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
     
     return (
         <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required}}>
-            <Select sx={{height: "19.5px", ...sx}}>
-                {!required && 
-                    <MenuItem value={""}>
-                        <em>None</em>
-                    </MenuItem>
-                }
-                {entries ? entries.map((value, index) => (
-                    <MenuItem value={value.id} key={index}>{String(value[displayFromField])}</MenuItem>
-                )
-                ) : []}
-            </Select>
-        </FormInput>
+            {
+                loaded ?
+                <Select sx={{height: "19.5px", ...sx}}>
+                    {!required && 
+                        <MenuItem value={""}>
+                            <em>None</em>
+                        </MenuItem>
+                    }
+                    {entries ? entries.map((value, index) => (
+                        <MenuItem value={value.id} key={index}>{String(value[displayFromField])}</MenuItem>
+                    )
+                    ) : []}
+                </Select>
+                :
+                <div>loading...</div>
+            }
+        </FormInput> 
     )
 }
