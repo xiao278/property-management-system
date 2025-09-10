@@ -14,6 +14,7 @@ const sequelize = new Sequelize (
         define: {
             timestamps: false, // Disables createdAt and updatedAt globally
         },
+        port: 3333
     },
 );
 
