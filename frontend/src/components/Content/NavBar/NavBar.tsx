@@ -4,7 +4,6 @@ import { NavOption } from "./NavOption";
 import "./NavBar.css"
 import { AccountButton } from "../AccountButton/AccountButton";
 import { FloatingMiniDropdown } from "../../Template/FloatingMiniDropdown/FloatingMiniDropdown";
-import { housingEntryPageRoute } from "../../../pages/HousingEntryPage/HousingEntryPage";
 import { AuthOrHide } from "../../Auth/AuthOrHide";
 import { listingPageRoute } from "../../../pages/ListingPage/ListingPage";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -68,10 +67,7 @@ export function NavBar () {
             <AdaptiveNavbar>
                 <NavOption pagename="Overview (WIP)" pageroute="/overview"/>
                 <NavOption pagename="Property List" pageroute={listingPageRoute}/>
-                <AuthOrHide adminOnly={true}> 
-                    <NavOption pagename="New Property" pageroute={housingEntryPageRoute}/>
-                    <NavOption pagename="Admin" pageroute={adminPageRoute} />
-                </AuthOrHide>
+                <NavOption pagename="Manage" pageroute={adminPageRoute} />
             </AdaptiveNavbar>
             <div className="MiscContainer">
                 {/* <div>Welcome {user?.firstname} {user?.lastname}</div>

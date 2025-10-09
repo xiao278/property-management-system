@@ -1,11 +1,11 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { HousingInfo } from "../../../../interface/HousingQuery";
-import { HousingForm, housingFormDefaultValues } from "../../components/Content/HousingForm/HousingForm"
+import { HousingInfo } from "../../../../../../interface/HousingQuery";
+import { HousingForm, housingFormDefaultValues } from "../../../../components/Content/HousingForm/HousingForm"
 import "./HousingEntryPage.css"
-import { post } from "../../api";
+import { post } from "../../../../api";
 
 
-export const housingEntryPageRoute = "/insert"
+export const housingEntryPageExtension = "new-property"
 
 export function HousingEntryPage() {
     const methods = useForm<HousingInfo>({

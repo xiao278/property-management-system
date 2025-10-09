@@ -1,18 +1,18 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material"
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { createContext, useContext, useEffect, useState } from "react";
-import { CountryQueryResult, HousingTypeQueryResult } from "../../../../../interface/HousingQuery";
-import { deleteCountry, fetchCountries } from "../../../apiCalls/country";
-import { InteractiveTable, ItColumns } from "../../../components/Template/DataTable/InteractiveTable/InteractiveTable";
-import { deleteCurrency, fetchCurrencies } from "../../../apiCalls/currency";
-import { CurrencyQueryResult } from "../../../../../interface/miscQuery/CurrencyQuery";
+import { CountryQueryResult, HousingTypeQueryResult } from "../../../../../../interface/HousingQuery";
+import { deleteCountry, fetchCountries } from "../../../../apiCalls/country";
+import { InteractiveTable, ItColumns } from "../../../../components/Template/DataTable/InteractiveTable/InteractiveTable";
+import { deleteCurrency, fetchCurrencies } from "../../../../apiCalls/currency";
+import { CurrencyQueryResult } from "../../../../../../interface/miscQuery/CurrencyQuery";
 import "./ManageCategoriesPage.css"
-import { createPropertyType, deletePropertyType, fetchPropertyTypes } from "../../../apiCalls/propertyTypes";
-import { FormInput } from "../../../components/Template/FormInput/FormInput";
-import { HousingTypeAttributes } from "../../../../../database/models/Housings.model";
+import { createPropertyType, deletePropertyType, fetchPropertyTypes } from "../../../../apiCalls/propertyTypes";
+import { FormInput } from "../../../../components/Template/FormInput/FormInput";
+import { HousingTypeAttributes } from "../../../../../../database/models/Housings.model";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { PeriodTypeQueryResult } from "../../../../../interface/RentalContractQuery";
-import { createPeriodType, deletePeriodType, fetchPeriodTypes } from "../../../apiCalls/rentalContract";
+import { PeriodTypeQueryResult } from "../../../../../../interface/RentalContractQuery";
+import { createPeriodType, deletePeriodType, fetchPeriodTypes } from "../../../../apiCalls/rentalContract";
 
 export const manageCategoriesPageExtension = "manage-categories"
 
@@ -22,7 +22,7 @@ export function ManageCategoriesPage() {
     const state = useState<string | false>(false);
 
     return (
-        <div className="ManageCategoriesPageContainer">
+        <div className="ManageCategoriesPageContainer AdminPageLinksContainer">
             <AccordionExpandContext value={state}>
                 <ManageCategory<CountryQueryResult> fetchCallback={fetchCountries} deleteCallback={deleteCountry} displayName="Countries" />
                 <ManageCategory<CurrencyQueryResult> fetchCallback={fetchCurrencies} deleteCallback={deleteCurrency} displayName="Currencies" />

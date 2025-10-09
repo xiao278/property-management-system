@@ -5,11 +5,9 @@ import { LoginPage } from './pages/LoginPage/LoginPage';
 import { NavBar } from './components/Content/NavBar/NavBar';
 import { AuthProvider } from './components/Auth/AuthProvider';
 import { loginPageRoute } from './pages/LoginPage/LoginPage';
-import { HousingEntryPage, housingEntryPageRoute } from './pages/HousingEntryPage/HousingEntryPage';
 import { ListingPage, listingPageRoute } from './pages/ListingPage/ListingPage';
 import './App.css';
 import { AdminRoutes } from './routes/AdminRoutes';
-import { adminPageRoute } from './pages/AdministrationPage/AdministrationPage';
 
 export const mainPageRoute = "/app"
 
@@ -27,9 +25,6 @@ function App() {
               <div className='AppWrapper'>
                 <NavBar />
                 <Routes>
-                  <Route path={`${housingEntryPageRoute}`} element= {
-                    <HousingEntryPage />
-                  } />
                   <Route path={`${listingPageRoute}`} element= {
                     <ListingPage />
                   } />
