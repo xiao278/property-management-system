@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { authenticateToken } from "../middlewares/tokenAuth";
-import { CountrySearchResult } from "../../../interface/HousingQuery";
+import { PeriodTypeAttributes, PeriodTypes, RentalContracts } from "../../../database/models/RentalContract.model";
 import { Addresses, Countries, CountryAttributes } from "../../../database/models/Addresses.model";
 import { CategoryResult } from "../../../interface/CategoryQuery";
 import { TokenUserInfo } from "../../../interface/Auth";
@@ -27,6 +27,8 @@ async function categoryFetch<T extends {id: number, name: string}>(model: ModelS
     }
     return responseBody
 }
+
+/* COUNTRY */
 
 categoryRoutes.get("/country/fetch", authenticateToken, async (req, res) => {
     try {
@@ -76,6 +78,8 @@ categoryRoutes.post("/country/delete", authenticateToken, async (req, res) => {
     }
 });
 
+/* CURRENCY */
+
 categoryRoutes.get("/currency/fetch", authenticateToken, async (req, res) => {
     try {
         const responseBody = await categoryFetch(Currencies);
@@ -123,6 +127,8 @@ categoryRoutes.post("/currency/delete", authenticateToken, async (req, res) => {
         res.status(500).json({message: error.message});
     }
 })
+
+/* PROPERTY TYPE */
 
 categoryRoutes.get("/property-type/fetch", async (req, res) => {
     try {
@@ -195,3 +201,78 @@ categoryRoutes.post("/property-type/create", authenticateToken, async (req, res)
         res.status(500).json({message: error.message});
     }
 })
+
+/* PERIOD TYPE */
+
+categoryRoutes.get("/period-type/fetch", authenticateToken, async (req, res) => {
+    try {
+        const responseBody = await categoryFetch(PeriodTypes);
+        res.status(200).json(responseBody);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+});
+
+categoryRoutes.post("/period-type/create", authenticateToken, async (req, res) => {
+    const user = res.locals.user as TokenUserInfo
+
+    if (!user.isAdmin) {
+        res.status(403).json({message: "Not an admin"});
+        return;
+    }
+
+    const body = req.body as PeriodTypeAttributes;
+    
+    const t = await sequelize.transaction();
+
+    try {
+        await PeriodTypes.create(body);
+        await t.commit();
+        res.sendStatus(200);
+    }
+    catch (error) {
+        await t.rollback();
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+});
+
+categoryRoutes.post("/period-type/delete", authenticateToken, async (req, res) => {
+    const user = res.locals.user as TokenUserInfo 
+
+    if (!user.isAdmin) {
+        res.status(403).json({message: "Not an admin"});
+        return;
+    }
+
+    const filters = req.body as PeriodTypeAttributes; 
+    if (!filters.id) {
+        res.status(400).json({message: "id not provided in JSON"});
+        return;
+    }
+
+    const t = await sequelize.transaction();
+
+    try {
+        await PeriodTypes.findOrCreate({
+            where: {id: deletedId},
+            defaults: {
+                id: deletedId,
+                name: "Deleted",
+            }
+        })
+
+        await RentalContracts.update({period_type_id: deletedId}, {where: {period_type_id: filters.id}})
+        await PeriodTypes.destroy({where: {id: filters.id}});
+        await t.commit();
+        res.sendStatus(200);
+    }
+
+    catch (error) {
+        await t.rollback();
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+});

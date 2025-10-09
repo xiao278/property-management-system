@@ -5,6 +5,7 @@ import { Currencies } from "../models/Currencies.model";
 import { ItemCategories, ItemManufacturers, ItemModels } from "../models/ItemModel.model";
 import { Rooms } from "../models/Rooms.model";
 import { Renovations } from "../models/Renovations.model";
+import { PeriodTypes, RentalContracts, Tenants } from "../models/RentalContract.model";
 
 async function syncUsers() {
   await Users.sync({alter: true});
@@ -40,6 +41,9 @@ async function syncHousingExtras() {
   await syncHousings();
   await Renovations.sync({alter: true});
   await Rooms.sync({alter: true});
+  await PeriodTypes.sync({alter: true});
+  await Tenants.sync({alter: true});
+  await RentalContracts.sync({alter: true});
 }
 
 (async () => {

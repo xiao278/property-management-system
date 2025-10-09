@@ -11,7 +11,8 @@ import { createPropertyType, deletePropertyType, fetchPropertyTypes } from "../.
 import { FormInput } from "../../../components/Template/FormInput/FormInput";
 import { HousingTypeAttributes } from "../../../../../database/models/Housings.model";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { post } from "../../../api";
+import { PeriodTypeQueryResult } from "../../../../../interface/RentalContractQuery";
+import { createPeriodType, deletePeriodType, fetchPeriodTypes } from "../../../apiCalls/rentalContract";
 
 export const manageCategoriesPageExtension = "manage-categories"
 
@@ -26,6 +27,7 @@ export function ManageCategoriesPage() {
                 <ManageCategory<CountryQueryResult> fetchCallback={fetchCountries} deleteCallback={deleteCountry} displayName="Countries" />
                 <ManageCategory<CurrencyQueryResult> fetchCallback={fetchCurrencies} deleteCallback={deleteCurrency} displayName="Currencies" />
                 <ManageCategory<HousingTypeQueryResult> fetchCallback={fetchPropertyTypes} deleteCallback={deletePropertyType} createCallback={createPropertyType} displayName="Property Types" />
+                <ManageCategory<PeriodTypeQueryResult>  fetchCallback={fetchPeriodTypes} deleteCallback={deletePeriodType} createCallback={createPeriodType} displayName="Rental Contract Period Types"/>
             </AccordionExpandContext>
         </div>
     )
