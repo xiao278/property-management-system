@@ -4,6 +4,7 @@ import { DatabaseManagementPage, databaseManagementPageExtension } from '../page
 import { ManageCategoriesPage, manageCategoriesPageExtension } from '../pages/AdministrationPage/DatabaseManagementPage/ManageCategoriesPage/ManageCategoriesPage';
 import { HousingEntryPage, housingEntryPageExtension } from "../pages/AdministrationPage/DataEntryLinksPage/HousingEntryPage/HousingEntryPage";
 import { DataEntryLinksPage,dataEntryLinksPageExtension } from "../pages/AdministrationPage/DataEntryLinksPage/DataEntryLinksPage";
+import { RentalEntryPage, rentalEntryPageExtension } from "../pages/AdministrationPage/DataEntryLinksPage/RentalEntryPage/RentalEntryPage";
 
 export function AdminRoutes() {
     return (
@@ -18,6 +19,7 @@ export function AdminRoutes() {
                 <Route path={`${dataEntryLinksPageExtension}`}>
                     <Route index element={<DataEntryLinksPage />} />
                     <Route path={`${housingEntryPageExtension}`} element={<HousingEntryPage />} />
+                    <Route path={`${rentalEntryPageExtension}`} element={<RentalEntryPage /> } />
                 </Route>
             </Route>
         </>

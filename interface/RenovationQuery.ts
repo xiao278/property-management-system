@@ -4,4 +4,4 @@ interface RenovationQueryResult {
     renovations: RenovationAttributes[]
 }
 
-export { RenovationQueryResult }
+export type { RenovationQueryResult }

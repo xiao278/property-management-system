@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { TokenUserInfo } from '../../../interface/Auth';
 import { authenticateToken } from '../middlewares/tokenAuth';
-import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo } from '../../../interface/HousingQuery';
+import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingTitleQueryResult, HousingTypeQueryResult, HousingUnitInfo } from '../../../interface/HousingQuery';
 import { AddressAttributes, Addresses, Countries } from '../../../database/models/Addresses.model'
 import { HousingAttributes, Housings, HousingTypes } from '../../../database/models/Housings.model';
 import { Currencies } from '../../../database/models/Currencies.model';
@@ -10,6 +10,7 @@ import { SearchHousingQueryResult, SearchHousingQueryResultFormatted } from '../
 import { AddressInfo } from '../../../interface/HousingQuery';
 import { Sequelize } from 'sequelize';
 import { Renovations } from '../../../database/models/Renovations.model';
+import { Listify } from '../../../interface/QueryingGenerics';
 
 const housingRoutes = Router();
 
@@ -251,5 +252,43 @@ housingRoutes.post('/delete', authenticateToken, async (req, res) => {
         res.status(500).json({message: error.message});
     }
 })
+
+housingRoutes.get('/fetch-titles', authenticateToken, async (req, res) => {
+    try {
+        const housingResult = await Housings.findAll({
+            attributes: ['id', 'unit'],
+            include: [
+                {
+                    model: Addresses,
+                    as: "address",
+                    required: true,
+                    include: [{ 
+                        model: Countries,
+                        as: "country",
+                        attributes: ['name']
+                    }]
+                },
+            ],
+        });
+        const responseBody: Listify<HousingTitleQueryResult> = {
+            list: housingResult.map((housing) => {
+                    const data = housing.dataValues as unknown as SearchHousingQueryResult;
+                    const formattedData = {
+                        id: data.id,
+                        title: `${data.address.building_name ? `${data.unit ? `${data.unit} `: ""}${data.address.building_name}, ` : ""}`
+                        + `${data.address.street_number ? `${data.address.street_number} ` : ""}${data.address.street_name}, `
+                        + `${data.address.city}, ${data.address.state} ${data.address.postal_code}, ${data.address.country.name}`
+                    }
+                    return formattedData;
+                })
+        };     
+        res.status(200).json(responseBody);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({message: error.message});
+        return;
+    }
+});
 
 export { housingRoutes }

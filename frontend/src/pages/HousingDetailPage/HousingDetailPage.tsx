@@ -8,7 +8,7 @@ import { HousingInfo, HousingSearchFilters, HousingSearchResult, HousingUnitInfo
 import { AddressDisplay } from "../../components/Content/AddressDisplay/AddressDisplay";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { JSX, useState } from "react";
-import { HousingForm, housingFormDefaultValues } from "../../components/Content/HousingForm/HousingForm";
+import { HousingForm, housingFormDefaultValues } from "../../components/Content/Forms/HousingForm/HousingForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { post } from "../../api";
 import { AuthOrHide } from "../../components/Auth/AuthOrHide";

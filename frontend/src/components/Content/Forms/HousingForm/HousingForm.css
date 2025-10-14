@@ -1,9 +1,3 @@
-.HousingFormContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
 .ClusteredInput {
     display: flex;
     flex-direction: row;

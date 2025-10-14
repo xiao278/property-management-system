@@ -5,8 +5,7 @@ import { Currencies } from "./Currencies.model";
 
 interface TenantAttributes {
     id?: number;
-    first_name: string;
-    last_name: string;
+    name: string;
     email?: string;
     phone?: string;
 }
@@ -22,12 +21,8 @@ const Tenants = sequelize.define<TenantInstance>(
             primaryKey: true,
             autoIncrement: true
         },
-        first_name: {
-            type: DataTypes.STRING(16),
-            allowNull: false,
-        },
-        last_name: {
-            type: DataTypes.STRING(16),
+        name: {
+            type: DataTypes.STRING(64),
             allowNull: false,
         },
         email: {

@@ -7,6 +7,7 @@ import { roomRoutes } from './routes/rooms';
 import { sequelize } from '../../database/main';
 import { renovationRoutes } from './routes/renovation';
 import { categoryRoutes } from './routes/category';
+import { rentRoutes } from './routes/rent';
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use('/api/housing', housingRoutes);
 app.use('/api/room', roomRoutes);
 app.use('/api/renovation', renovationRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/rental-contract', rentRoutes);
 
 app.listen(Number(PORT), "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -1,14 +1,14 @@
-import { SmallCard } from "../../Template/SmallCard/SmallCard"
-import { FormInput } from "../../Template/FormInput/FormInput"
+import { SmallCard } from "../../../Template/SmallCard/SmallCard"
+import { FormInput } from "../../../Template/FormInput/FormInput"
 import "./HousingForm.css"
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { HousingInfo, HousingTypeQueryResult } from "../../../../../interface/HousingQuery";
+import { HousingInfo, HousingTypeQueryResult } from "../../../../../../interface/HousingQuery";
 import { NumericFormat } from 'react-number-format';
-import { FlexWrapping } from "../../Template/FlexWrapping/FlexWrapping";
+import { FlexWrapping } from "../../../Template/FlexWrapping/FlexWrapping";
 import { useEffect } from "react";
 import { MenuItem, Select } from "@mui/material";
-import { Selection } from "../../Template/FormInput/Implemented/Selection";
-import { fetchPropertyTypes } from "../../../apiCalls/propertyTypes";
+import { Selection } from "../../../Template/FormInput/Implemented/Selection";
+import { fetchPropertyTypes } from "../../../../apiCalls/propertyTypes";
 
 interface HousingFormProps {
     onFormSubmit: SubmitHandler<HousingInfo>
@@ -32,7 +32,7 @@ export function HousingForm(props: HousingFormProps) {
 
     return (
         <form onSubmit={handleSubmit(onFormSubmit)}>
-            <div className="HousingFormContainer">
+            <div className="FormContainer">
                 <SmallCard title="Property Information">
                     <FlexWrapping minWidth={280}>
                         <FormInput fieldName="housing.unit" hint="Unit Number" type="text" />
@@ -61,11 +61,11 @@ export function HousingForm(props: HousingFormProps) {
                         </div>
                         <FormInput fieldName="housing.purchase_date" hint="Date of Purchase" type="date" validation={{required: true}} />
                         <FormInput fieldName="housing.furnish" hint="Furnish Status" type="mui" validation={{required: true}}>
-                                <Select sx={{height: "19.5px"}}>
-                                    <MenuItem value="Bare">Bare Furnishing</MenuItem>
-                                    <MenuItem value="Semi">Semi Furnished</MenuItem>
-                                    <MenuItem value="Fully">Fully Furnished</MenuItem>
-                                </Select>
+                            <Select sx={{height: "19.5px"}}>
+                                <MenuItem value="Bare">Bare Furnishing</MenuItem>
+                                <MenuItem value="Semi">Semi Furnished</MenuItem>
+                                <MenuItem value="Fully">Fully Furnished</MenuItem>
+                            </Select>
                         </FormInput>
                         <FormInput fieldName="housing.parking_lots" hint="Parking" type="number" validation={{required: true}}>
                             <NumericFormat allowNegative={false}/>

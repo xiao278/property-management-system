@@ -1,6 +1,6 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { HousingInfo } from "../../../../../../interface/HousingQuery";
-import { HousingForm, housingFormDefaultValues } from "../../../../components/Content/HousingForm/HousingForm"
+import { HousingForm, housingFormDefaultValues } from "../../../../components/Content/Forms/HousingForm/HousingForm"
 import "./HousingEntryPage.css"
 import { post } from "../../../../api";
 
@@ -22,7 +22,7 @@ export function HousingEntryPage() {
         }
     }
     return (
-        <div className="HousingEntryPageContainer">
+        <div className="DataEntryPageContainer">
             <FormProvider {...methods}>
                 <HousingForm onFormSubmit={onFormSubmit} />
             </FormProvider>

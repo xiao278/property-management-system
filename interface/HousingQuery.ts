@@ -127,11 +127,17 @@ interface HousingTypeQueryResult {
     name: string;
 }
 
+interface HousingTitleQueryResult {
+    id: number;
+    title: string;
+}
+
 export type { HousingInfo, AddressInfo, HousingUnitInfo,
     HousingSearchResult, SearchHousingQueryResult, SearchHousingQueryResultFormatted, 
     HousingSearchFilters,
     AddressSearchFilters, AddressQueryResult, AddressQueryResultFormatted,
     CountryQueryResult, CountrySearchResult,
     OrderingOptions,
-    HousingTypeQueryResult
+    HousingTypeQueryResult,
+    HousingTitleQueryResult
 };
