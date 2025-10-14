@@ -20,7 +20,10 @@ interface RentalFormProps {
 
 export const rentalFormDefaultValues = {
     contract: {
-        tenant_id: -1
+        tenant_id: -2,
+        housing_id: -2,
+        currency_id: -2,
+        period_type_id: -2,
     }
 }
 

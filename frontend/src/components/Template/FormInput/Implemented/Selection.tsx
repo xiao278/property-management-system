@@ -29,11 +29,15 @@ export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
     }, [])
     
     return (
-        <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required}}>
+        <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required, min: required ? 0 : undefined}}>
             {
                 loaded ?
                 <Select sx={{height: "19.5px", ...sx}}>
-                    {!required && 
+                    {required ?
+                        <MenuItem value={-2}>
+                            <em>Please Select</em>
+                        </MenuItem>
+                        :
                         <MenuItem value={""}>
                             <em>None</em>
                         </MenuItem>
