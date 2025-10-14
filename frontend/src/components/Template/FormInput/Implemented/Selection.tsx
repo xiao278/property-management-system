@@ -3,6 +3,7 @@ import { FormInput } from "../FormInput";
 import { useEffect, useState } from "react";
 import { CountryQueryResult } from "../../../../../../interface/HousingQuery";
 import { fetchCountries } from "../../../../apiCalls/country";
+import { FieldValues, RegisterOptions } from "react-hook-form";
 
 interface SelectionProps<T> {
     sx?: SxProps | undefined;
@@ -11,12 +12,14 @@ interface SelectionProps<T> {
     displayFromField: keyof T;
     fieldName: string;
     hint: string;
+    validation?: RegisterOptions<FieldValues, string>;
+    
 }
 
 export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
     const [ entries, setEntries ] = useState<T[] | null>();
     const [ loaded, setLoaded ] = useState(false);
-    const { sx, fieldName, hint, fetchCallback, displayFromField, required } = props
+    const { sx, fieldName, hint, fetchCallback, displayFromField, required, validation } = props
 
     useEffect(() => {
         const loadEntries = async () => {
@@ -29,7 +32,7 @@ export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
     }, [])
     
     return (
-        <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required, min: required ? 0 : undefined}}>
+        <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required, min: required ? 0 : undefined, ...validation}}>
             {
                 loaded ?
                 <Select sx={{height: "19.5px", ...sx}}>

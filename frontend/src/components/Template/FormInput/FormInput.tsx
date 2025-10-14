@@ -49,15 +49,15 @@ export function FormInput(props: FormInputProps) {
         }
     }
     return (
-        <div className="FormInputContainer" style={containerStyle}>
+        <div className={`FormInputContainer ${validation?.disabled ? "FormInputContainerDisabled" : "FormInputContainerEnabled"}`} style={containerStyle}>
             {children ? 
                 renderChildren()
                 : 
-                <input className={"FormInput"} {...register(fieldName, validation)} type={type} placeholder={placeholder} />
+                <input className={`FormInput`} {...register(fieldName, validation)} type={type} placeholder={placeholder} />
             }
             {!hint ? <></> : 
-                <div className="FormInputName"> {hint}
-                    {(validation && validation.required) ? <span style={{color: "red"}}>*</span> : <></>}
+                <div className={`FormInputName ${validation?.disabled ? "FormInputNameDisabled" : ""}`}> {hint}
+                    {(validation && validation.required && !validation.disabled) ? <span style={{color: "red"}}>*</span> : <></>}
                 </div>
             }
         </div>

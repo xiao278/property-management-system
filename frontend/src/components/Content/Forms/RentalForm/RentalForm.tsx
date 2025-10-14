@@ -5,11 +5,11 @@ import { SmallCard } from "../../../Template/SmallCard/SmallCard";
 import { FormInput } from "../../../Template/FormInput/FormInput";
 import { PeriodTypeQueryResult } from "../../../../../../interface/RentalContractQuery";
 import { Selection } from "../../../Template/FormInput/Implemented/Selection";
-import { fetchPeriodTypes, fetchTenants } from "../../../../apiCalls/rentalContract";
+import { calculateEndDate, fetchPeriodTypes, fetchTenants } from "../../../../apiCalls/rentalContract";
 import { NumericFormat } from "react-number-format";
 import { CurrencyQueryResult } from "../../../../../../interface/miscQuery/CurrencyQuery";
 import { fetchCurrencies } from "../../../../apiCalls/currency";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { fetchHousingTitles } from "../../../../apiCalls/housing";
 import { HousingTitleQueryResult } from "../../../../../../interface/HousingQuery";
@@ -29,7 +29,24 @@ export const rentalFormDefaultValues = {
 
 export function RentalForm(props: RentalFormProps) {
     const { onSubmit } = props;
-    const { handleSubmit, reset } = useFormContext<RentalInfo>();
+    const { handleSubmit, reset, getValues, setValue, register, watch } = useFormContext<RentalInfo>();
+
+    const watchStartDate = watch("contract.start_date");
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {setEndDate()}, 2000);
+        return () => clearTimeout(timeoutId);
+    }, [watchStartDate]);
+
+    async function setEndDate() {
+        const startDate = getValues("contract.start_date");
+        const periodTypeId = getValues("contract.period_type_id");
+        const periods = getValues("contract.periods");
+        if (!startDate || periodTypeId < 0 || !periods) return;
+        const date = await calculateEndDate(startDate, periodTypeId, periods);
+        setValue("misc.end_date", date ? date : "");
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="FormContainer">
@@ -37,10 +54,13 @@ export function RentalForm(props: RentalFormProps) {
                     <FlexWrapping minWidth={280}>
                         <Selection<HousingTitleQueryResult> fieldName="contract.housing_id" hint="Select Property" displayFromField="title" fetchCallback={fetchHousingTitles} required />
                         <FormInput fieldName="contract.start_date" hint="Start Date" type="date" validation={{required: true}} />
-                        <Selection<PeriodTypeQueryResult> fieldName="contract.period_type_id" hint="Period Type" displayFromField="name" fetchCallback={fetchPeriodTypes} required />
-                        <FormInput fieldName="contract.periods" hint="No. Periods" type="number" validation={{required: true}}>
-                            <NumericFormat allowNegative={false} decimalScale={0} />
-                        </FormInput>
+                        <Selection<PeriodTypeQueryResult> fieldName="contract.period_type_id" hint="Period Type" displayFromField="name" fetchCallback={fetchPeriodTypes} required validation={{onChange: setEndDate}}/>
+                        <div style={{display: "grid", gridTemplateColumns: "50% 50%", alignItems: "center", gap: "4px"}}>
+                            <FormInput fieldName="contract.periods" hint="No. Periods" type="number" validation={{required: true, onChange: setEndDate}}>
+                                <NumericFormat allowNegative={false} decimalScale={0} />
+                            </FormInput>
+                            <FormInput fieldName="misc.end_date" hint="End Date" type="date" validation={{required: false, disabled: true}} />
+                        </div>
                         <Selection<CurrencyQueryResult> fieldName="contract.currency_id" hint="Currency" displayFromField="name" fetchCallback={fetchCurrencies} required />
                         <FormInput fieldName="contract.rent" hint="Rent Amt." type="number" validation={{required: true}}>
                             <NumericFormat thousandSeparator={true} allowNegative={false} decimalScale={2} fixedDecimalScale={true} />

@@ -32,10 +32,21 @@ async function deletePeriodType(id: number) {
     }
 }
 
+async function calculateEndDate(startDate: string, periodTypeId: number, periodCount: number) {
+    const res = await get("/api/rental-contract/calculate-end-date", {startDate: startDate, periodTypeId: String(periodTypeId), periodCount: String(periodCount)});
+    if (!res.ok) {
+        const error = await res.json();
+        alert(`Failed to calculate end date: ${error.message}`);
+        return null;
+    }
+    const data = await res.json() as {endDate: string};
+    return data.endDate;
+}
 
 /* CONTRACT */
 
 async function createRentalContract(form: RentalInfo) {
+    delete form.misc;
     const res = await post("/api/rental-contract/create-contract", form);
     if (!res.ok) {
         const error = await res.json();
@@ -67,5 +78,6 @@ async function fetchTenants() {
 export { 
     fetchPeriodTypes, createPeriodType, deletePeriodType,
     createRentalContract, fetchRentalContracts,
-    fetchTenants
+    fetchTenants,
+    calculateEndDate
 };

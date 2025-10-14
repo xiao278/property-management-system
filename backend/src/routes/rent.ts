@@ -70,6 +70,54 @@ rentRoutes.post("/create-contract", authenticateToken, async (req, res) => {
     }
 });
 
+export async function calculateEndDate(startDate: Date, periodTypeId: number, periodCount: number): Promise<Date> {
+    const endDate = new Date(startDate);
+    const periodType = await PeriodTypes.findOne({where: {id: periodTypeId}}).then((record) => record?.dataValues.name);
+    switch(periodType) {
+        case "monthly": {
+            endDate.setMonth(endDate.getMonth() + periodCount);
+            break;
+        }
+
+        case "yearly": {
+            endDate.setFullYear(endDate.getFullYear() + periodCount);
+            break;
+        }
+
+        case "weekly": {
+            endDate.setDate(endDate.getDate() + (7 * periodCount));
+            break;
+        }
+
+        case "thirty-days": {
+            endDate.setDate(endDate.getDate() + (30 * periodCount));
+            break;
+        }
+
+        default: {
+            endDate.setFullYear(0);
+            endDate.setMonth(0);
+            endDate.setDate(0);
+            break;
+        }
+    }
+    return endDate;
+}
+
+rentRoutes.get("/calculate-end-date", authenticateToken, async (req, res) => {
+    const { startDate, periodTypeId, periodCount } = req.query;
+    if (!startDate || !periodTypeId || !periodCount) {
+        res.status(400).json({message: "Missing query parameters. Expecting startDate, periodTypeId, periodCount"});
+        return;
+    }
+    const formattedStartDate = new Date(startDate as string);
+    const formattedPeriodTypeId = Number(periodTypeId);
+    const formattedPeriodCount = Number(periodCount);
+
+    const endDate = await calculateEndDate(formattedStartDate, formattedPeriodTypeId, formattedPeriodCount);
+
+    res.status(200).json({endDate: endDate.toISOString().split('T')[0]});
+});
 
 /* TENANTS */
 

@@ -12,9 +12,21 @@
 }
 
 .FormInputContainer > input {
-    background-color: rgb(245,245,245);
     border-width: 1px;
     border-style: solid;
-    border-color: rgb(220,220,220);
     box-shadow: inset 0px 2px 6px -6px rgba(66, 68, 90);
+}
+
+.FormInputContainerDisabled > input {
+    background-color: rgb(245, 235, 235);
+    cursor: not-allowed
+}
+
+.FormInputContainerEnabled > input {
+    border-color: rgb(220,220,220);
+    background-color: rgb(245,245,245);
+}
+
+.FormInputNameDisabled {
+    color: gray;
 }

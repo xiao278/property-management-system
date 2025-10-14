@@ -4,6 +4,9 @@ import { QueryResult } from './QueryingGenerics';
 interface RentalInfo {
     contract: RentalContractAttributes,
     tenant?: TenantAttributes,
+    misc?: {
+        end_date?: string
+    }
 }
 
 interface RentalQueryResult {
