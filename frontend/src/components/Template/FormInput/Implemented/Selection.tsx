@@ -1,8 +1,6 @@
 import { MenuItem, Select, SxProps } from "@mui/material";
 import { FormInput } from "../FormInput";
 import { useEffect, useState } from "react";
-import { CountryQueryResult } from "../../../../../../interface/HousingQuery";
-import { fetchCountries } from "../../../../apiCalls/country";
 import { FieldValues, RegisterOptions } from "react-hook-form";
 
 interface SelectionProps<T> {
@@ -29,7 +27,7 @@ export function Selection<T extends {id: number}>(props: SelectionProps<T>) {
         }
 
         loadEntries();
-    }, [])
+    }, [fetchCallback])
     
     return (
         <FormInput fieldName={fieldName} hint={hint} type="mui" validation={{required: required, min: required ? 0 : undefined, ...validation}}>
